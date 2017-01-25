@@ -1,0 +1,120 @@
+package io.swagger.model;
+
+import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+
+
+/**
+ * SDN-O Service Instance Termination Request.
+ **/
+
+@ApiModel(description = "SDN-O Service Instance Termination Request.")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T11:14:05.407Z")
+
+public class NsTerminationRequest   {
+  
+  private String nsInstanceId = null;
+  private String terminationType = null;
+  private String gracefulTerminationTimeout = null;
+
+  /**
+   * id of the SDN-O service instance to be terminated
+   **/
+  public NsTerminationRequest nsInstanceId(String nsInstanceId) {
+    this.nsInstanceId = nsInstanceId;
+    return this;
+  }
+
+  
+  @ApiModelProperty(required = true, value = "id of the SDN-O service instance to be terminated")
+  @JsonProperty("nsInstanceId")
+  public String getNsInstanceId() {
+    return nsInstanceId;
+  }
+  public void setNsInstanceId(String nsInstanceId) {
+    this.nsInstanceId = nsInstanceId;
+  }
+
+  /**
+   * type of termination. graceful or not, etc.
+   **/
+  public NsTerminationRequest terminationType(String terminationType) {
+    this.terminationType = terminationType;
+    return this;
+  }
+
+  
+  @ApiModelProperty(required = true, value = "type of termination. graceful or not, etc.")
+  @JsonProperty("terminationType")
+  public String getTerminationType() {
+    return terminationType;
+  }
+  public void setTerminationType(String terminationType) {
+    this.terminationType = terminationType;
+  }
+
+  /**
+   * timeout value for a graceful timeout
+   **/
+  public NsTerminationRequest gracefulTerminationTimeout(String gracefulTerminationTimeout) {
+    this.gracefulTerminationTimeout = gracefulTerminationTimeout;
+    return this;
+  }
+
+  
+  @ApiModelProperty(value = "timeout value for a graceful timeout")
+  @JsonProperty("gracefulTerminationTimeout")
+  public String getGracefulTerminationTimeout() {
+    return gracefulTerminationTimeout;
+  }
+  public void setGracefulTerminationTimeout(String gracefulTerminationTimeout) {
+    this.gracefulTerminationTimeout = gracefulTerminationTimeout;
+  }
+
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    NsTerminationRequest nsTerminationRequest = (NsTerminationRequest) o;
+    return Objects.equals(nsInstanceId, nsTerminationRequest.nsInstanceId) &&
+        Objects.equals(terminationType, nsTerminationRequest.terminationType) &&
+        Objects.equals(gracefulTerminationTimeout, nsTerminationRequest.gracefulTerminationTimeout);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(nsInstanceId, terminationType, gracefulTerminationTimeout);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class NsTerminationRequest {\n");
+    
+    sb.append("    nsInstanceId: ").append(toIndentedString(nsInstanceId)).append("\n");
+    sb.append("    terminationType: ").append(toIndentedString(terminationType)).append("\n");
+    sb.append("    gracefulTerminationTimeout: ").append(toIndentedString(gracefulTerminationTimeout)).append("\n");
+    sb.append("}");
+    return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
+  }
+}
+
