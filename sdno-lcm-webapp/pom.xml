@@ -3,18 +3,33 @@
     <packaging>jar</packaging>
             <groupId>org.openo.sdno.lcm</groupId>
             <artifactId>sdno-lcm-webapp</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.1.0-SNAPSHOT</version>
     <properties>
         <java.version>1.7</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <springfox-version>2.5.0</springfox-version>
+        <nexusproxy>https://nexus.open-o.org/content</nexusproxy>
     </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.3.5.RELEASE</version>
     </parent>
+
+
+  <distributionManagement>
+    <repository>
+      <id>open-o-releases</id>
+      <url>${nexusproxy}/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>open-o-snapshots</id>
+      <url>${nexusproxy}/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+    
+    
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
@@ -64,7 +79,7 @@
         <dependency>
             <groupId>org.openo.sdno.lcm</groupId>
             <artifactId>sdno-lcm-engine</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.1.0-SNAPSHOT</version>
         </dependency>        
     </dependencies>
 </project>

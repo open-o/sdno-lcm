@@ -5,7 +5,14 @@
   <artifactId>sdno-lcm-restclient-catalog</artifactId>
   <packaging>jar</packaging>
   <name>sdno-lcm-restclient-catalog</name>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.1.0-SNAPSHOT</version>
+  
+  <parent>
+    <groupId>org.openo.sdno.lcm</groupId>
+    <artifactId>sdno-lcm</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
+  </parent>
+  
   <scm>
     <connection>scm:git:git@github.com:swagger-api/swagger-mustache.git</connection>
     <developerConnection>scm:git:git@github.com:swagger-api/swagger-codegen.git</developerConnection>

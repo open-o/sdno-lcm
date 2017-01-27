@@ -28,7 +28,7 @@ Add this dependency to your project's POM:
 <dependency>
     <groupId>org.openo.sdno.lcm</groupId>
     <artifactId>restclient-catalog</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -41,7 +41,7 @@ At first generate the JAR by executing:
 
 Then manually install the following JARs:
 
-* target/restclient-catalog-1.0.0-SNAPSHOT.jar
+* target/restclient-catalog-1.1.0-SNAPSHOT.jar
 * target/lib/*.jar
 
 ## Getting Started

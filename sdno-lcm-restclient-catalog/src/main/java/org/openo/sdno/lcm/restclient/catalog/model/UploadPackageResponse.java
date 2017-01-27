@@ -1,3 +1,18 @@
+/*
+ * Copyright 2017 Huawei Technologies Co., Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /**
  * Open-o Catalog Service rest API
  * 
@@ -22,7 +37,6 @@
  * limitations under the License.
  */
 
-
 package org.openo.sdno.lcm.restclient.catalog.model;
 
 import java.util.Objects;
@@ -30,70 +44,69 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-
 /**
  * UploadPackageResponse
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-18T13:47:52.904Z")
-public class UploadPackageResponse   {
-  @JsonProperty("csarId")
-  private String csarId = null;
+public class UploadPackageResponse {
 
-  public UploadPackageResponse csarId(String csarId) {
-    this.csarId = csarId;
-    return this;
-  }
+    @JsonProperty("csarId")
+    private String csarId = null;
 
-   /**
-   * Get csarId
-   * @return csarId
-  **/
-  @ApiModelProperty(example = "null", value = "")
-  public String getCsarId() {
-    return csarId;
-  }
-
-  public void setCsarId(String csarId) {
-    this.csarId = csarId;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
+    public UploadPackageResponse csarId(String csarId) {
+        this.csarId = csarId;
+        return this;
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    /**
+     * Get csarId
+     * 
+     * @return csarId
+     **/
+    @ApiModelProperty(example = "null", value = "")
+    public String getCsarId() {
+        return csarId;
     }
-    UploadPackageResponse uploadPackageResponse = (UploadPackageResponse) o;
-    return Objects.equals(this.csarId, uploadPackageResponse.csarId);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(csarId);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class UploadPackageResponse {\n");
-    
-    sb.append("    csarId: ").append(toIndentedString(csarId)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
+    public void setCsarId(String csarId) {
+        this.csarId = csarId;
     }
-    return o.toString().replace("\n", "\n    ");
-  }
+
+    @Override
+    public boolean equals(java.lang.Object o) {
+        if(this == o) {
+            return true;
+        }
+        if(o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        UploadPackageResponse uploadPackageResponse = (UploadPackageResponse)o;
+        return Objects.equals(this.csarId, uploadPackageResponse.csarId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(csarId);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class UploadPackageResponse {\n");
+
+        sb.append("    csarId: ").append(toIndentedString(csarId)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(java.lang.Object o) {
+        if(o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
 }
-
