@@ -16,25 +16,25 @@
 
 package org.openo.sdno.lcm.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.LcmStateEngine;
+import org.springframework.stereotype.Component;
 
+@Component
 public class NsApiControllerFacade {
 
-    private final Logger log = Logger.getLogger("NsApiControllerFacade");
+	private final Logger log = Logger.getLogger("NsApiControllerFacade");
 
-    public void nsCreationPost() {
+	public void nsCreationPost(Map<String, String> params) {
 
-        log.info("~~~~~ NsApiControllerFacade - nsCreationPost ~~~~~");
-        log.severe("info log should appear next... isInfoEnabled:" + log.isLoggable(Level.INFO));
-        log.info("test the info logger");
-        Map<String, String> params = new HashMap<>();
-        LcmStateEngine.execute(params);
-        return;
-    }
+		log.info("~~~~~ NsApiControllerFacade - nsCreationPost ~~~~~");
+		log.severe("info log should appear next... isInfoEnabled:" + log.isLoggable(Level.INFO));
+		log.info(params.toString());
+		LcmStateEngine.execute(params);
+		return;
+	}
 
 }
