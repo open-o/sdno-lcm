@@ -16,37 +16,61 @@
 
 package org.openo.sdno.lcm.engine;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-
+import org.openo.sdno.catalogclient.ModelResourceApiClient;
+import org.openo.sdno.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.restclient.catalog.ApiException;
 import org.openo.sdno.lcm.restclient.catalog.api.PackageResourceApi;
 import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
+import org.openo.sdno.lcm.statetablehandler.StateTableHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class LcmStateEngine {
 
     private static final Logger log = Logger.getLogger("LcmStateEngine");
+    
+    private StateTableHandler stateTableHandler;
+    
+    private ModelResourceApiClient modelResourceApiClient;
+    
+    private PackageResourceApiClient packageResourceApiClient;
 
-    public static void execute(Map<String, String> params) {
+    public Map<String, Object> execute(Map<String, String> params) {
+    	
+    	if(params == null) {
+    		
+    		throw new InvalidParameterException("input params may not be null");
+    	}
 
         // check if the nsid is included in params
         String nsid = params.get("nsid");
+        String csarId = params.get("nsName"); // ????????????????????
         if(null != params.get("nsid")) {
 
             log.info("nsid is " + nsid);
         } else {
             log.info("nsid is not found in params");
-            executeCreate();
+            return executeCreate(csarId);
         }
+		return null;
 
     }
 
-    public static void executeCreate() {
+    Map<String, Object> executeCreate(String csarId) {
 
+    	if(csarId == null || csarId.isEmpty()) {
+    		
+    		throw new InvalidParameterException("csarId may not be empty or null");
+    	}
         // get TOSCA template
+    	List<PackageMeta> packageMetaList = packageResourceApiClient.queryPackageById(csarId);
+    	
 
         // get template instance
 
@@ -54,6 +78,7 @@ public class LcmStateEngine {
         
         
         try {
+            // TODO let spring manage this
             PackageResourceApi packageResourceApi = new PackageResourceApi();
             List<PackageMeta> queryPackageListByCond =
                     packageResourceApi.queryPackageListByCond(null, null, null, null, null);
@@ -66,6 +91,34 @@ public class LcmStateEngine {
             log.severe("Package query has failed with error: " + e.getMessage());
             e.printStackTrace();
         }
+		return null;
     }
+
+	public StateTableHandler getStateTableHandler() {
+		return stateTableHandler;
+	}
+
+	@Autowired
+	public void setStateTableHandler(StateTableHandler stateTableHandler) {
+		this.stateTableHandler = stateTableHandler;
+	}
+
+	public ModelResourceApiClient getModelResourceApiClient() {
+		return modelResourceApiClient;
+	}
+
+	@Autowired
+	public void setModelResourceApiClient(ModelResourceApiClient modelResourceApiClient) {
+		this.modelResourceApiClient = modelResourceApiClient;
+	}
+
+	public PackageResourceApiClient getPackageResourceApiClient() {
+		return packageResourceApiClient;
+	}
+
+	@Autowired
+	public void setPackageResourceApiClient(PackageResourceApiClient packageResourceApiClient) {
+		this.packageResourceApiClient = packageResourceApiClient;
+	}
 
 }

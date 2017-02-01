@@ -18,6 +18,8 @@ package org.openo.sdno.lcm.statetablehandler;
 
 import java.util.List;
 
+import org.openo.sdno.lcm.statetablehandler.model.StateTable;
+
 public interface StateTableHandler {
 
 	/**
@@ -54,7 +56,4 @@ public interface StateTableHandler {
 	 */
 	List<String> getAllowedTransitions(String stateId, StateTable stateTable);
 
-}
-
-class StateTable {
 }

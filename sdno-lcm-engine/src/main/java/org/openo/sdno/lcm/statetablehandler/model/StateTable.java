@@ -14,28 +14,9 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.lcm.restclient;
 
-import java.util.logging.Logger;
+package org.openo.sdno.lcm.statetablehandler.model;
 
-/**
- * @author mark
- */
-public class LocalMsbRestClientImpl implements RestClient {
+public class StateTable {
 
-    private final Logger log = Logger.getLogger("LocalMsbRestClientImpl");
-
-    /*
-     * (non-Javadoc)
-     * @see org.openo.sdno.lcm.restclient.RestClient#doOperation()
-     */
-    @Override
-    public int doOperation() {
-
-        log.severe("DO-OP");
-        return 0;
-    }
-
-    public void deliberateStyleError() {
-    }
 }

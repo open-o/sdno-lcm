@@ -14,10 +14,20 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.lcm.restclient;
+package org.openo.sdno.lcm.controller;
 
-public interface RestClient {
+import java.util.logging.Logger;
 
-    public int doOperation();
+import org.springframework.stereotype.Component;
+
+@Component
+public class HealthcheckApiControllerFacade {
+	
+	private final Logger log = Logger.getLogger("HealthcheckApiControllerFacade");
+	
+    public void nsHealthcheck() {
+    	
+    	log.fine("healthcheck operation called");
+    }
 
 }

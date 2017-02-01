@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.LcmStateEngine;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,13 +29,19 @@ public class NsApiControllerFacade {
 
 	private final Logger log = Logger.getLogger("NsApiControllerFacade");
 
-	public void nsCreationPost(Map<String, String> params) {
+	private LcmStateEngine lcmStateEngine;
+
+	public Map<String, Object> nsCreationPost(Map<String, String> params) {
 
 		log.info("~~~~~ NsApiControllerFacade - nsCreationPost ~~~~~");
 		log.severe("info log should appear next... isInfoEnabled:" + log.isLoggable(Level.INFO));
 		log.info(params.toString());
-		LcmStateEngine.execute(params);
-		return;
+		return lcmStateEngine.execute(params);
+	}
+
+	@Autowired
+	public void setLcmStateEngine(LcmStateEngine lcmStateEngine) {
+		this.lcmStateEngine = lcmStateEngine;
 	}
 
 }

@@ -33,8 +33,9 @@ public class Mapper {
 	private static final Logger log = Logger.getLogger("Mapper");
 
 	/**
-	 * Fills a Map with the values of the bean-style object's properties. Limited to String properties for now.
-	 * Works by checking the getters, not the fields! Doesn't handle non-String primitive fields.
+	 * Fills a Map with the values of the bean-style object's properties.
+	 * Limited to String properties for now. Works by checking the getters, not
+	 * the fields! Doesn't handle non-String primitive fields.
 	 * 
 	 * @param bean
 	 * @return
@@ -51,6 +52,11 @@ public class Mapper {
 			throw new RuntimeException("Failed to convert an object to Map - maybe the values are not simply strings");
 		}
 		return map;
+	}
+
+	public <T> T mapToBean(T beanInstance, Map<String, Object> properties) {
+		// TODO
+		return null;
 	}
 
 }

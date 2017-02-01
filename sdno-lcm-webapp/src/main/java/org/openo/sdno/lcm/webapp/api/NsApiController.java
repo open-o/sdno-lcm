@@ -16,6 +16,7 @@
 
 package org.openo.sdno.lcm.webapp.api;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.controller.NsApiControllerFacade;
@@ -48,10 +49,11 @@ public class NsApiController implements NsApi {
 
 	public ResponseEntity<NsCreationResponse> nsCreationPost(
 			@ApiParam(value = "the request used to create a SDN-O service instance", required = true) @RequestBody NsCreationRequest nsRequest) {
-		// do some magic!
-		log.severe("~~~~~ NsApiController - nsCreationPost ~~~~~");
-		nsApiControllerFacade.nsCreationPost(mapper.beanToMap(nsRequest));
-		return new ResponseEntity<NsCreationResponse>(HttpStatus.OK);
+		
+		log.fine("~~~~~ NsApiController - nsCreationPost ~~~~~");
+		Map<String, Object> responseMap = nsApiControllerFacade.nsCreationPost(mapper.beanToMap(nsRequest));
+		ResponseEntity<NsCreationResponse> reponse = ResponseEntity.ok(mapper.mapToBean(new NsCreationResponse(), responseMap)); 
+		return reponse;
 	}
 
 	public ResponseEntity<Void> nsDeletionDelete(
