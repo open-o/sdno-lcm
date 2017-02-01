@@ -11,7 +11,7 @@
   <artifactId>sdno-lcm-engine</artifactId>
   <packaging>jar</packaging>
   <version>1.0.0-SNAPSHOT</version>
-  <name>sdno-lcm-engine</name>
+  <name>sdno-lcm/sdno-lcm-engine/bin</name>
   
   <repositories>
     <repository>
