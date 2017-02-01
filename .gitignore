@@ -43,3 +43,4 @@ target
 **.classpath
 .settings
 **test-output
+**build.sbt
