@@ -44,3 +44,4 @@ target
 .settings
 **test-output
 **build.sbt
+**bin
