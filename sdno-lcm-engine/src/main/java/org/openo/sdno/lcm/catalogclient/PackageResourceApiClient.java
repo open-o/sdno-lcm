@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openo.sdno.catalogclient;
+package org.openo.sdno.lcm.catalogclient;
 
 import java.util.List;
 

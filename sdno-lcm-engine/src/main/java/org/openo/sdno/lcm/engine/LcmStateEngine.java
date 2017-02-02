@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.openo.sdno.catalogclient.ModelResourceApiClient;
-import org.openo.sdno.catalogclient.PackageResourceApiClient;
+import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
+import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.restclient.catalog.ApiException;
 import org.openo.sdno.lcm.restclient.catalog.api.PackageResourceApi;
 import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
@@ -33,66 +33,70 @@ import org.springframework.stereotype.Component;
 @Component
 public class LcmStateEngine {
 
-    private static final Logger log = Logger.getLogger("LcmStateEngine");
-    
-    private StateTableHandler stateTableHandler;
-    
-    private ModelResourceApiClient modelResourceApiClient;
-    
-    private PackageResourceApiClient packageResourceApiClient;
+	private static final Logger log = Logger.getLogger("LcmStateEngine");
 
-    public Map<String, Object> execute(Map<String, String> params) {
-    	
-    	if(params == null) {
-    		
-    		throw new InvalidParameterException("input params may not be null");
-    	}
+	private StateTableHandler stateTableHandler;
 
-        // check if the nsid is included in params
-        String nsid = params.get("nsid");
-        String csarId = params.get("nsName"); // ????????????????????
-        if(null != params.get("nsid")) {
+	private ModelResourceApiClient modelResourceApiClient;
 
-            log.info("nsid is " + nsid);
-        } else {
-            log.info("nsid is not found in params");
-            return executeCreate(csarId);
-        }
+	private PackageResourceApiClient packageResourceApiClient;
+
+	public Map<String, Object> execute(Map<String, String> params) {
+
+		if (params == null) {
+
+			throw new InvalidParameterException("input params may not be null");
+		}
+		log.fine("params:" + params.toString());
+
+		// check if the nsid is included in params
+		String nsid = params.get("nsid");
+		if (null != params.get("nsid")) {
+
+			log.info("nsid is " + nsid);
+		} else {
+			log.info("nsid is not found in params");
+			if (null != params.get("nsName")) {
+
+				String csarId = params.get("nsName"); // ????????????????????
+				log.info("csarId is " + csarId);
+				return executeCreate(csarId);
+			} else {
+				log.info("nsName is not found in params");
+			}
+		}
 		return null;
 
-    }
+	}
 
-    Map<String, Object> executeCreate(String csarId) {
+	Map<String, Object> executeCreate(String csarId) {
 
-    	if(csarId == null || csarId.isEmpty()) {
-    		
-    		throw new InvalidParameterException("csarId may not be empty or null");
-    	}
-        // get TOSCA template
-    	List<PackageMeta> packageMetaList = packageResourceApiClient.queryPackageById(csarId);
-    	
+		if (csarId == null || csarId.isEmpty()) {
 
-        // get template instance
+			throw new InvalidParameterException("csarId may not be empty or null");
+		}
+		try {
+			// get TOSCA template
+			List<PackageMeta> packageMetaList = packageResourceApiClient.queryPackageById(csarId);
+			log.info(packageMetaList.size() + " packageMetas have been returned in the query");
+			for (PackageMeta pm : packageMetaList) {
+				log.finer(pm.toString());
+			}
+		} catch (Exception e) {
 
-        // get state from instance
-        
-        
-        try {
-            // TODO let spring manage this
-            PackageResourceApi packageResourceApi = new PackageResourceApi();
-            List<PackageMeta> queryPackageListByCond =
-                    packageResourceApi.queryPackageListByCond(null, null, null, null, null);
-            log.severe(queryPackageListByCond.size() + " packages have been returned in the query");
-            for(PackageMeta pm : queryPackageListByCond) {
-                log.severe(pm.toString());
-            }
-        } catch(ApiException e) {
+			log.severe("Package query has failed with error: " + e.getMessage());
+			e.printStackTrace();
+		}
+		// get template instance
 
-            log.severe("Package query has failed with error: " + e.getMessage());
-            e.printStackTrace();
-        }
+		// get state from instance
+
+		// List<PackageMeta> queryPackageListByCond =
+		// packageResourceApiClient.queryPackageListByCond(null, null, null,
+		// null,
+		// null);
 		return null;
-    }
+	}
 
 	public StateTableHandler getStateTableHandler() {
 		return stateTableHandler;

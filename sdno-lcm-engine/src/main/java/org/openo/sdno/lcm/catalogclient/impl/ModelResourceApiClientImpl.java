@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.catalogclient.impl;
+package org.openo.sdno.lcm.catalogclient.impl;
 
 import java.util.List;
 
-import org.openo.sdno.catalogclient.ModelResourceApiClient;
+import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.restclient.catalog.ApiException;
 import org.openo.sdno.lcm.restclient.catalog.model.InputParameter;
 import org.openo.sdno.lcm.restclient.catalog.model.NodeTemplate;

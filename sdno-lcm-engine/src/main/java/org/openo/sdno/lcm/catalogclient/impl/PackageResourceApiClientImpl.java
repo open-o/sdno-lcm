@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.catalogclient.impl;
+package org.openo.sdno.lcm.catalogclient.impl;
 
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openo.sdno.catalogclient.PackageResourceApiClient;
+import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.restclient.catalog.ApiException;
 import org.openo.sdno.lcm.restclient.catalog.api.PackageResourceApi;
 import org.openo.sdno.lcm.restclient.catalog.model.CsarFileUriResponse;
