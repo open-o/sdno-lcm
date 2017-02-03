@@ -12,13 +12,14 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <springfox-version>2.5.0</springfox-version>
         <nexusproxy>https://nexus.open-o.org/content</nexusproxy>
+        <springboot.version>1.3.5.RELEASE</springboot.version>
     </properties>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.3.5.RELEASE</version>
-    </parent>
 
+  <parent>
+    <groupId>org.openo.sdno.lcm</groupId>
+    <artifactId>sdno-lcm</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
+  </parent>
 
   <distributionManagement>
     <repository>
@@ -30,7 +31,19 @@
       <url>${nexusproxy}/repositories/snapshots</url>
     </snapshotRepository>
   </distributionManagement>
-    
+  
+  <dependencyManagement>
+     <dependencies>
+        <dependency>
+            <!-- Import dependency management from Spring Boot -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <version>${springboot.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+  </dependencyManagement>
     
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
