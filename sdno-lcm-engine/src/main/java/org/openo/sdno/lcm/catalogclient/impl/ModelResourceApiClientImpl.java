@@ -17,9 +17,11 @@
 package org.openo.sdno.lcm.catalogclient.impl;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.restclient.catalog.ApiException;
+import org.openo.sdno.lcm.restclient.catalog.api.ModelResourceApi;
 import org.openo.sdno.lcm.restclient.catalog.model.InputParameter;
 import org.openo.sdno.lcm.restclient.catalog.model.NodeTemplate;
 import org.openo.sdno.lcm.restclient.catalog.model.Parameters;
@@ -36,6 +38,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 
+	private static final String FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_ID = "Failed to query service template by ID";
+
+	private final Logger log = Logger.getLogger("ModelResourceApiClientImpl");
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -43,7 +49,7 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 	 * getNestingServiceTemplate(java.lang.String)
 	 */
 	@Override
-	public List<ServiceTemplate> getNestingServiceTemplate(String nodeTypeIds) throws ApiException {
+	public List<ServiceTemplate> getNestingServiceTemplate(String nodeTypeIds) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -56,7 +62,7 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
-	public NodeTemplate getNodeTemplateById(String serviceTemplateId, String nodeTemplateId) throws ApiException {
+	public NodeTemplate getNodeTemplateById(String serviceTemplateId, String nodeTemplateId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -68,7 +74,7 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 	 * getNodeTemplatesByType(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<NodeTemplate> getNodeTemplatesByType(String serviceTemplateId, String types) throws ApiException {
+	public List<NodeTemplate> getNodeTemplatesByType(String serviceTemplateId, String types) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -80,8 +86,7 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 	 * getParametersByOperationName(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public List<InputParameter> getParametersByOperationName(String serviceTemplateId, String operationName)
-			throws ApiException {
+	public List<InputParameter> getParametersByOperationName(String serviceTemplateId, String operationName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -93,9 +98,16 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 	 * getServiceTemplateById(java.lang.String)
 	 */
 	@Override
-	public ServiceTemplate getServiceTemplateById(String servicetemplateid) throws ApiException {
-		// TODO Auto-generated method stub
-		return null;
+	public ServiceTemplate getServiceTemplateById(String serviceTemplateId) {
+		
+        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded environment
+		ModelResourceApi modelResourceApi = new ModelResourceApi();
+		try {
+			return modelResourceApi.getServiceTemplateById(serviceTemplateId);
+		} catch (ApiException e) {
+			log.severe(FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_ID);
+			throw new RuntimeException(FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_ID);
+		}
 	}
 
 	/*
@@ -105,7 +117,7 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 	 * getServiceTemplateOperations(java.lang.String)
 	 */
 	@Override
-	public List<ServiceTemplateOperation> getServiceTemplateOperations(String serviceTemplateId) throws ApiException {
+	public List<ServiceTemplateOperation> getServiceTemplateOperations(String serviceTemplateId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -117,7 +129,7 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 	 * getServiceTemplateParameters(java.lang.String)
 	 */
 	@Override
-	public Parameters getServiceTemplateParameters(String servicetemplateid) throws ApiException {
+	public Parameters getServiceTemplateParameters(String servicetemplateid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -130,7 +142,7 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 	 * QueryRawDataCondition)
 	 */
 	@Override
-	public ServiceTemplateRawData getServiceTemplateRawData(QueryRawDataCondition body) throws ApiException {
+	public ServiceTemplateRawData getServiceTemplateRawData(QueryRawDataCondition body) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -143,7 +155,7 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 	 * java.lang.String, java.lang.Boolean)
 	 */
 	@Override
-	public List<ServiceTemplate> getServiceTemplates(String status, Boolean deletionPending) throws ApiException {
+	public List<ServiceTemplate> getServiceTemplates(String status, Boolean deletionPending) {
 		// TODO Auto-generated method stub
 		return null;
 	}

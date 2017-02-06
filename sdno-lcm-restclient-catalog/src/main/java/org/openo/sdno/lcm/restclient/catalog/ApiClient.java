@@ -66,7 +66,7 @@ import org.openo.sdno.lcm.restclient.catalog.auth.OAuth;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-01-18T13:47:52.904Z")
 public class ApiClient {
   private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
-  private String basePath = "https://localhost/openoapi/catalog/v1";
+  private String basePath = "http://127.0.0.1:80/openoapi/catalog/v1";
   private boolean debugging = false;
   private int connectionTimeout = 0;
 

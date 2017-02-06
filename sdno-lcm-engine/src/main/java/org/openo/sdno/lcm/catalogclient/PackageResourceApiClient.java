@@ -47,7 +47,7 @@ public interface PackageResourceApiClient {
 	CsarFileUriResponse getCsarFileUri(String csarId, String relativePath);
 
 	/**
-	 * get csar package list
+	 * get csar package
 	 * 
 	 * @param csarId
 	 *            csar id (required)
@@ -55,7 +55,7 @@ public interface PackageResourceApiClient {
 	 * @throws ApiException
 	 *             if fails to make API call
 	 */
-	List<PackageMeta> queryPackageById(String csarId);
+	PackageMeta queryPackageById(String csarId);
 
 	/**
 	 * get csar package list by condition

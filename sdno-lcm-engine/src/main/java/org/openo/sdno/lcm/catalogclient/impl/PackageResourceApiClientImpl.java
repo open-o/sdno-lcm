@@ -33,10 +33,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class PackageResourceApiClientImpl implements PackageResourceApiClient {
 
+	private static final String FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION = "Failed to retrieve package list by condition";
 	private static final String FAILED_TO_DELETE_PACKAGE = "Failed to delete Package";
 	private static final String FAILED_TO_GET_CSAR_FILE_URI = "Failed to get CSAR file URI";
 	private static final String FAILED_TO_QUERY_PACKAGE_BY_ID = "Failed to query package by ID";
-	
+
 	private final Logger log = Logger.getLogger("PackageResourceApiClientImpl");
 
 	/*
@@ -49,6 +50,7 @@ public class PackageResourceApiClientImpl implements PackageResourceApiClient {
 	@Override
 	public void delPackage(String csarId) {
 
+        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded environment
 		PackageResourceApi packageResourceApi = new PackageResourceApi();
 		try {
 			packageResourceApi.delPackage(csarId);
@@ -56,7 +58,6 @@ public class PackageResourceApiClientImpl implements PackageResourceApiClient {
 			log.severe(FAILED_TO_DELETE_PACKAGE);
 			throw new RuntimeException(FAILED_TO_DELETE_PACKAGE);
 		}
-
 	}
 
 	/*
@@ -69,6 +70,7 @@ public class PackageResourceApiClientImpl implements PackageResourceApiClient {
 	@Override
 	public CsarFileUriResponse getCsarFileUri(String csarId, String relativePath) {
 
+        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded environment
 		PackageResourceApi packageResourceApi = new PackageResourceApi();
 		try {
 			return packageResourceApi.getCsarFileUri(csarId, relativePath);
@@ -86,8 +88,9 @@ public class PackageResourceApiClientImpl implements PackageResourceApiClient {
 	 * java.lang.String)
 	 */
 	@Override
-	public List<PackageMeta> queryPackageById(String csarId) {
-		
+	public PackageMeta queryPackageById(String csarId) {
+
+        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded environment
 		PackageResourceApi packageResourceApi = new PackageResourceApi();
 		try {
 			return packageResourceApi.queryPackageById(csarId);
@@ -107,10 +110,16 @@ public class PackageResourceApiClientImpl implements PackageResourceApiClient {
 	@Override
 	public List<PackageMeta> queryPackageListByCond(String name, String provider, String version,
 			String deletionPending, String type) {
-		// TODO Auto-generated method stub
-		PackageResourceApi packageResourceApi = new PackageResourceApi();
 
-		return null;
+        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded environment
+		PackageResourceApi packageResourceApi = new PackageResourceApi();
+		try {
+			return packageResourceApi.queryPackageListByCond(name, provider, version, deletionPending, type);
+		} catch (ApiException e) {
+			log.severe(String.format("%s; name:%s, provider:%s, version:%s, deletionPending:%s, type:%s",
+					FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION, name, provider, version, deletionPending, type));
+			throw new RuntimeException(FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION);
+		}
 	}
 
 }

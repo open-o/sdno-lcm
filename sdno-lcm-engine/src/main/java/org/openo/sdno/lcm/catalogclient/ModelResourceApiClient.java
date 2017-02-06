@@ -38,7 +38,7 @@ public interface ModelResourceApiClient {
 	 * @throws ApiException
 	 *             if fails to make API call
 	 */
-	List<ServiceTemplate> getNestingServiceTemplate(String nodeTypeIds) throws ApiException;
+	List<ServiceTemplate> getNestingServiceTemplate(String nodeTypeIds);
 
 	/**
 	 * Query node template by node template id
@@ -51,7 +51,7 @@ public interface ModelResourceApiClient {
 	 * @throws ApiException
 	 *             if fails to make API call
 	 */
-	NodeTemplate getNodeTemplateById(String serviceTemplateId, String nodeTemplateId) throws ApiException;
+	NodeTemplate getNodeTemplateById(String serviceTemplateId, String nodeTemplateId);
 
 	/**
 	 * Query node template list of a specified service template
@@ -64,7 +64,7 @@ public interface ModelResourceApiClient {
 	 * @throws ApiException
 	 *             if fails to make API call
 	 */
-	List<NodeTemplate> getNodeTemplatesByType(String serviceTemplateId, String types) throws ApiException;
+	List<NodeTemplate> getNodeTemplatesByType(String serviceTemplateId, String types);
 
 	/**
 	 * Query input parameters of a specified operation
@@ -77,8 +77,7 @@ public interface ModelResourceApiClient {
 	 * @throws ApiException
 	 *             if fails to make API call
 	 */
-	List<InputParameter> getParametersByOperationName(String serviceTemplateId, String operationName)
-			throws ApiException;
+	List<InputParameter> getParametersByOperationName(String serviceTemplateId, String operationName);
 
 	/**
 	 * Query service template by service template id
@@ -86,10 +85,8 @@ public interface ModelResourceApiClient {
 	 * @param servicetemplateid
 	 *            service template id (required)
 	 * @return ServiceTemplate
-	 * @throws ApiException
-	 *             if fails to make API call
 	 */
-	ServiceTemplate getServiceTemplateById(String servicetemplateid) throws ApiException;
+	ServiceTemplate getServiceTemplateById(String servicetemplateid);
 
 	/**
 	 * Query operation list of service template
@@ -97,10 +94,8 @@ public interface ModelResourceApiClient {
 	 * @param serviceTemplateId
 	 *            Service Template Id (required)
 	 * @return List<ServiceTemplateOperation>
-	 * @throws ApiException
-	 *             if fails to make API call
 	 */
-	List<ServiceTemplateOperation> getServiceTemplateOperations(String serviceTemplateId) throws ApiException;
+	List<ServiceTemplateOperation> getServiceTemplateOperations(String serviceTemplateId);
 
 	/**
 	 * Query input parameters of service template
@@ -108,10 +103,8 @@ public interface ModelResourceApiClient {
 	 * @param servicetemplateid
 	 *            service template id (required)
 	 * @return Parameters
-	 * @throws ApiException
-	 *             if fails to make API call
 	 */
-	Parameters getServiceTemplateParameters(String servicetemplateid) throws ApiException;
+	Parameters getServiceTemplateParameters(String servicetemplateid);
 
 	/**
 	 * Query raw data of a service template by csar id
@@ -119,10 +112,8 @@ public interface ModelResourceApiClient {
 	 * @param body
 	 *            Query Service Template Raw Data Condition (required)
 	 * @return ServiceTemplateRawData
-	 * @throws ApiException
-	 *             if fails to make API call
 	 */
-	ServiceTemplateRawData getServiceTemplateRawData(QueryRawDataCondition body) throws ApiException;
+	ServiceTemplateRawData getServiceTemplateRawData(QueryRawDataCondition body);
 
 	/**
 	 * Query service template by filter conditions
@@ -132,9 +123,7 @@ public interface ModelResourceApiClient {
 	 * @param deletionPending
 	 *            delay to delete (optional)
 	 * @return List<ServiceTemplate>
-	 * @throws ApiException
-	 *             if fails to make API call
 	 */
-	List<ServiceTemplate> getServiceTemplates(String status, Boolean deletionPending) throws ApiException;
+	List<ServiceTemplate> getServiceTemplates(String status, Boolean deletionPending);
 
 }

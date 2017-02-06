@@ -150,7 +150,7 @@ public class PackageResourceApi {
    * @return List<PackageMeta>
    * @throws ApiException if fails to make API call
    */
-  public List<PackageMeta> queryPackageById(String csarId) throws ApiException {
+  public PackageMeta queryPackageById(String csarId) throws ApiException {
     Object localVarPostBody = null;
     
     // verify the required parameter 'csarId' is set
@@ -182,7 +182,7 @@ public class PackageResourceApi {
 
     String[] localVarAuthNames = new String[] {  };
 
-    GenericType<List<PackageMeta>> localVarReturnType = new GenericType<List<PackageMeta>>() {};
+    GenericType<PackageMeta> localVarReturnType = new GenericType<PackageMeta>() {};
     return apiClient.invokeAPI(localVarPath, "GET", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
       }
   /**
