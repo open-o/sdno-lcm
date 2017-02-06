@@ -64,6 +64,12 @@
 			<version>1.1.0-SNAPSHOT</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.openo.sdno.lcm</groupId>
+			<artifactId>sdno-lcm-restclient-aria</artifactId>
+			<version>1.1.0-SNAPSHOT</version>
+		</dependency>
+		
 	</dependencies>
 
 
