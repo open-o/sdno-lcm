@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.lcm.templateinstanceparser;
+package org.openo.sdno.lcm.util;
 
-public interface TemplateInstanceParser {
 
-    Object parse();
-
+public class Constants {
+    
+    // property names for config.properties file
+    public static final String COMMON_TOSCA_CATALOG_BASE_PATH = "common-tosca-catalog.base-path";
+    public static final String COMMON_TOSCA_ARIA_BASE_PATH = "common-tosca-aria.base-path";
 }

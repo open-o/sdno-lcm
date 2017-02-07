@@ -16,93 +16,28 @@
 
 package org.openo.sdno.lcm.ariaclient;
 
-import org.openo.sdno.lcm.restclient.aria.model.IndirectData;
+import org.openo.sdno.lcm.restclient.aria.ApiException;
 
 public interface ParserApiClient {
-	
-	  /**
-	   * Create instance from file using given path
-	   * 
-	   * @param path Path to blueprint file (required)
-	   * @param inputs Inputs for instance creation from blueprint (optional)
-	   * @return Object
-	   * @throws ApiException if fails to make API call
-	   */
-	  public Object parseControllerInstanceFile(String path, String inputs);
-	  
-	  /**
-	   * Create instance from blueprint specyfied by URI
-	   * 
-	   * @param indirectData Blueprint specification (required)
-	   * @return Object
-	   * @throws ApiException if fails to make API call
-	   */
-	  public Object parseControllerInstanceIndirect(IndirectData indirectData);
-	  
-	  /**
-	   * Create instance from uploaded blueprint file
-	   * 
-	   * @param uploadContent  (required)
-	   * @param inputs Inputs for instance creation from blueprint (optional)
-	   * @return Object
-	   * @throws ApiException if fails to make API call
-	   */
-	  public Object parseControllerInstanceUpload(Object uploadContent, String inputs);
-	  
-	  /**
-	   * Create model from blueprint file using given path
-	   * 
-	   * @param path Path to blueprint file (required)
-	   * @return Object
-	   * @throws ApiException if fails to make API call
-	   */
-	  public Object parseControllerModelFile(String path);
-	  
-	  /**
-	   * Create model from blueprint specyfied by URI
-	   * 
-	   * @param indirectData Blueprint specification (required)
-	   * @return Object
-	   * @throws ApiException if fails to make API call
-	   */
-	  public Object parseControllerModelIndirect(IndirectData indirectData);
-	  
-	  /**
-	   * Create model from uploaded blueprint file
-	   * 
-	   * @param uploadContent  (required)
-	   * @param inputs Inputs for instance creation from blueprint (optional)
-	   * @return Object
-	   * @throws ApiException if fails to make API call
-	   */
-	  public Object parseControllerModelUpload(Object uploadContent, String inputs);
-	  
-	  /**
-	   * Validate blueprint file using given path
-	   * 
-	   * @param path Path to blueprint file (required)
-	   * @return Object
-	   * @throws ApiException if fails to make API call
-	   */
-	  public Object parseControllerValidateFile(String path);
-	  
-	  /**
-	   * Validate blueprint file using given URI
-	   * 
-	   * @param indirectData Blueprint specification (required)
-	   * @return Object
-	   * @throws ApiException if fails to make API call
-	   */
-	  public Object parseControllerValidateIndirect(IndirectData indirectData);
-	  
-	  /**
-	   * Validate uploaded blueprint file
-	   * 
-	   * @param uploadContent  (required)
-	   * @param inputs Inputs for instance creation from blueprint (optional)
-	   * @return Object
-	   * @throws ApiException if fails to make API call
-	   */
-	  public Object parseControllerValidateUpload(Object uploadContent, String inputs);
+
+    /**
+     * Create instance from file using given path
+     * 
+     * @param path Path to blueprint file (required)
+     * @param inputs Inputs for instance creation from blueprint (optional)
+     * @return Object
+     * @throws ApiException if fails to make API call
+     */
+    public Object parseControllerInstanceFile(String path, String inputs);
+
+    /**
+     * Create instance from uploaded blueprint file
+     * 
+     * @param uploadContent (required)
+     * @param inputs Inputs for instance creation from blueprint (optional)
+     * @return Object
+     * @throws ApiException if fails to make API call
+     */
+    public Object parseControllerInstanceUpload(Object uploadContent, String inputs);
 
 }

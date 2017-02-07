@@ -22,104 +22,76 @@ import java.util.logging.Logger;
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.restclient.catalog.ApiException;
 import org.openo.sdno.lcm.restclient.catalog.api.PackageResourceApi;
-import org.openo.sdno.lcm.restclient.catalog.model.CsarFileUriResponse;
 import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
+import org.openo.sdno.lcm.util.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 /**
  * @author mark
- *
  */
 @Component
+@PropertySource("classpath:config.properties")
 public class PackageResourceApiClientImpl implements PackageResourceApiClient {
 
-	private static final String FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION = "Failed to retrieve package list by condition";
-	private static final String FAILED_TO_DELETE_PACKAGE = "Failed to delete Package";
-	private static final String FAILED_TO_GET_CSAR_FILE_URI = "Failed to get CSAR file URI";
-	private static final String FAILED_TO_QUERY_PACKAGE_BY_ID = "Failed to query package by ID";
 
-	private final Logger log = Logger.getLogger("PackageResourceApiClientImpl");
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.openo.sdno.catalogclient.PackageResourceApiClient#delPackage(java.
-	 * lang.String)
-	 */
-	@Override
-	public void delPackage(String csarId) {
+    private static final String FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION =
+            "Failed to retrieve package list by condition";
 
-        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded environment
-		PackageResourceApi packageResourceApi = new PackageResourceApi();
-		try {
-			packageResourceApi.delPackage(csarId);
-		} catch (ApiException e) {
-			log.severe(FAILED_TO_DELETE_PACKAGE);
-			throw new RuntimeException(FAILED_TO_DELETE_PACKAGE);
-		}
-	}
+    private static final String FAILED_TO_QUERY_PACKAGE_BY_ID = "Failed to query package by ID";
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.openo.sdno.catalogclient.PackageResourceApiClient#getCsarFileUri(java
-	 * .lang.String, java.lang.String)
-	 */
-	@Override
-	public CsarFileUriResponse getCsarFileUri(String csarId, String relativePath) {
+    private final Logger log = Logger.getLogger("PackageResourceApiClientImpl");
+    
+    @Autowired
+    private Environment env;
 
-        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded environment
-		PackageResourceApi packageResourceApi = new PackageResourceApi();
-		try {
-			return packageResourceApi.getCsarFileUri(csarId, relativePath);
-		} catch (ApiException e) {
-			log.severe(FAILED_TO_GET_CSAR_FILE_URI);
-			throw new RuntimeException(FAILED_TO_GET_CSAR_FILE_URI);
-		}
-	}
+    private PackageResourceApi getPackageResourceApi() {
+        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded
+        // environment
+        PackageResourceApi packageResourceApi = new PackageResourceApi();
+        packageResourceApi.getApiClient().setBasePath(env.getRequiredProperty(Constants.COMMON_TOSCA_CATALOG_BASE_PATH));
+        return packageResourceApi;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.openo.sdno.catalogclient.PackageResourceApiClient#queryPackageById(
-	 * java.lang.String)
-	 */
-	@Override
-	public PackageMeta queryPackageById(String csarId) {
+    /*
+     * (non-Javadoc)
+     * @see
+     * org.openo.sdno.catalogclient.PackageResourceApiClient#queryPackageById(
+     * java.lang.String)
+     */
+    @Override
+    public PackageMeta queryPackageById(String csarId) {
+        
+        try {
+            return this.getPackageResourceApi().queryPackageById(csarId);
+            
+        } catch(ApiException e) {
+            log.severe(FAILED_TO_QUERY_PACKAGE_BY_ID);
+            throw new RuntimeException(FAILED_TO_QUERY_PACKAGE_BY_ID);
+        }
+    }
 
-        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded environment
-		PackageResourceApi packageResourceApi = new PackageResourceApi();
-		try {
-			return packageResourceApi.queryPackageById(csarId);
-		} catch (ApiException e) {
-			log.severe(FAILED_TO_QUERY_PACKAGE_BY_ID);
-			throw new RuntimeException(FAILED_TO_QUERY_PACKAGE_BY_ID);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.openo.sdno.catalogclient.PackageResourceApiClient#
-	 * queryPackageListByCond(java.lang.String, java.lang.String,
-	 * java.lang.String, java.lang.String, java.lang.String)
-	 */
-	@Override
-	public List<PackageMeta> queryPackageListByCond(String name, String provider, String version,
-			String deletionPending, String type) {
-
-        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded environment
-		PackageResourceApi packageResourceApi = new PackageResourceApi();
-		try {
-			return packageResourceApi.queryPackageListByCond(name, provider, version, deletionPending, type);
-		} catch (ApiException e) {
-			log.severe(String.format("%s; name:%s, provider:%s, version:%s, deletionPending:%s, type:%s",
-					FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION, name, provider, version, deletionPending, type));
-			throw new RuntimeException(FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION);
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.openo.sdno.catalogclient.PackageResourceApiClient#
+     * queryPackageListByCond(java.lang.String, java.lang.String,
+     * java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
+    public List<PackageMeta> queryPackageListByCond(String name, String provider, String version,
+            String deletionPending, String type) {
+        
+        try {
+            return this.getPackageResourceApi().queryPackageListByCond(name, provider, version, deletionPending, type);
+            
+        } catch(ApiException e) {
+            log.severe(String.format("%s; name:%s, provider:%s, version:%s, deletionPending:%s, type:%s",
+                    FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION, name, provider, version, deletionPending, type));
+            throw new RuntimeException(FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION);
+        }
+    }
 
 }

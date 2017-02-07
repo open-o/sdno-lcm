@@ -21,11 +21,12 @@ import java.util.logging.Logger;
 import org.openo.sdno.lcm.ariaclient.ParserApiClient;
 import org.openo.sdno.lcm.restclient.aria.ApiException;
 import org.openo.sdno.lcm.restclient.aria.api.ParserApi;
-import org.openo.sdno.lcm.restclient.aria.model.IndirectData;
+import org.springframework.stereotype.Component;
 
 /**
  * @author mark
  */
+@Component
 public class ParserApiClientImpl implements ParserApiClient {
 
     private static final String FAILED_TO_PARSE_CONTROLLER_INSTANCE_FILE = "Failed to parse controller instance file";
@@ -74,83 +75,4 @@ public class ParserApiClientImpl implements ParserApiClient {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.openo.sdno.lcm.ariaclient.ParserApiClient#parseControllerModelFile(
-     * java.lang.String)
-     */
-    @Override
-    public Object parseControllerModelFile(String path) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.openo.sdno.lcm.ariaclient.ParserApiClient#parseControllerModelUpload(
-     * java.lang.Object, java.lang.String)
-     */
-    @Override
-    public Object parseControllerModelUpload(Object uploadContent, String inputs) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.openo.sdno.lcm.ariaclient.ParserApiClient#parseControllerValidateFile
-     * (java.lang.String)
-     */
-    @Override
-    public Object parseControllerValidateFile(String path) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see org.openo.sdno.lcm.ariaclient.ParserApiClient#
-     * parseControllerValidateUpload(java.lang.Object, java.lang.String)
-     */
-    @Override
-    public Object parseControllerValidateUpload(Object uploadContent, String inputs) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see org.openo.sdno.lcm.ariaclient.ParserApiClient#
-     * parseControllerValidateUpload(java.lang.Object, java.lang.String)
-     */
-    @Override
-    public Object parseControllerValidateIndirect(IndirectData data) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see org.openo.sdno.lcm.ariaclient.ParserApiClient#
-     * parseControllerValidateUpload(java.lang.Object, java.lang.String)
-     */
-    @Override
-    public Object parseControllerModelIndirect(IndirectData indirectData) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see org.openo.sdno.lcm.ariaclient.ParserApiClient#
-     * parseControllerValidateUpload(java.lang.Object, java.lang.String)
-     */
-    @Override
-    public Object parseControllerInstanceIndirect(IndirectData indirectData) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

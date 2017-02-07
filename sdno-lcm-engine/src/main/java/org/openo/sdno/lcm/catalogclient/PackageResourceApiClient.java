@@ -13,68 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.openo.sdno.lcm.catalogclient;
 
 import java.util.List;
 
 import org.openo.sdno.lcm.restclient.catalog.ApiException;
-import org.openo.sdno.lcm.restclient.catalog.model.CsarFileUriResponse;
 import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
 
 public interface PackageResourceApiClient {
 
-	/**
-	 * delete a package
-	 * 
-	 * @param csarId
-	 *            csar Id (required)
-	 * @throws ApiException
-	 *             if fails to make API call
-	 */
-	void delPackage(String csarId);
+    /**
+     * get csar package
+     * 
+     * @param csarId
+     *            csar id (required)
+     * @return List<PackageMeta>
+     * @throws ApiException
+     *             if fails to make API call
+     */
+    PackageMeta queryPackageById(String csarId);
 
-	/**
-	 * get csar file uri by csarId
-	 * 
-	 * @param csarId
-	 *            csar Id (required)
-	 * @param relativePath
-	 *            csar file path (required)
-	 * @return CsarFileUriResponse
-	 * @throws ApiException
-	 *             if fails to make API call
-	 */
-	CsarFileUriResponse getCsarFileUri(String csarId, String relativePath);
-
-	/**
-	 * get csar package
-	 * 
-	 * @param csarId
-	 *            csar id (required)
-	 * @return List<PackageMeta>
-	 * @throws ApiException
-	 *             if fails to make API call
-	 */
-	PackageMeta queryPackageById(String csarId);
-
-	/**
-	 * get csar package list by condition
-	 * 
-	 * @param name
-	 *            csar name (optional)
-	 * @param provider
-	 *            csar provider (optional)
-	 * @param version
-	 *            csar version (optional)
-	 * @param deletionPending
-	 *            delay to delete (optional)
-	 * @param type
-	 *            csar type (optional)
-	 * @return List<PackageMeta>
-	 * @throws ApiException
-	 *             if fails to make API call
-	 */
-	List<PackageMeta> queryPackageListByCond(String name, String provider, String version, String deletionPending,
-			String type);
+    /**
+     * get csar package list by condition
+     * 
+     * @param name
+     *            csar name (optional)
+     * @param provider
+     *            csar provider (optional)
+     * @param version
+     *            csar version (optional)
+     * @param deletionPending
+     *            delay to delete (optional)
+     * @param type
+     *            csar type (optional)
+     * @return List<PackageMeta>
+     * @throws ApiException
+     *             if fails to make API call
+     */
+    List<PackageMeta> queryPackageListByCond(String name, String provider, String version, String deletionPending,
+            String type);
 
 }

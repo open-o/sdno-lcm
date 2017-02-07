@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.lcm.templateinstanceparser;
+package org.openo.sdno.lcm.controller;
 
-public interface TemplateInstanceParser {
+import org.testng.annotations.Test;
 
-    Object parse();
+@Test(groups = {"sdno-lcm-unit"})
+public class HealthcheckApiControllerFacadeTest {
 
+  /**
+ * Facile test that just checks we don't throw an exception
+ */
+@Test
+  public void nsHealthcheck() {
+      HealthcheckApiControllerFacade harry = new HealthcheckApiControllerFacade();
+      harry.nsHealthcheck();
+  }
 }
