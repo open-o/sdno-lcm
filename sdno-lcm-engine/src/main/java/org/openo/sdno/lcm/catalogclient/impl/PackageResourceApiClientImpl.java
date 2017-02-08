@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
+import org.openo.sdno.lcm.exception.ExternalComponentException;
 import org.openo.sdno.lcm.restclient.catalog.ApiException;
 import org.openo.sdno.lcm.restclient.catalog.api.PackageResourceApi;
 import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
@@ -65,12 +66,13 @@ public class PackageResourceApiClientImpl implements PackageResourceApiClient {
     @Override
     public PackageMeta queryPackageById(String csarId) {
         
+        PackageResourceApi packageResourceApi = this.getPackageResourceApi(); 
         try {
-            return this.getPackageResourceApi().queryPackageById(csarId);
+            return packageResourceApi.queryPackageById(csarId);
             
-        } catch(ApiException e) {
+        } catch(Exception e) {
             log.severe(FAILED_TO_QUERY_PACKAGE_BY_ID);
-            throw new RuntimeException(FAILED_TO_QUERY_PACKAGE_BY_ID);
+            throw new ExternalComponentException(FAILED_TO_QUERY_PACKAGE_BY_ID, e);
         }
     }
 
@@ -84,14 +86,20 @@ public class PackageResourceApiClientImpl implements PackageResourceApiClient {
     public List<PackageMeta> queryPackageListByCond(String name, String provider, String version,
             String deletionPending, String type) {
         
+        PackageResourceApi packageResourceApi = this.getPackageResourceApi(); 
         try {
-            return this.getPackageResourceApi().queryPackageListByCond(name, provider, version, deletionPending, type);
+            return packageResourceApi.queryPackageListByCond(name, provider, version, deletionPending, type);
             
-        } catch(ApiException e) {
+        } catch(Exception e) {
             log.severe(String.format("%s; name:%s, provider:%s, version:%s, deletionPending:%s, type:%s",
                     FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION, name, provider, version, deletionPending, type));
-            throw new RuntimeException(FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION);
+            throw new ExternalComponentException(FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION, e);
         }
+    }
+
+    
+    public void setEnv(Environment env) {
+        this.env = env;
     }
 
 }

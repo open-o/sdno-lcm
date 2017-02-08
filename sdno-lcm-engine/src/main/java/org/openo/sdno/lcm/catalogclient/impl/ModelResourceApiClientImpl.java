@@ -19,7 +19,7 @@ package org.openo.sdno.lcm.catalogclient.impl;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
-import org.openo.sdno.lcm.restclient.catalog.ApiException;
+import org.openo.sdno.lcm.exception.ExternalComponentException;
 import org.openo.sdno.lcm.restclient.catalog.api.ModelResourceApi;
 import org.openo.sdno.lcm.restclient.catalog.model.Parameters;
 import org.openo.sdno.lcm.restclient.catalog.model.QueryRawDataCondition;
@@ -66,12 +66,13 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
     @Override
     public ServiceTemplate getServiceTemplateById(String serviceTemplateId) {
 
+        ModelResourceApi modelResourceApi = getModelResourceApi();
         try {
-            return getModelResourceApi().getServiceTemplateById(serviceTemplateId);
+            return modelResourceApi.getServiceTemplateById(serviceTemplateId);
 
-        } catch(ApiException e) {
+        } catch(Exception e) {
             log.severe(FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_ID);
-            throw new RuntimeException(FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_ID);
+            throw new ExternalComponentException(FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_ID, e);
         }
     }
 
@@ -83,12 +84,13 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
     @Override
     public Parameters getServiceTemplateParameters(String servicetemplateid) {
 
+        ModelResourceApi modelResourceApi = getModelResourceApi();
         try {
-            return getModelResourceApi().getServiceTemplateParameters(servicetemplateid);
+            return modelResourceApi.getServiceTemplateParameters(servicetemplateid);
 
-        } catch(ApiException e) {
+        } catch(Exception e) {
             log.severe(FAILED_TO_GET_SERVICE_TEMPLATE_PARAMETERS);
-            throw new RuntimeException(FAILED_TO_GET_SERVICE_TEMPLATE_PARAMETERS);
+            throw new ExternalComponentException(FAILED_TO_GET_SERVICE_TEMPLATE_PARAMETERS, e);
         }
     }
 
@@ -104,17 +106,23 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
         QueryRawDataCondition body = new QueryRawDataCondition();
         body.setCsarId(csarId);
 
+        ModelResourceApi modelResourceApi = getModelResourceApi();
         try {
-            ServiceTemplateRawData serviceTemplateRawData = getModelResourceApi().getServiceTemplateRawData(body);
+            ServiceTemplateRawData serviceTemplateRawData = modelResourceApi.getServiceTemplateRawData(body);
 
             String rawData = serviceTemplateRawData.getRawData();
             log.info("raw data: " + rawData);
             return rawData;
 
-        } catch(ApiException e) {
+        } catch(Exception e) {
             log.severe(FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_RAW_DATA + body.toString());
-            throw new RuntimeException(FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_RAW_DATA);
+            throw new ExternalComponentException(FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_RAW_DATA, e);
         }
+    }
+
+    
+    public void setEnv(Environment env) {
+        this.env = env;
     }
 
 }

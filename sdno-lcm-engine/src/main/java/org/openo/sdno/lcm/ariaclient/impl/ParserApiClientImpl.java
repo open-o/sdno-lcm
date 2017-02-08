@@ -19,8 +19,11 @@ package org.openo.sdno.lcm.ariaclient.impl;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.ariaclient.ParserApiClient;
-import org.openo.sdno.lcm.restclient.aria.ApiException;
+import org.openo.sdno.lcm.exception.ExternalComponentException;
 import org.openo.sdno.lcm.restclient.aria.api.ParserApi;
+import org.openo.sdno.lcm.util.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 /**
@@ -36,6 +39,17 @@ public class ParserApiClientImpl implements ParserApiClient {
 
     private final Logger log = Logger.getLogger("ParserApiClientImpl");
 
+    @Autowired
+    private Environment env;
+
+    private ParserApi getParserApi() {
+        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded
+        // environment
+        ParserApi parserApi = new ParserApi();
+        parserApi.getApiClient().setBasePath(env.getRequiredProperty(Constants.COMMON_TOSCA_ARIA_BASE_PATH));
+        return parserApi;
+    }
+
     /*
      * (non-Javadoc)
      * @see
@@ -45,14 +59,12 @@ public class ParserApiClientImpl implements ParserApiClient {
     @Override
     public Object parseControllerInstanceFile(String path, String inputs) {
 
-        // It's recommended to create an instance of `ApiClient` per thread in a
-        // multithreaded environment
-        ParserApi parserApi = new ParserApi();
+        ParserApi parserApi = this.getParserApi();
         try {
             return parserApi.parseControllerInstanceFile(path, inputs);
-        } catch(ApiException e) {
+        } catch(Exception e) {
             log.severe(FAILED_TO_PARSE_CONTROLLER_INSTANCE_FILE);
-            throw new RuntimeException(FAILED_TO_PARSE_CONTROLLER_INSTANCE_FILE);
+            throw new ExternalComponentException(FAILED_TO_PARSE_CONTROLLER_INSTANCE_FILE, e);
         }
     }
 
@@ -64,15 +76,18 @@ public class ParserApiClientImpl implements ParserApiClient {
     @Override
     public Object parseControllerInstanceUpload(Object uploadContent, String inputs) {
 
-        // It's recommended to create an instance of `ApiClient` per thread in a
-        // multithreaded environment
-        ParserApi parserApi = new ParserApi();
+        ParserApi parserApi = this.getParserApi();
         try {
             return parserApi.parseControllerInstanceUpload(uploadContent, inputs);
-        } catch(ApiException e) {
+        } catch(Exception e) {
             log.severe(FAILED_TO_PARSE_CONTROLLER_INSTANCE_UPLOAD);
-            throw new RuntimeException(FAILED_TO_PARSE_CONTROLLER_INSTANCE_UPLOAD);
+            throw new ExternalComponentException(FAILED_TO_PARSE_CONTROLLER_INSTANCE_UPLOAD, e);
         }
+    }
+
+    
+    public void setEnv(Environment env) {
+        this.env = env;
     }
 
 }
