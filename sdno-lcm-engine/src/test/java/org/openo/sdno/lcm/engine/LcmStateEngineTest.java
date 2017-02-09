@@ -16,17 +16,26 @@
 
 package org.openo.sdno.lcm.engine;
 
+import static org.easymock.EasyMock.mock;
+import static org.easymock.EasyMock.replay;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
+
+
+import org.openo.sdno.lcm.engine.LcmStateEngine;
+import org.openo.sdno.lcm.util.Constants;
+import org.openo.sdno.lcm.exception.ExternalComponentException;
+import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import static org.easymock.EasyMock.*;
 
 @Test(groups = {"sdno-lcm-unit"})
 @ContextConfiguration(locations = {"classpath:spring-test-config.xml"})
@@ -48,8 +57,11 @@ public class LcmStateEngineTest extends AbstractTestNGSpringContextTests {
         mockPackageResourceApiClient = mock(PackageResourceApiClient.class);
     }
 
-    @Test
-    public void execute() {
+    /**
+     * Empty input params so we expect an exception
+     */
+    @Test(expectedExceptions = LcmInternalException.class)
+    public void executeEmptyParams() {
 
         // simple test to exercise the code a little for now
         replay(mockModelResourceApiClient);
@@ -58,8 +70,33 @@ public class LcmStateEngineTest extends AbstractTestNGSpringContextTests {
         Map<String, String> params = new HashMap<String, String>();
         lcmStateEngine.execute(params);
     }
+    
+    @Test(expectedExceptions = ExternalComponentException.class)
+    public void executeCsarName() {
 
-    @Test
+        // simple test to exercise the code a little for now
+        replay(mockModelResourceApiClient);
+        replay(mockPackageResourceApiClient);
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.LCM_NBI_CSAR_NAME, "myLittleCsar");
+        lcmStateEngine.execute(params);
+    }
+    
+    @Test(expectedExceptions = NullPointerException.class)
+    public void executeServiceId() {
+
+        // simple test to exercise the code a little for now
+        replay(mockModelResourceApiClient);
+        replay(mockPackageResourceApiClient);
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.LCM_NBI_SERVICE_ID, "slimShady");
+        // workflows are not implemented
+        Assert.assertNull(lcmStateEngine.execute(params));
+    }
+
+    @Test(expectedExceptions = ExternalComponentException.class)
     public void executeCreate() {
 
         // simple test to exercise the code a little for now

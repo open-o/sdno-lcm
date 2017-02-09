@@ -82,10 +82,6 @@ public class NsApiController implements NsApi {
 		return new ResponseEntity<LongOperationResponse>(HttpStatus.OK);
 	}
 
-	public NsApiControllerFacade getNsApiControllerFacade() {
-		return nsApiControllerFacade;
-	}
-
 	@Autowired
 	public void setNsApiControllerFacade(NsApiControllerFacade nsApiControllerFacade) {
 		this.nsApiControllerFacade = nsApiControllerFacade;

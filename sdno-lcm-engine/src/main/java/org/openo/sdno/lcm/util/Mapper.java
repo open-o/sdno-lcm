@@ -19,8 +19,10 @@ package org.openo.sdno.lcm.util;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -37,19 +39,23 @@ public class Mapper {
 	 * Limited to String properties for now. Works by checking the getters, not
 	 * the fields! Doesn't handle non-String primitive fields.
 	 * 
+	 * NB does not add properties to the map that have null value
+	 * 
 	 * @param bean
 	 * @return
 	 */
 	public Map<String, String> beanToMap(Object bean) {
 
 		ObjectMapper oMapper = new ObjectMapper();
+		// do not add properties to the map that have null value
+		oMapper.setSerializationInclusion(Include.NON_NULL);
 		Map<String, String> map;
 		try {
 			map = oMapper.convertValue(bean, Map.class);
 		} catch (Exception ex) {
 			log.severe(String.format("Failed to convert an object to Map<String, String> due to error %s. /n object: ",
 					ex.getMessage(), bean.toString()));
-			throw new RuntimeException("Failed to convert an object to Map - maybe the values are not simply strings");
+			throw new LcmInternalException("Failed to convert an object to Map - maybe the values are not simply strings", ex);
 		}
 		return map;
 	}

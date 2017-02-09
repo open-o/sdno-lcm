@@ -14,17 +14,29 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.lcm.util;
+package org.openo.sdno.lcm.exception;
 
-public class Constants {
 
-    // property names for config.properties file
-    public static final String COMMON_TOSCA_CATALOG_BASE_PATH = "common-tosca-catalog.base-path";
+/**
+ * @author mark
+ * 
+ * Exception throw when input to LCM is not valid
+ */
+public class InvalidInputException extends RuntimeException {
 
-    public static final String COMMON_TOSCA_ARIA_BASE_PATH = "common-tosca-aria.base-path";
+    /**
+     * @param message
+     */
+    public InvalidInputException(String message) {
+        super(message);
+    }
 
-    // NBI input constants
-    public static final String LCM_NBI_CSAR_NAME = "nsdId";
+    /**
+     * @param message
+     * @param cause
+     */
+    public InvalidInputException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    public static final String LCM_NBI_SERVICE_ID = "nsName";
 }

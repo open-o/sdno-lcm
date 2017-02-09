@@ -17,22 +17,21 @@
 package org.openo.sdno.lcm.engine;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.openo.sdno.lcm.ariaclient.ParserApiClient;
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
+import org.openo.sdno.lcm.exception.ExternalComponentException;
+import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
-import org.openo.sdno.lcm.restclient.catalog.model.ServiceTemplate;
 import org.openo.sdno.lcm.statetablehandler.StateTableHandler;
+import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -53,28 +52,34 @@ public class LcmStateEngine {
 
         if(params == null) {
 
-            throw new InvalidParameterException("input params may not be null");
+            throw new IllegalArgumentException("input params may not be null");
         }
         log.fine("params:" + params.toString());
 
         // check if the nsid is included in params
-        String nsid = params.get("nsid");
-        if(null != params.get("nsid")) {
+        if(params.containsKey(Constants.LCM_NBI_SERVICE_ID) && !params.get(Constants.LCM_NBI_SERVICE_ID).isEmpty()) {
 
-            log.info("nsid is " + nsid);
+            String nsid = params.get(Constants.LCM_NBI_SERVICE_ID);
+            log.info(Constants.LCM_NBI_SERVICE_ID + " is " + nsid);
+
+            // TODO execute the appropriate workflow...
+            // TODO get the service from the inventory
+            stateTableHandler.validateServiceTransition(null, null, null);
+            return null;
         } else {
-            log.info("nsid is not found in params");
-            if(null != params.get("nsName")) {
+            log.info(Constants.LCM_NBI_SERVICE_ID + " is not found in params");
 
-                String csarName = params.get("nsdId"); // ????????????????????
-                log.info("csarId is " + csarName);
+            // no connectivity service ID, so this must be a create
+            if(params.containsKey(Constants.LCM_NBI_CSAR_NAME) && !params.get(Constants.LCM_NBI_CSAR_NAME).isEmpty()) {
+
+                String csarName = params.get(Constants.LCM_NBI_CSAR_NAME);
+                log.info(Constants.LCM_NBI_CSAR_NAME + " is " + csarName);
                 return executeCreate(csarName);
             } else {
-                log.info("nsdId is not found in params");
+                log.info(Constants.LCM_NBI_CSAR_NAME + " is not found in params");
+                throw new LcmInternalException("No workflows possible with the parameters given");
             }
         }
-        return null;
-
     }
 
     Map<String, Object> executeCreate(String csarName) {
@@ -83,55 +88,56 @@ public class LcmStateEngine {
 
             throw new InvalidParameterException("csarName may not be empty or null");
         }
-        try {
-            // get TOSCA template
-            // PackageMeta packageMetaL = packageResourceApiClient.queryPackageById(csarId);
-            List<PackageMeta> packageMetaList =
-                    packageResourceApiClient.queryPackageListByCond(csarName, null, null, null, null);
+        // get TOSCA template
+        // PackageMeta packageMetaL = packageResourceApiClient.queryPackageById(csarId);
+        List<PackageMeta> packageMetaList =
+                packageResourceApiClient.queryPackageListByCond(csarName, null, null, null, null);
 
-            if(packageMetaList.isEmpty())
-                log.severe("Empty package list returned from catalog");
-            if(packageMetaList.size() > 1)
-                log.warning(String.format("%s packages returned from catalog -expected one", packageMetaList.size()));
-            for(PackageMeta pm : packageMetaList) {
-                log.finer(pm.toString());
-            }
-            if(!packageMetaList.isEmpty()) {
+        if(packageMetaList.isEmpty()) {
+            log.severe("Empty package list returned from catalog");
+            throw new ExternalComponentException("Catalog returned an empty list for the query of CSAR " + csarName);
+        }
+        if(packageMetaList.size() > 1)
+            log.warning(String.format("%s packages returned from catalog -expected one", packageMetaList.size()));
+        for(PackageMeta pm : packageMetaList) {
+            log.finer(pm.toString());
+        }
+        if(!packageMetaList.isEmpty()) {
 
-                PackageMeta packageMeta = packageMetaList.get(0);
-                log.info(packageMeta.toString());
-                String downloadUri = packageMeta.getDownloadUri();
+            PackageMeta packageMeta = packageMetaList.get(0);
+            log.info(packageMeta.toString());
+            String downloadUri = packageMeta.getDownloadUri();
+            try {
                 FileUtils.copyURLToFile(new URL(downloadUri), File.createTempFile(csarName, ".csar"));
-                log.info("Now we can do something with the CSAR...");
-                String csarId = packageMeta.getCsarId();
-
-                // get raw template instance from catalog
-                String serviceTemplate = modelResourceApiClient.getServiceTemplateRawData(csarId);
-
-                ////////////////// need to check if the instance coming back in rawdata is the full
-                ////////////////// instance, or if we need parser
-                // log.finer("serviceTemplate: " + serviceTemplate);
-                //
-                // String templateUri = serviceTemplate.getDownloadUri();
-                // // parse the template
-                // Object pathParsedObject =
-                ////////////////// parserApiClient.parseControllerInstanceFile(templateUri, "");
-                // log.finer("path parsed: " + pathParsedObject.toString());
-                //
-                // String templateStr = null;
-                // try {
-                // templateStr = IOUtils.toString(new URL(templateUri), StandardCharsets.UTF_8);
-                // } catch(IOException e) {
-                // // TODO Auto-generated catch block
-                // e.printStackTrace();
-                // }
-                Object obj = parserApiClient.parseControllerInstanceUpload(serviceTemplate, "");
-                log.finer("downloaded: " + obj.toString());
+            } catch(Exception e) {
+                log.severe("Failed to download or store the temporary CSAR file");
+                throw new LcmInternalException("Failed to download or store the temporary CSAR file", e);
             }
+            log.info("Now we can do something with the CSAR...");
+            String csarId = packageMeta.getCsarId();
 
-        } catch(Exception e) {
+            // get raw template instance from catalog
+            String serviceTemplate = modelResourceApiClient.getServiceTemplateRawData(csarId);
 
-            e.printStackTrace();
+            ////////////////// need to check if the instance coming back in rawdata is the full
+            ////////////////// instance, or if we need parser
+            // log.finer("serviceTemplate: " + serviceTemplate);
+            //
+            // String templateUri = serviceTemplate.getDownloadUri();
+            // // parse the template
+            // Object pathParsedObject =
+            ////////////////// parserApiClient.parseControllerInstanceFile(templateUri, "");
+            // log.finer("path parsed: " + pathParsedObject.toString());
+            //
+            // String templateStr = null;
+            // try {
+            // templateStr = IOUtils.toString(new URL(templateUri), StandardCharsets.UTF_8);
+            // } catch(IOException e) {
+            // // TODO Auto-generated catch block
+            // e.printStackTrace();
+            // }
+            Object obj = parserApiClient.parseControllerInstanceUpload(serviceTemplate, "");
+            log.finer("downloaded: " + obj.toString());
         }
 
         // get service instance from inventory
@@ -143,10 +149,6 @@ public class LcmStateEngine {
         // null);
         return null;
     }
-
-    // public StateTableHandler getStateTableHandler() {
-    // return stateTableHandler;
-    // }
 
     @Autowired
     public void setStateTableHandler(StateTableHandler stateTableHandler) {

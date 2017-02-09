@@ -17,31 +17,42 @@
 package org.openo.sdno.lcm.controller;
 
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.LcmStateEngine;
+import org.openo.sdno.lcm.exception.InvalidInputException;
+import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class NsApiControllerFacade {
 
-	private final Logger log = Logger.getLogger("NsApiControllerFacade");
+    private final Logger log = Logger.getLogger("NsApiControllerFacade");
 
-	private LcmStateEngine lcmStateEngine;
+    private LcmStateEngine lcmStateEngine;
 
-	public Map<String, Object> nsCreationPost(Map<String, String> params) {
+    public Map<String, Object> nsCreationPost(Map<String, String> params) {
 
-		log.info("~~~~~ NsApiControllerFacade - nsCreationPost ~~~~~");
-		log.severe("info log should appear next... isInfoEnabled:" + log.isLoggable(Level.INFO));
-		log.info(params.toString());
-		return lcmStateEngine.execute(params);
-	}
+        log.info("begin nsCreationPost");
+        log.fine("params: " + params.toString());
 
-	@Autowired
-	public void setLcmStateEngine(LcmStateEngine lcmStateEngine) {
-		this.lcmStateEngine = lcmStateEngine;
-	}
+        // check if the csar id is included in params
+        if(params.containsKey(Constants.LCM_NBI_CSAR_NAME) && !params.get(Constants.LCM_NBI_CSAR_NAME).isEmpty()) {
+
+            // need to fill default values for input params because this create doesn't correspond
+            // exactly to our semantic of create in our state machine
+            return lcmStateEngine.execute(params);
+        } else {
+
+            throw new InvalidInputException(
+                    "Input params must contain non-empty value for " + Constants.LCM_NBI_CSAR_NAME);
+        }
+    }
+
+    @Autowired
+    public void setLcmStateEngine(LcmStateEngine lcmStateEngine) {
+        this.lcmStateEngine = lcmStateEngine;
+    }
 
 }

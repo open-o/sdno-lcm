@@ -31,8 +31,6 @@ public class ParserApiClientImplTest {
 
     private static final String DUMMY_PATH = "http://127.0.0.1:9999/openbanana/catamaran/v987654321";
 
-    private static final String FAKE_TEMPLATE_ID = "myTemplateId";
-
     ParserApiClientImpl parserApiClientImpl;
 
     Environment mockEnvironment;

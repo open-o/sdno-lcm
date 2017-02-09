@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.exception.ExternalComponentException;
-import org.openo.sdno.lcm.restclient.catalog.ApiException;
 import org.openo.sdno.lcm.restclient.catalog.api.PackageResourceApi;
 import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
 import org.openo.sdno.lcm.util.Constants;
@@ -37,15 +36,13 @@ import org.springframework.stereotype.Component;
 @PropertySource("classpath:config.properties")
 public class PackageResourceApiClientImpl implements PackageResourceApiClient {
 
-
-
     private static final String FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION =
             "Failed to retrieve package list by condition";
 
     private static final String FAILED_TO_QUERY_PACKAGE_BY_ID = "Failed to query package by ID";
 
     private final Logger log = Logger.getLogger("PackageResourceApiClientImpl");
-    
+
     @Autowired
     private Environment env;
 
@@ -53,7 +50,8 @@ public class PackageResourceApiClientImpl implements PackageResourceApiClient {
         // It's recommended to create an instance of `ApiClient` per thread in a multithreaded
         // environment
         PackageResourceApi packageResourceApi = new PackageResourceApi();
-        packageResourceApi.getApiClient().setBasePath(env.getRequiredProperty(Constants.COMMON_TOSCA_CATALOG_BASE_PATH));
+        packageResourceApi.getApiClient()
+                .setBasePath(env.getRequiredProperty(Constants.COMMON_TOSCA_CATALOG_BASE_PATH));
         return packageResourceApi;
     }
 
@@ -65,11 +63,11 @@ public class PackageResourceApiClientImpl implements PackageResourceApiClient {
      */
     @Override
     public PackageMeta queryPackageById(String csarId) {
-        
-        PackageResourceApi packageResourceApi = this.getPackageResourceApi(); 
+
+        PackageResourceApi packageResourceApi = this.getPackageResourceApi();
         try {
             return packageResourceApi.queryPackageById(csarId);
-            
+
         } catch(Exception e) {
             log.severe(FAILED_TO_QUERY_PACKAGE_BY_ID);
             throw new ExternalComponentException(FAILED_TO_QUERY_PACKAGE_BY_ID, e);
@@ -85,11 +83,11 @@ public class PackageResourceApiClientImpl implements PackageResourceApiClient {
     @Override
     public List<PackageMeta> queryPackageListByCond(String name, String provider, String version,
             String deletionPending, String type) {
-        
-        PackageResourceApi packageResourceApi = this.getPackageResourceApi(); 
+
+        PackageResourceApi packageResourceApi = this.getPackageResourceApi();
         try {
             return packageResourceApi.queryPackageListByCond(name, provider, version, deletionPending, type);
-            
+
         } catch(Exception e) {
             log.severe(String.format("%s; name:%s, provider:%s, version:%s, deletionPending:%s, type:%s",
                     FAILED_TO_RETRIEVE_PACKAGE_LIST_BY_CONDITION, name, provider, version, deletionPending, type));
@@ -97,7 +95,6 @@ public class PackageResourceApiClientImpl implements PackageResourceApiClient {
         }
     }
 
-    
     public void setEnv(Environment env) {
         this.env = env;
     }
