@@ -1,0 +1,191 @@
+# Copyright 2017 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+###############################################################################
+#####                        overlay_enterprise to dc                      ####
+###############################################################################
+tosca_definitions_version: tosca_simple_yaml_1_0
+description: creates overlay connection from Enterprise to DC
+imports:
+     - Definitions/enterprise2DC_type_definition.yaml
+
+###############################################################################
+
+metadata:
+    id: enterprise2Dc
+    template_name: enterprise2Dc
+    version: 0.1
+    vendor: sdno
+    template_author: Huawei
+
+
+####################################### TOPOLOGY ##############################
+topology_template:
+        inputs:
+            vpnName:
+                type: string
+                description: Name of Overlayvpn
+            vpnDescription:
+                type: string
+                description: description of Overlayvpn
+            siteName:
+                type: string
+                description: Name of Site
+            siteCidr:
+                type: string
+                description: enterprise site cidr
+                default: 10.100.100.0/24
+            subnetVlan:
+                type: integer
+                description: Vlan value of Subnet
+            siteVni:
+                type: integer
+                description: VxLAN ID connect site to vCPE
+                default: 20001
+            vpcName:
+                type: string
+                description: in format of domain/project, should keep consistent with NFVO
+                default: vdc0/vpc1
+            vpcSubnetName:
+                type: string
+                description: name of subnet in VPC, should keep consistent with NFVO
+                default: sn
+            vpcSubnetCidr:
+                type: string
+                description: vpc cidr
+                default: 10.21.3.0/24
+            vpcVni:
+                type: integer
+                description: vpc subnet vxlanID, should keep consistent with NFVO
+                default: 10001
+            dcGwIp:
+                type: string
+                description: mgrIp of dcGW
+            dcFwIp:
+                type: string
+                description: mgrIp of dc Firewall
+            dcLbIp:
+                type: string
+                description: mgrIp of dc Load Balancer
+
+        node_templates:
+ 
+                thinCpe:
+                    type: sdno.node.ServiceEndPoint.ThinCpe
+                    properties:
+                        id: thinCpe01
+                        name: thinCpe
+                        version: '1.0'
+ 
+                dcEndpoint:
+                    type: sdno.node.ServiceEndPoint.DcEndpoint
+                    properties:
+                        id: dcEndpoint01
+                        name: dcEndpoint
+                        version: '1.0'
+ 
+                enterprise2Dc:
+                    type: sdno.node.ConnectivityService.Enterprise2Dc
+                    properties:
+                        id: ent3DC01
+                        name: enterprise2Dc
+                        version: '1.0'
+                    requirements:
+                        - endPoint: thinCpe
+                        - endPoint: dcEndpoint
+                        - realizes: siteSubnet
+                        - realizes: vpn
+                        - realizes: vpcSubnet
+                        - realizes: sfc
+
+                vpcSubnet:
+                    type: sdno.node.Connection.VpcSubnet
+                    properties:
+                        id: vpcSubnet01
+                        name: vpcSbnet
+                    requirements:
+                        - realizes: vpc
+                vpc:
+                    type: sdno.node.Connection.Vpc
+                    properties:
+                        id: vpc01
+                        name: vpc
+
+                siteSubnet:
+                    type: sdno.node.Connection.SiteSubnet
+                    properties:
+                        id: siteSubnet01
+                        name: siteSubnet
+                    requirements:
+                        - realizes: vlan
+                vlan:
+                    type: sdno.node.Connection.Vlan
+                    properties:
+                        id: vlan01
+                        name: vlan
+                    requirements:
+                        - realizes: site
+
+                site:
+                    type: sdno.node.Connection.Site
+                    properties:
+                        id: site01
+                        name: site
+
+                thinCpe:
+                    type: sdno.node.ConnectionEndPoint.ThinCpe
+                    properties:
+                        id: thinCpe01
+                        name: thinCpe
+
+                vCpe:
+                    type: sdno.node.ConnectionEndPoint.VCpe
+                    properties:
+                        id: vCpe01
+                        name: vCpe
+
+                sfc:
+                    type: sdno.node.Connection.Sfc
+                    properties:
+                        id: sfc01
+                        name: sfc
+
+                vpn:
+                    type: sdno.node.Connection.Vpn
+                    properties:
+                        id: vpn01
+                        name: vpn
+                    requirements:
+                        - realizes: vpnConnection
+
+                vpnConnection:
+                    type: sdno.node.Connection.VpnConnection
+                    properties:
+                        id: vpnConnection01
+                        name: vpnConnection
+                    requirements:
+                        - endPoint: siteGateway
+                        - endPoint: vpcGateway
+
+                siteGateway:
+                    type: sdno.node.ConnectionEndPoint.SiteGateway
+                    properties:
+                        id: siteGw01
+                        name: siteGw
+
+                vpcGateway:
+                    type: sdno.node.ConnectionEndPoint.VpcGateway
+                    properties:
+                        id: vpcGw01
+                        name: vpcGw
