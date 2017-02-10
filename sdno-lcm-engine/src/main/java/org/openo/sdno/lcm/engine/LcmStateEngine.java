@@ -118,6 +118,7 @@ public class LcmStateEngine {
 
             // get raw template instance from catalog
             String serviceTemplate = modelResourceApiClient.getServiceTemplateRawData(csarId);
+            log.finer("\n\n\nserviceTemplate: \n\n" + serviceTemplate);
 
             ////////////////// need to check if the instance coming back in rawdata is the full
             ////////////////// instance, or if we need parser
