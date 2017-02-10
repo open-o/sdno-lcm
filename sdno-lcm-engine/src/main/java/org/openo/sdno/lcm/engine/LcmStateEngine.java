@@ -64,7 +64,7 @@ public class LcmStateEngine {
 
             // TODO execute the appropriate workflow...
             // TODO get the service from the inventory
-            stateTableHandler.validateServiceTransition(null, null, null);
+//            stateTableHandler.validateServiceTransition(null, null, null);
             return null;
         } else {
             log.info(Constants.LCM_NBI_SERVICE_ID + " is not found in params");

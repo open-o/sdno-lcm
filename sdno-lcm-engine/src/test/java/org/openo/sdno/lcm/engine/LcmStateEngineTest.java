@@ -83,7 +83,6 @@ public class LcmStateEngineTest extends AbstractTestNGSpringContextTests {
         lcmStateEngine.execute(params);
     }
     
-    @Test(expectedExceptions = NullPointerException.class)
     public void executeServiceId() {
 
         // simple test to exercise the code a little for now

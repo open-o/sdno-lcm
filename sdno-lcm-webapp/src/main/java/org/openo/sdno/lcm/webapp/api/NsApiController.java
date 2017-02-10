@@ -41,59 +41,60 @@ import io.swagger.annotations.ApiParam;
 @Controller
 public class NsApiController implements NsApi {
 
-	private final Logger log = Logger.getLogger("NsApiController");
+    private final Logger log = Logger.getLogger("NsApiController");
 
-	private NsApiControllerFacade nsApiControllerFacade;
+    private NsApiControllerFacade nsApiControllerFacade;
 
-	private Mapper mapper;
+    private Mapper mapper;
 
-	public ResponseEntity<NsCreationResponse> nsCreationPost(
-			@ApiParam(value = "the request used to create a SDN-O service instance", required = true) @RequestBody NsCreationRequest nsRequest) {
-		
-		log.fine("~~~~~ NsApiController - nsCreationPost ~~~~~");
-		Map<String, Object> responseMap = nsApiControllerFacade.nsCreationPost(mapper.beanToMap(nsRequest));
-		ResponseEntity<NsCreationResponse> reponse = ResponseEntity.ok(mapper.mapToBean(new NsCreationResponse(), responseMap)); 
-		return reponse;
-	}
+    public ResponseEntity<NsCreationResponse> nsCreationPost(
+            @ApiParam(value = "the request used to create a SDN-O service instance", required = true) @RequestBody NsCreationRequest nsRequest) {
 
-	public ResponseEntity<Void> nsDeletionDelete(
-			@ApiParam(value = "ID of the SDN-O service instance to be deleted", required = true) @PathVariable("instanceid") String instanceid) {
-		// do some magic!
-		return new ResponseEntity<Void>(HttpStatus.OK);
-	}
+        log.fine("~~~~~ NsApiController - nsCreationPost ~~~~~");
+        Map<String, Object> responseMap = nsApiControllerFacade.nsCreationPost(mapper.beanToMap(nsRequest));
+        NsCreationResponse nsCreationResponse = mapper.mapToBean(new NsCreationResponse(), responseMap);
+        ResponseEntity<NsCreationResponse> response = new ResponseEntity<NsCreationResponse>(nsCreationResponse, HttpStatus.CREATED);
+        return response;
+    }
 
-	public ResponseEntity<LongOperationResponse> nsInstantiationPost(
-			@ApiParam(value = "ID of the SDN-O service instance to be instantiated", required = true) @PathVariable("instanceid") String instanceid,
-			@ApiParam(value = "the request used to instantiate a SDN-O service instance", required = true) @RequestBody NsInstantiationRequest nsInstantiationRequest) {
-		// do some magic!
-		return new ResponseEntity<LongOperationResponse>(HttpStatus.OK);
-	}
+    public ResponseEntity<Void> nsDeletionDelete(
+            @ApiParam(value = "ID of the SDN-O service instance to be deleted", required = true) @PathVariable("instanceid") String instanceid) {
+        // do some magic!
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
 
-	public ResponseEntity<NsInstanceQueryResponse> nsQueryGet(
-			@ApiParam(value = "ID of the SDN-O service instance to be queried", required = true) @PathVariable("instanceid") String instanceid) {
-		// do some magic!
-		return new ResponseEntity<NsInstanceQueryResponse>(HttpStatus.OK);
-	}
+    public ResponseEntity<LongOperationResponse> nsInstantiationPost(
+            @ApiParam(value = "ID of the SDN-O service instance to be instantiated", required = true) @PathVariable("instanceid") String instanceid,
+            @ApiParam(value = "the request used to instantiate a SDN-O service instance", required = true) @RequestBody NsInstantiationRequest nsInstantiationRequest) {
+        // do some magic!
+        return new ResponseEntity<LongOperationResponse>(HttpStatus.OK);
+    }
 
-	public ResponseEntity<LongOperationResponse> nsTerminationPost(
-			@ApiParam(value = "ID of the SDN-O service instance to be terminated", required = true) @PathVariable("instanceid") String instanceid,
-			@ApiParam(value = "the request used to terminate a SDN-O service instance", required = true) @RequestBody NsTerminationRequest nsTerminationRequest) {
-		// do some magic!
-		return new ResponseEntity<LongOperationResponse>(HttpStatus.OK);
-	}
+    public ResponseEntity<NsInstanceQueryResponse> nsQueryGet(
+            @ApiParam(value = "ID of the SDN-O service instance to be queried", required = true) @PathVariable("instanceid") String instanceid) {
+        // do some magic!
+        return new ResponseEntity<NsInstanceQueryResponse>(HttpStatus.OK);
+    }
 
-	@Autowired
-	public void setNsApiControllerFacade(NsApiControllerFacade nsApiControllerFacade) {
-		this.nsApiControllerFacade = nsApiControllerFacade;
-	}
+    public ResponseEntity<LongOperationResponse> nsTerminationPost(
+            @ApiParam(value = "ID of the SDN-O service instance to be terminated", required = true) @PathVariable("instanceid") String instanceid,
+            @ApiParam(value = "the request used to terminate a SDN-O service instance", required = true) @RequestBody NsTerminationRequest nsTerminationRequest) {
+        // do some magic!
+        return new ResponseEntity<LongOperationResponse>(HttpStatus.OK);
+    }
 
-	public Mapper getMapper() {
-		return mapper;
-	}
+    @Autowired
+    public void setNsApiControllerFacade(NsApiControllerFacade nsApiControllerFacade) {
+        this.nsApiControllerFacade = nsApiControllerFacade;
+    }
 
-	@Autowired
-	public void setMapper(Mapper mapper) {
-		this.mapper = mapper;
-	}
+    public Mapper getMapper() {
+        return mapper;
+    }
+
+    @Autowired
+    public void setMapper(Mapper mapper) {
+        this.mapper = mapper;
+    }
 
 }
