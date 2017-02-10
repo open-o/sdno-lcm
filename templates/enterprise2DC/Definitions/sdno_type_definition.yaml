@@ -239,6 +239,22 @@ relationship_types:
 
 
 # *****************************************************************************
+# artifact types
+# *****************************************************************************
+artifact_types:
+    sdno.artifacts.Implementation.Swagger:
+        derived_from: tosca.artifacts.Implementation
+        description: swagger API document
+        mime_type: application/x-jaml
+        file_ext: [jaml]
+
+    sdno.artifacts.Implementation.ToscaSwaggerMapper:
+        derived_from: tosca.artifacts.Implementation
+        description: mapping between property of TOSCA node instance and data model used by swagger API
+        mime_type: application/x-tsmap
+        file_ext: [tsmap]
+
+# *****************************************************************************
 # node types
 # *****************************************************************************
 node_types:

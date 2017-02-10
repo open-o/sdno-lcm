@@ -489,6 +489,10 @@ node_types:
                 node: sdno.node.Connection.Vpc
                 capability: sdno.capability.Realizes
                 relationship: sdno.relationship.RealizedBy
+        artifacts:
+            swagger:
+                file: swagger/vpc.jaml
+                type: sdno.artifacts.Implementation.Swagger
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
@@ -521,7 +525,11 @@ node_types:
                 required: false
             attributes:
                 type: UnderlayResourcesType 
-                required: false       
+                required: false
+        artifacts:
+            swagger:
+                file: swagger/vpc.jaml
+                type: sdno.artifacts.Implementation.Swagger
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
@@ -550,6 +558,10 @@ node_types:
                 node: sdno.node.Connection.Vlan
                 capability: sdno.capability.Realizes
                 relationship: sdno.relationship.RealizedBy   
+        artifacts:
+            swagger:
+                file: swagger/site.jaml
+                type: sdno.artifacts.Implementation.Swagger
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
@@ -578,6 +590,10 @@ node_types:
                 node: sdno.node.Connection.Site
                 capability: sdno.capability.Realizes
                 relationship: sdno.relationship.RealizedBy   
+        artifacts:
+            swagger:
+                file: swagger/site.jaml
+                type: sdno.artifacts.Implementation.Swagger
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
@@ -622,6 +638,10 @@ node_types:
                 node: sdno.node.Connection.Site    
                 capability: sdno.capability.Realizes
                 relationship: sdno.relationship.RealizedBy
+        artifacts:
+            swagger:
+                file: swagger/site.jaml
+                type: sdno.artifacts.Implementation.Swagger
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
@@ -725,6 +745,10 @@ node_types:
                 node: sdno.node.Connection.Site    
                 capability: sdno.capability.Realizes
                 relationship: sdno.relationship.RealizedBy
+        artifacts:
+            swagger:
+                file: swagger/site.jaml
+                type: sdno.artifacts.Implementation.Swagger
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
@@ -830,6 +854,10 @@ node_types:
 #            - endPoint:
 #                node: sdno.node.ConnectionEndPoint.VCpe
 #                capability: sdno.capability.ConnectionEndPoint
+        artifacts:
+            swagger:
+                file: swagger/site.jaml
+                type: sdno.artifacts.Implementation.Swagger
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
@@ -868,6 +896,10 @@ node_types:
                 node: sdno.node.Connection.VpnConnection
                 capability: sdno.capability.Realizes
                 relationship: sdno.relationship.RealizedBy
+        artifacts:
+            swagger:
+                file: swagger/overlay.jaml
+                type: sdno.artifacts.Implementation.Swagger
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
@@ -891,6 +923,10 @@ node_types:
     sdno.node.ConnectionEndPoint.SiteGateway:
         derived_from: sdno.node.ConnectionEndPoint
         properties: *Gateway
+        artifacts:
+            swagger:
+                file: swagger/overlay.jaml
+                type: sdno.artifacts.Implementation.Swagger
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
@@ -910,6 +946,10 @@ node_types:
     sdno.node.ConnectionEndPoint.VpcGateway:
         derived_from: sdno.node.ConnectionEndPoint
         properties: *Gateway
+        artifacts:
+            swagger:
+                file: swagger/overlay.jaml
+                type: sdno.artifacts.Implementation.Swagger
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
@@ -951,6 +991,10 @@ node_types:
 #            - endPoint:
 #                node: sdno.node.ConnectionEndPoint.VpcGateway
 #                capability: sdno.capability.ConnectionEndPoint
+        artifacts:
+            swagger:
+                file: swagger/overlay.jaml
+                type: sdno.artifacts.Implementation.Swagger
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
@@ -1015,6 +1059,10 @@ node_types:
                       type: ServiceClassiferType
                 description: The list of sfc
                 required: false
+        artifacts:
+            swagger:
+                file: swagger/sfc.jaml
+                type: sdno.artifacts.Implementation.Swagger
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
