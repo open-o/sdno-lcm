@@ -30,6 +30,8 @@ import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.exception.ExternalComponentException;
 import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.ResponseConnectivityService;
+import org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient;
 import org.openo.sdno.lcm.statetablehandler.StateTableHandler;
 import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,8 @@ public class LcmStateEngine {
     private PackageResourceApiClient packageResourceApiClient;
 
     private ParserApiClient parserApiClient;
+    
+    private DefaultMssApiClient defaultMssApiClient;
 
     public Map<String, Object> execute(Map<String, String> params) {
 
@@ -119,7 +123,13 @@ public class LcmStateEngine {
             // get raw template instance from catalog
             String serviceTemplate = modelResourceApiClient.getServiceTemplateRawData(csarId);
             log.finer("\n\n\nserviceTemplate: \n\n" + serviceTemplate);
-
+            
+            
+            // test
+//            log.fine("Query the MSS");
+//            ResponseConnectivityService connectivityService = defaultMssApiClient.getConnectivityService();
+//            log.info(connectivityService.);
+            
             ////////////////// need to check if the instance coming back in rawdata is the full
             ////////////////// instance, or if we need parser
             // log.finer("serviceTemplate: " + serviceTemplate);

@@ -22,6 +22,8 @@ public class Constants {
     public static final String COMMON_TOSCA_CATALOG_BASE_PATH = "common-tosca-catalog.base-path";
 
     public static final String COMMON_TOSCA_ARIA_BASE_PATH = "common-tosca-aria.base-path";
+    
+    public static final String SDNO_BRS_SERVICEINVENTORY_BASE_PATH = "sdno-brs.serviceinventory.base-path";
 
     // NBI input constants
     public static final String LCM_NBI_CSAR_NAME = "nsdId";
