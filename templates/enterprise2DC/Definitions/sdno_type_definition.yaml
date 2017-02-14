@@ -24,7 +24,7 @@ metadata:
 # macros
 # ****************************************************************************    
 dsl_definitions:
-        
+
     BaseServiceInfo: &BaseServiceInfo
         adminStatus:
             type: AdministrationStateType
@@ -40,7 +40,7 @@ dsl_definitions:
             default: none
         statusReason:
             type: string
-            description: In case of ERROR actionState, it will have the reason for the error. 
+            description: In case of ERROR actionState, it will have the reason for the error.
                          Otherwise its empty. It is required to make create process to be asynchronous.
             default: none
         createTime:
@@ -76,7 +76,7 @@ data_types:
             these generic ones.
         constraints:
             - valid_values: ['create','deploy','get','update','undeploy','delete']
- 
+
     ActionStateType:
         derived_from: string
         description: State and/or result of the generic API operations. In the case of the exception, additional information may be present in the statusReason property.
@@ -110,7 +110,7 @@ data_types:
         description: Directionality of the connectivity service flow in the endpoint or port.
         constraints:
             - valid_values: ['input','output','bidirectional']
-  
+
     StateMachineRow:
         derived_from: tosca.datatypes.Root
         description: Row in the state transition table
@@ -137,7 +137,6 @@ data_types:
 # *****************************************************************************
 # capability types
 # *****************************************************************************                
-                
 capability_types:
     # ConnectionEndPoint can be derived from tosca.capabilities.Endpoint ?
     sdno.capability.ConnectionEndPoint:
@@ -146,7 +145,7 @@ capability_types:
     # ServiceEndPoint can be derived from tosca.capabilities.Endpoint ?
     sdno.capability.ServiceEndPoint:
             derived_from: tosca.capabilities.Root
-      
+
     sdno.capability.Realizes:
          derived_from: tosca.capabilities.Root
 
@@ -155,7 +154,7 @@ capability_types:
 
     sdno.capability.Bindable:
          derived_from: tosca.capabilities.Node
- 
+
 # *****************************************************************************
 # interface_types
 # *****************************************************************************                
@@ -180,7 +179,7 @@ interface_types:
 # relationship types
 # *****************************************************************************
 relationship_types:
- 
+
     sdno.relationship.ServiceEndPoint:
         description: >-
             The relationship specifies which ServiceEndPoints are terminating the ConnectivityService.
@@ -199,12 +198,12 @@ relationship_types:
                 type: DirectionalityType
                 required: false
         valid_target_types: [sdno.capability.ServiceEndPoint]
-              
+
     sdno.relationship.ConnectionEndPoint:
         description: >-
             The relationship specifies which ConnectionEndPonts are terminating the Connection.
             The association of the Connection to ConnectionEndPoints is made via the Ports of the Connection,
-            where each Port of the Connection has a role and directionality in the context of the Connection. 
+            where each Port of the Connection has a role and directionality in the context of the Connection.
         derived_from: tosca.relationships.Root
         properties:
             # This is initial simple ConnectionPort model, this may be enhanced later via separate Nodes and/or Types
@@ -218,16 +217,16 @@ relationship_types:
                 type: DirectionalityType
                 required: false
         valid_target_types: [sdno.capability.ConnectionEndPoint]
-    
+
     sdno.relationship.RealizedBy:
         description: >-
             The relationship specifies what Connenctions are Connectivity Services or Connections realized from. 
         derived_from: tosca.relationships.Root
         valid_target_types: [sdno.capability.Realizes]   
- 
+
     sdno.relationship.HostedOn:
         description: >-
-            The relationship specifies what Node the Endpoint is hosted on. 
+            The relationship specifies what Node the Endpoint is hosted on.
         derived_from: tosca.relationships.Root
         valid_target_types: [sdno.capability.Host]   
 
@@ -275,7 +274,7 @@ node_types:
             version:
                 type: string
                 required: false
- 
+
     sdno.node.Node:
         derived_from: sdno.node.Root
         description: >-
@@ -303,7 +302,7 @@ node_types:
                 node: sdno.node.Node
                 capability: sdno.capability.Bindable
                 relationship: sdno.relationship.BindsTo
-              
+
     sdno.node.ServiceEndPoint:
         derived_from: sdno.node.Root
         description: >-
@@ -320,12 +319,12 @@ node_types:
                     capability:  sdno.capability.Host
                     relationship: sdno.relationship.HostedOn
                     occurrences: [0, UNBOUNDED]
-                        
+
     sdno.node.ConnectivityService:
         derived_from: sdno.node.Root
         description: >-
             It represents an “intent-like” request for connectivity between two or more ServiceEndPoints.
-            As such, ConnectivityService is a container for connectivity request details and is distinct 
+            As such, ConnectivityService is a container for connectivity request details and is distinct
             from the Connection that realizes the request
         properties: *BaseServiceInfo
         properties: 
@@ -392,7 +391,7 @@ node_types:
                 relationship: sdno.relationship.RealizedBy
                 occurrences: [1, UNBOUNDED]
 
-            
+
     sdno.node.ConnectionEndPoint:
         derived_from: sdno.node.Root
         properties:
@@ -401,7 +400,7 @@ node_types:
             standard:
                 type: sdno.interfaces.lifecycle.Standard    
         description: >-
-            It represents the ingress/egress port aspects that access the forwarding function provided 
+            It represents the ingress/egress port aspects that access the forwarding function provided
             by the Connection.
         capabilities:
             endPoint:
@@ -412,7 +411,7 @@ node_types:
                     capability:  sdno.capability.Host
                     relationship: sdno.relationship.HostedOn
                     occurrences: [0, UNBOUNDED] 
- 
+
     sdno.node.Connection:
         derived_from: sdno.node.Root
         properties:

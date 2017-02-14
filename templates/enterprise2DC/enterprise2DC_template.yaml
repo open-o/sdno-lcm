@@ -80,21 +80,21 @@ topology_template:
                 description: mgrIp of dc Load Balancer
 
         node_templates:
- 
+
                 thinCpe:
                     type: sdno.node.ServiceEndPoint.ThinCpe
                     properties:
                         id: thinCpe01
                         name: thinCpe
                         version: '1.0'
- 
+
                 dcEndpoint:
                     type: sdno.node.ServiceEndPoint.DcEndpoint
                     properties:
                         id: dcEndpoint01
                         name: dcEndpoint
                         version: '1.0'
- 
+
                 enterprise2Dc:
                     type: sdno.node.ConnectivityService.Enterprise2Dc
                     properties:

@@ -1,0 +1,42 @@
+{
+  "Vpc": {
+    "*id": "id",
+    "*name": "name",
+    "description": "description",
+    "statusReason": "statusReason",
+    "createdAt": "createTime",
+    "updatedAt": "updateTime",
+
+    "*externalIp": "externalIp",
+    "*osControllerId": "ownerID",
+    "attributes#UnderlayResources#": "attributes#UnderlayResourcesType#"
+  },
+  "UnderlayResources": {
+    "*id": "id",
+    "*parentId": "parentId",
+    "*projectId": "projectId",
+    "*routerId": "routerId"
+  },
+  "Subnet": {
+    "*id": "id",
+    "*name": "name",
+    "description": "description",
+    "statusReason": "statusReason",
+    "*adminStatus": "adminStatus",
+    "createdAt": "createTime",
+    "updatedAt": "updateTime",
+    
+    "*cidr": "cidr",
+    "*vni": "vni",
+    "*vpcId": "vpcId",
+    "*gatewayIp": "gatewayIp",
+    "attributes#subnetAttributes#": "attributes#SubnetAttributes#"
+  },
+  
+  "subnetAttributes": {
+    "*id": "id",
+    "*parentId": "parentId",
+    "*networkId": "networkId",
+    "*subnetId": "subnetId"
+  }
+}

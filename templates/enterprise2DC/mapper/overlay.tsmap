@@ -1,0 +1,40 @@
+{
+  "NbiVpn": {
+    "id": "id",
+    "name": "name",
+    "description": "description",
+    "tenantId": "tenantID",
+    "deployStatus": "TBD",
+    
+    "vpnDescriptor": "vpnDescriptor"
+  },
+  "NbiVpnConnection": {
+    "id": "id",
+    "name": "name",
+    "description": "description",
+    "tenantId": "tenantID",
+    "deployStatus": "TBD",
+    
+    "vpnId": "vpnId",
+    "aEndVpnGatewayId": "aEndVpnGatewayId",
+    "zEndVpnGatewayId": "zEndVpnGatewayId",
+    "vni": "vni"
+  },
+  "NbiVpnGateway": {
+    "id": "id",
+    "name": "name",
+    "description": "description",
+    "tenantId": "tenantID",
+    
+    "vpnId": "vpnId",
+    "siteId": "siteId",
+    "vpcId": "vpcId",
+    "deployPosition": "deployPosition",
+    "upstreamBandwidth": "upstreamBandwidth",
+    "downstreamBandwidth": "downstreamBandwidth",
+    "vlans": "vlans",
+    "ports[]": "ports[]",
+    "portNames[]": "portNames[]",
+    "regionId": "regionId"
+  }
+}
