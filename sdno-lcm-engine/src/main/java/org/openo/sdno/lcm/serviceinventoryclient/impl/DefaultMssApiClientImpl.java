@@ -19,7 +19,6 @@ package org.openo.sdno.lcm.serviceinventoryclient.impl;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.exception.ExternalComponentException;
-import org.openo.sdno.lcm.restclient.serviceinventory.ApiException;
 import org.openo.sdno.lcm.restclient.serviceinventory.api.DefaultApi;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.ResponseConnectivityService;
@@ -42,6 +41,10 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
     private static final String FAILED_TO_DELETE_CONNECTIVITY_SERVICE = "Failed to delete connectivity service";
 
     private static final String FAILED_TO_CREATE_CONNECTIVITY_SERVICE = "Failed to create connectivity service";
+
+    private static final String FAILED_TO_READ_CONNECTIVITY_SERVICES = "Failed to read connectivity service";
+
+    private static final String FAILED_TO_UPDATE_CONNECTIVITY_SERVICES = "Failed to update connectivity service";
 
     private final Logger log = Logger.getLogger("DefaultApiClientImpl");
 
@@ -69,7 +72,7 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
         DefaultApi defaultApi = this.getDefaultApi();
         try {
             return defaultApi.createConnectivityService(body);
-        } catch(ApiException e) {
+        } catch(Exception e) {
             log.severe(FAILED_TO_CREATE_CONNECTIVITY_SERVICE);
             throw new ExternalComponentException(FAILED_TO_CREATE_CONNECTIVITY_SERVICE, e);
         }
@@ -87,7 +90,7 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
         DefaultApi defaultApi = this.getDefaultApi();
         try {
             defaultApi.deleteConnectivityService(id);
-        } catch(ApiException e) {
+        } catch(Exception e) {
             log.severe(FAILED_TO_DELETE_CONNECTIVITY_SERVICE);
             throw new ExternalComponentException(FAILED_TO_DELETE_CONNECTIVITY_SERVICE, e);
         }
@@ -103,7 +106,7 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
         DefaultApi defaultApi = this.getDefaultApi();
         try {
             return defaultApi.getConnectivityService();
-        } catch(ApiException e) {
+        } catch(Exception e) {
             log.severe(FAILED_TO_GET_CONNECTIVITY_SERVICES);
             throw new ExternalComponentException(FAILED_TO_GET_CONNECTIVITY_SERVICES, e);
         }
@@ -117,8 +120,14 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
      */
     @Override
     public ResponseConnectivityService readConnectivityService(String id) {
-        // TODO Auto-generated method stub
-        return null;
+        
+        DefaultApi defaultApi = this.getDefaultApi();
+        try {
+            return defaultApi.readConnectivityService(id);
+        } catch(Exception e) {
+            log.severe(FAILED_TO_READ_CONNECTIVITY_SERVICES);
+            throw new ExternalComponentException(FAILED_TO_READ_CONNECTIVITY_SERVICES, e);
+        }
     }
 
     /*
@@ -129,8 +138,14 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
      */
     @Override
     public UpdateResponseConnectivityService updateConnectivityService(String id, UpdateConnectivityService body) {
-        // TODO Auto-generated method stub
-        return null;
+        
+        DefaultApi defaultApi = this.getDefaultApi();
+        try {
+            return defaultApi.updateConnectivityService(id, body);
+        } catch(Exception e) {
+            log.severe(FAILED_TO_UPDATE_CONNECTIVITY_SERVICES);
+            throw new ExternalComponentException(FAILED_TO_UPDATE_CONNECTIVITY_SERVICES, e);
+        }
     }
 
     public void setEnv(Environment env) {
