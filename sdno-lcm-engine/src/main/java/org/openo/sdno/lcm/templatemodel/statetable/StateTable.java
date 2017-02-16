@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "rows"
 })
-public class Value
+public class StateTable
 {
 
     @JsonProperty("rows")

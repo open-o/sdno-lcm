@@ -18,8 +18,8 @@ package org.openo.sdno.lcm.decomposer;
 
 import java.util.List;
 
-import org.openo.sdno.lcm.templatemodel.service.Instance;
-import org.openo.sdno.lcm.templatemodel.service.Node;
+//import org.openo.sdno.lcm.templatemodel.service.Instance;
+//import org.openo.sdno.lcm.templatemodel.service.Node;
 
 public interface Decomposer {
 
@@ -39,6 +39,6 @@ public interface Decomposer {
      * @return the list of Node in the order that they need to be visited to perform the given
      *         operation
      */
-    List<Node> decompose(Instance serviceTemplateInstance, String operation);
+    List<Object> decompose(Object serviceTemplateInstance, String operation);
 
 }
