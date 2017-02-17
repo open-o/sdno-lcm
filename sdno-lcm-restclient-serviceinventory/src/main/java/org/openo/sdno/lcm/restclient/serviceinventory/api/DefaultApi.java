@@ -23,8 +23,9 @@ import org.openo.sdno.lcm.restclient.serviceinventory.Pair;
 
 import javax.ws.rs.core.GenericType;
 
+import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceResp;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceReq;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.ResponseConnectivityService;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateResponseConnectivityService;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityService;
 
@@ -33,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-02-10T13:29:29.405Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-02-15T16:47:04.731Z")
 public class DefaultApi {
   private ApiClient apiClient;
 
@@ -57,10 +58,10 @@ public class DefaultApi {
    * 
    * Add a new connectivity services
    * @param body the createConnectivityService to be created (required)
-   * @return ResponseConnectivityService
+   * @return ConnectivityServiceResp
    * @throws ApiException if fails to make API call
    */
-  public ResponseConnectivityService createConnectivityService(ConnectivityService body) throws ApiException {
+  public ConnectivityServiceResp createConnectivityService(ConnectivityServiceReq body) throws ApiException {
     Object localVarPostBody = body;
     
     // verify the required parameter 'body' is set
@@ -91,12 +92,12 @@ public class DefaultApi {
 
     String[] localVarAuthNames = new String[] {  };
 
-    GenericType<ResponseConnectivityService> localVarReturnType = new GenericType<ResponseConnectivityService>() {};
+    GenericType<ConnectivityServiceResp> localVarReturnType = new GenericType<ConnectivityServiceResp>() {};
     return apiClient.invokeAPI(localVarPath, "POST", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
       }
   /**
    * 
-   * Delete the connectivity services
+   * Delete the connectivity service specified in request
    * @param id ID of the connectivity service to be deleted (required)
    * @throws ApiException if fails to make API call
    */
@@ -137,11 +138,11 @@ public class DefaultApi {
   }
   /**
    * 
-   * Add a new connectivity services
-   * @return ResponseConnectivityService
+   * get connectivity services
+   * @return List<ResponseConnectivityService>
    * @throws ApiException if fails to make API call
    */
-  public ResponseConnectivityService getConnectivityService() throws ApiException {
+  public List<ResponseConnectivityService> getConnectivityService() throws ApiException {
     Object localVarPostBody = null;
     
     // create path and map variables
@@ -167,13 +168,13 @@ public class DefaultApi {
 
     String[] localVarAuthNames = new String[] {  };
 
-    GenericType<ResponseConnectivityService> localVarReturnType = new GenericType<ResponseConnectivityService>() {};
+    GenericType<List<ResponseConnectivityService>> localVarReturnType = new GenericType<List<ResponseConnectivityService>>() {};
     return apiClient.invokeAPI(localVarPath, "GET", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
       }
   /**
    * 
-   * Read the connectivity services
-   * @param id ID of the connectivity service to be deleted (required)
+   * Get the connectivity service specified in request
+   * @param id ID of the connectivity service to be queried (required)
    * @return ResponseConnectivityService
    * @throws ApiException if fails to make API call
    */
@@ -214,8 +215,8 @@ public class DefaultApi {
       }
   /**
    * 
-   * modify the value.
-   * @param id ID of the connectivity service to be deleted (required)
+   * modify the connectivity service specified in request
+   * @param id ID of the connectivity service to be updated (required)
    * @param body the partial connectivity service for the update operation (required)
    * @return UpdateResponseConnectivityService
    * @throws ApiException if fails to make API call

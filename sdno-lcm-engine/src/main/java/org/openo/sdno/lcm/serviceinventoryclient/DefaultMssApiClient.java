@@ -17,7 +17,11 @@
 
 package org.openo.sdno.lcm.serviceinventoryclient;
 
+import java.util.List;
+
 import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceReq;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceResp;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.ResponseConnectivityService;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityService;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateResponseConnectivityService;
@@ -34,7 +38,7 @@ public interface DefaultMssApiClient {
      * @return ResponseConnectivityService
      * @throws ApiException if fails to make API call
      */
-    ResponseConnectivityService createConnectivityService(ConnectivityService body);
+    ConnectivityServiceResp createConnectivityService(ConnectivityServiceReq body);
 
     /**
      * Delete the connectivity services
@@ -50,7 +54,7 @@ public interface DefaultMssApiClient {
      * @return ResponseConnectivityService
      * @throws ApiException if fails to make API call
      */
-    ResponseConnectivityService getConnectivityService();
+    List<ResponseConnectivityService> getConnectivityService();
 
     /**
      * Read the connectivity services

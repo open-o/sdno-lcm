@@ -19,6 +19,8 @@ package org.openo.sdno.lcm.engine;
 import java.io.File;
 import java.net.URL;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -30,6 +32,8 @@ import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.exception.ExternalComponentException;
 import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceReq;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.ResponseConnectivityService;
 import org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient;
 import org.openo.sdno.lcm.statetablehandler.StateTableHandler;
@@ -122,33 +126,32 @@ public class LcmStateEngine {
 
             // get raw template instance from catalog
             String serviceTemplate = modelResourceApiClient.getServiceTemplateRawData(csarId);
-            log.finer("\n\n\nserviceTemplate: \n\n" + serviceTemplate);
+//            log.finer("\n\n\nserviceTemplate: \n\n" + serviceTemplate);
             
             
-            // test
+            // test - faiols because we don't expect paged data back
 //            log.fine("Query the MSS");
-//            ResponseConnectivityService connectivityService = defaultMssApiClient.getConnectivityService();
-//            log.info(connectivityService.);
+//            List<ResponseConnectivityService> connectivityServices = defaultMssApiClient.getConnectivityService();
+//            for(ResponseConnectivityService responseConnectivityService:connectivityServices) {
+//                
+//                log.finer(responseConnectivityService.toString());
+//            }
             
-            ////////////////// need to check if the instance coming back in rawdata is the full
-            ////////////////// instance, or if we need parser
-            // log.finer("serviceTemplate: " + serviceTemplate);
-            //
-            // String templateUri = serviceTemplate.getDownloadUri();
-            // // parse the template
-            // Object pathParsedObject =
-            ////////////////// parserApiClient.parseControllerInstanceFile(templateUri, "");
-            // log.finer("path parsed: " + pathParsedObject.toString());
-            //
-            // String templateStr = null;
-            // try {
-            // templateStr = IOUtils.toString(new URL(templateUri), StandardCharsets.UTF_8);
-            // } catch(IOException e) {
-            // // TODO Auto-generated catch block
-            // e.printStackTrace();
-            // }
-            Object obj = parserApiClient.parseControllerInstanceUpload(serviceTemplate, "");
-            log.finer("downloaded: " + obj.toString());
+            
+            ConnectivityServiceReq body = new ConnectivityServiceReq();
+            ConnectivityService service = new ConnectivityService();
+            service.setId("marko1");
+            service.setName("asd");
+            service.setDescription("description");
+            Map<String, List<ConnectivityService>> objects = new HashMap<String, List<ConnectivityService>>();
+            List<ConnectivityService> list = new ArrayList<ConnectivityService>();
+            list.add(service);
+            objects.put("objects", list);
+            body.setObjects(list);
+            defaultMssApiClient.createConnectivityService(body );
+            
+//            Object obj = parserApiClient.parseControllerInstanceUpload(serviceTemplate, "");
+//            log.finer("downloaded: " + obj.toString());
         }
 
         // get service instance from inventory
@@ -179,6 +182,11 @@ public class LcmStateEngine {
     @Autowired
     public void setParserApiClient(ParserApiClient parserApiClient) {
         this.parserApiClient = parserApiClient;
+    }
+
+    @Autowired    
+    public void setDefaultMssApiClient(DefaultMssApiClient defaultMssApiClient) {
+        this.defaultMssApiClient = defaultMssApiClient;
     }
 
 }

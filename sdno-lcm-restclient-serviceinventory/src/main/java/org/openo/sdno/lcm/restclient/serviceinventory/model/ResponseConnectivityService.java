@@ -34,7 +34,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * ResponseConnectivityService
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-02-10T13:29:29.405Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-02-15T16:47:04.731Z")
 public class ResponseConnectivityService   {
   @JsonProperty("lifecycleState")
   private String lifecycleState = null;
@@ -77,6 +77,9 @@ public class ResponseConnectivityService   {
 
   @JsonProperty("id")
   private String id = null;
+
+  @JsonProperty("updatetime")
+  private String updatetime = null;
 
   public ResponseConnectivityService lifecycleState(String lifecycleState) {
     this.lifecycleState = lifecycleState;
@@ -330,6 +333,24 @@ public class ResponseConnectivityService   {
     this.id = id;
   }
 
+  public ResponseConnectivityService updatetime(String updatetime) {
+    this.updatetime = updatetime;
+    return this;
+  }
+
+   /**
+   * Get updatetime
+   * @return updatetime
+  **/
+  @ApiModelProperty(example = "null", value = "")
+  public String getUpdatetime() {
+    return updatetime;
+  }
+
+  public void setUpdatetime(String updatetime) {
+    this.updatetime = updatetime;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -353,12 +374,13 @@ public class ResponseConnectivityService   {
         Objects.equals(this.operStatus, responseConnectivityService.operStatus) &&
         Objects.equals(this.tenantID, responseConnectivityService.tenantID) &&
         Objects.equals(this.location, responseConnectivityService.location) &&
-        Objects.equals(this.id, responseConnectivityService.id);
+        Objects.equals(this.id, responseConnectivityService.id) &&
+        Objects.equals(this.updatetime, responseConnectivityService.updatetime);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(lifecycleState, createtime, actionState, description, ownerID, templateId, version, statusReason, adminStatus, name, operStatus, tenantID, location, id);
+    return Objects.hash(lifecycleState, createtime, actionState, description, ownerID, templateId, version, statusReason, adminStatus, name, operStatus, tenantID, location, id, updatetime);
   }
 
   @Override
@@ -380,6 +402,7 @@ public class ResponseConnectivityService   {
     sb.append("    tenantID: ").append(toIndentedString(tenantID)).append("\n");
     sb.append("    location: ").append(toIndentedString(location)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    updatetime: ").append(toIndentedString(updatetime)).append("\n");
     sb.append("}");
     return sb.toString();
   }

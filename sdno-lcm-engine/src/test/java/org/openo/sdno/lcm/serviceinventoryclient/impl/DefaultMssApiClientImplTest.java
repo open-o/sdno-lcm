@@ -21,7 +21,7 @@ import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.replay;
 
 import org.openo.sdno.lcm.exception.ExternalComponentException;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceReq;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityService;
 import org.openo.sdno.lcm.util.Constants;
 import org.springframework.core.env.Environment;
@@ -54,7 +54,7 @@ public class DefaultMssApiClientImplTest {
     @Test(expectedExceptions = ExternalComponentException.class)
     public void createConnectivityServiceTest() {
 
-        defaultMssApiClientImpl.createConnectivityService(new ConnectivityService());
+        defaultMssApiClientImpl.createConnectivityService(new ConnectivityServiceReq());
     }
 
     /**

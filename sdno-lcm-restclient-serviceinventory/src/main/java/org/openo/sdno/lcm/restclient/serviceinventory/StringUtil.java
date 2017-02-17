@@ -25,7 +25,7 @@
 
 package org.openo.sdno.lcm.restclient.serviceinventory;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-02-10T13:29:29.405Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-02-15T16:47:04.731Z")
 public class StringUtil {
   /**
    * Check if the given array contains the given value (with case-insensitive comparison).
