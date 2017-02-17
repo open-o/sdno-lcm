@@ -19,7 +19,6 @@ package org.openo.sdno.lcm.engine;
 import java.io.File;
 import java.net.URL;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,11 +31,10 @@ import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.exception.ExternalComponentException;
 import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceReq;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ResponseConnectivityService;
 import org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient;
 import org.openo.sdno.lcm.statetablehandler.StateTableHandler;
+import org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser;
+import org.openo.sdno.lcm.templatemodel.service.Instance;
 import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -53,8 +51,10 @@ public class LcmStateEngine {
     private PackageResourceApiClient packageResourceApiClient;
 
     private ParserApiClient parserApiClient;
-    
+
     private DefaultMssApiClient defaultMssApiClient;
+    
+    private TemplateInstanceParser templateInstanceParser; 
 
     public Map<String, Object> execute(Map<String, String> params) {
 
@@ -72,7 +72,7 @@ public class LcmStateEngine {
 
             // TODO execute the appropriate workflow...
             // TODO get the service from the inventory
-//            stateTableHandler.validateServiceTransition(null, null, null);
+            // stateTableHandler.validateServiceTransition(null, null, null);
             return null;
         } else {
             log.info(Constants.LCM_NBI_SERVICE_ID + " is not found in params");
@@ -96,8 +96,7 @@ public class LcmStateEngine {
 
             throw new InvalidParameterException("csarName may not be empty or null");
         }
-        // get TOSCA template
-        // PackageMeta packageMetaL = packageResourceApiClient.queryPackageById(csarId);
+
         List<PackageMeta> packageMetaList =
                 packageResourceApiClient.queryPackageListByCond(csarName, null, null, null, null);
 
@@ -126,42 +125,13 @@ public class LcmStateEngine {
 
             // get raw template instance from catalog
             String serviceTemplate = modelResourceApiClient.getServiceTemplateRawData(csarId);
-//            log.finer("\n\n\nserviceTemplate: \n\n" + serviceTemplate);
-            
-            
-            // test - faiols because we don't expect paged data back
-//            log.fine("Query the MSS");
-//            List<ResponseConnectivityService> connectivityServices = defaultMssApiClient.getConnectivityService();
-//            for(ResponseConnectivityService responseConnectivityService:connectivityServices) {
-//                
-//                log.finer(responseConnectivityService.toString());
-//            }
-            
-            
-            ConnectivityServiceReq body = new ConnectivityServiceReq();
-            ConnectivityService service = new ConnectivityService();
-            service.setId("marko1");
-            service.setName("asd");
-            service.setDescription("description");
-            Map<String, List<ConnectivityService>> objects = new HashMap<String, List<ConnectivityService>>();
-            List<ConnectivityService> list = new ArrayList<ConnectivityService>();
-            list.add(service);
-            objects.put("objects", list);
-            body.setObjects(list);
-            defaultMssApiClient.createConnectivityService(body );
-            
-//            Object obj = parserApiClient.parseControllerInstanceUpload(serviceTemplate, "");
-//            log.finer("downloaded: " + obj.toString());
+            Instance templateInstance = templateInstanceParser.parse(serviceTemplate);
         }
 
-        // get service instance from inventory
-        // get state from instance - except in create case we know already
+        // TODO get service instance from inventory
+        // TODO get state from instance - except in create case we know already
 
-        // List<PackageMeta> queryPackageListByCond =
-        // packageResourceApiClient.queryPackageListByCond(null, null, null,
-        // null,
-        // null);
-        return null;
+        return new HashMap<String, Object>();
     }
 
     @Autowired
@@ -184,9 +154,14 @@ public class LcmStateEngine {
         this.parserApiClient = parserApiClient;
     }
 
-    @Autowired    
+    @Autowired
     public void setDefaultMssApiClient(DefaultMssApiClient defaultMssApiClient) {
         this.defaultMssApiClient = defaultMssApiClient;
+    }
+
+    @Autowired    
+    public void setTemplateInstanceParser(TemplateInstanceParser templateInstanceParser) {
+        this.templateInstanceParser = templateInstanceParser;
     }
 
 }

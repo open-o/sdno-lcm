@@ -18,27 +18,28 @@ package org.openo.sdno.lcm.decomposer;
 
 import java.util.List;
 
-//import org.openo.sdno.lcm.templatemodel.service.Instance;
-//import org.openo.sdno.lcm.templatemodel.service.Node;
+import org.openo.sdno.lcm.templatemodel.csar.Csar;
+import org.openo.sdno.lcm.templatemodel.service.Instance;
+import org.openo.sdno.lcm.templatemodel.service.Node;
 
 public interface Decomposer {
 
     /**
-     * Decompose the Instance of service template, ie determine the correct order to visit the Nodes
-     * for the operation.
-     * Notes:
-     * We receive the Instance with all input values already included.
+     * Decomposes the Instance of service template: determines the correct order to visit the Nodes
+     * for the operation and adds the swagger for each Node SBI in the 'artifacts' field of the
+     * Node.
+     * Receives the Instance with all input values already included.
      * We don't address any parallel processing.
-     * We assume the operation is the same (eg 'deploy') for all nodes?
-     * We don't include swagger for SBIs - assume this is passed directly to Dispatcher.
      * We don't do any traffic engineering yet.
-     * We don't allow to hook custom behaviour into the generic workflows yet.
+     * We don't allow to hook custom behaviour into a generic workflow here.
      * 
      * @param serviceTemplateInstance
      * @param operation
-     * @return the list of Node in the order that they need to be visited to perform the given
+     * @param csar the Csar model containing the required artifacts (swagger for Node SBIs)
+     * @return the Workplan with list of WorkplanItem (Node + artifacts) in the order that they need
+     *         to be visited to perform the given
      *         operation
      */
-    List<Object> decompose(Object serviceTemplateInstance, String operation);
+    List<Object> decompose(Instance serviceTemplateInstance, String operation, Csar csar);
 
 }

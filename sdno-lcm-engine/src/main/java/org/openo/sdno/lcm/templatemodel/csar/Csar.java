@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.lcm.templateinstanceparser;
+package org.openo.sdno.lcm.templatemodel.csar;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
 
-public class TemplateInstanceParserTest {
-	@Test
-	public void f() {
-	}
-
-	@BeforeMethod
-	public void beforeMethod() {
-	}
-
+public class Csar {
+ 
+//    hold artifacts etc
 }

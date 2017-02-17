@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.lcm.templateinstanceparser;
+package org.openo.sdno.lcm.csarhandler;
 
-import org.openo.sdno.lcm.templatemodel.service.Instance;
+import org.openo.sdno.lcm.templatemodel.csar.Csar;
 
-public interface TemplateInstanceParser {
+/**
+ * Responsible for downloading and caching the .csar files, and retrieving required artifacts from
+ * them
+ */
+public interface CsarHandler {
+    
 
-    Instance parse(String serviceInstanceJson);
+    Csar getCsar(String csarName);
 
 }

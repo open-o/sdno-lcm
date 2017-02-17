@@ -45,23 +45,26 @@ public class LcmExceptionHandler extends ResponseEntityExceptionHandler {
     ResponseEntity<Object> handleControllerException(HttpServletRequest req, Throwable ex) {
 
         Map<String, String> responseBody = new HashMap<>();
-        responseBody.put(DETAIL, ex.getMessage());
+        ResponseEntity<Object> response = null;
         if(ex instanceof LcmInternalException) {
             responseBody.put(MESSAGE, "An internal LCM error occurred");
-            return new ResponseEntity<Object>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
+            response = new ResponseEntity<Object>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
 
         } else if(ex instanceof ExternalComponentException) {
             responseBody.put(MESSAGE, "An external component could not be accessed or returned an error reponse");
-            return new ResponseEntity<Object>(responseBody, HttpStatus.NOT_FOUND);
+            response = new ResponseEntity<Object>(responseBody, HttpStatus.NOT_FOUND);
 
         } else if(ex instanceof InvalidInputException) {
             responseBody.put(MESSAGE, "Invalid input was received");
-            return new ResponseEntity<Object>(responseBody, HttpStatus.BAD_REQUEST);
+            response = new ResponseEntity<Object>(responseBody, HttpStatus.BAD_REQUEST);
 
         } else {
             responseBody.put(MESSAGE, "An unexpected error has occurred");
-            return new ResponseEntity<Object>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
+            response = new ResponseEntity<Object>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        responseBody.put(DETAIL, ex.getMessage());
+        ex.printStackTrace();
+        return response;
     }
 
 }

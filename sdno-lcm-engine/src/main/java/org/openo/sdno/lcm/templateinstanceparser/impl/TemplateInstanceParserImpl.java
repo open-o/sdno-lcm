@@ -16,11 +16,9 @@
 
 package org.openo.sdno.lcm.templateinstanceparser.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
-
+import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser;
+import org.openo.sdno.lcm.templatemodel.service.Instance;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -29,31 +27,34 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class TemplateInstanceParserImpl implements TemplateInstanceParser {
 
-    /* (non-Javadoc)
-     * @see org.openo.sdno.lcm.templateinstanceparser.impl.TemplateInstanceParser#parse()
+    /*
+     * (non-Javadoc)
+     * @see org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser#parse(java.lang.String)
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public Object parse() {
-        ObjectMapper mapper = new ObjectMapper();
+    public Instance parse(String serviceInstanceJson) {
+        ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            JsonNode root = mapper.readTree(new File("instance.json"));
+            JsonNode root = objectMapper.readTree(serviceInstanceJson);
 
             // Get Name
             JsonNode instanceNode = root.path("instance");
-            JsonNode nodesNode = instanceNode.path("nodes");
 
-            Iterator<JsonNode> elements = nodesNode.elements();
-            ((Iterable<JsonNode>)elements).forEach((k) -> System.out.println("element : " + k));
+            Instance instancePojo = objectMapper.treeToValue(instanceNode, Instance.class);
+
+            return instancePojo;
+
+            // JsonNode nodesNode = instanceNode.path("nodes");
+            //
+            // Iterator<JsonNode> elements = nodesNode.elements();
+            // ((Iterable<JsonNode>)elements).forEach((k) -> System.out.println("element : " + k));
 
             // StreamSupport.stream(root.spliterator(), false /* or whatever */);
 
-        } catch(IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch(Exception e) {
+            throw new LcmInternalException("Failed to parse serviceInstanceJson", e);
         }
-        return null;
     }
 
 }
