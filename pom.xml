@@ -33,6 +33,7 @@
     <module>sdno-lcm-restclient-catalog</module>
     <module>sdno-lcm-restclient-aria</module>
     <module>sdno-lcm-restclient-serviceinventory</module>
+    <module>sdno-lcm-restclient-msb</module>
     <module>sdno-lcm-engine</module>
     <module>sdno-lcm-webapp</module>
     <module>deployment</module>
