@@ -51,7 +51,7 @@ import org.openo.sdno.lcm.restclient.msb.auth.OAuth;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-02-20T12:04:17.236Z")
 public class ApiClient {
   private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
-  private String basePath = "https://localhost/api/microservices/v1";
+  private String basePath = "http://127.0.0.1:8080/api/microservices/v1";
   private boolean debugging = false;
   private int connectionTimeout = 0;
 

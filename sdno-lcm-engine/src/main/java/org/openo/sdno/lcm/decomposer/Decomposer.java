@@ -20,14 +20,12 @@ import java.util.List;
 
 import org.openo.sdno.lcm.templatemodel.csar.Csar;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
-import org.openo.sdno.lcm.templatemodel.service.Node;
 
 public interface Decomposer {
 
     /**
      * Decomposes the Instance of service template: determines the correct order to visit the Nodes
-     * for the operation and adds the swagger for each Node SBI in the 'artifacts' field of the
-     * Node.
+     * of the Node.
      * Receives the Instance with all input values already included.
      * We don't address any parallel processing.
      * We don't do any traffic engineering yet.

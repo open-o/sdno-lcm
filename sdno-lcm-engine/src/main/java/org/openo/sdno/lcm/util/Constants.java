@@ -26,6 +26,8 @@ public class Constants {
     public static final String COMMON_SERVICES_MSB_BASE_PATH = "common-services-msb.base-path";
     
     public static final String SDNO_BRS_SERVICEINVENTORY_BASE_PATH = "sdno-brs.serviceinventory.base-path";
+    
+    public static final String SDNO_LCM_DEFAULT_IP = "sdno-lcm.default-ip";
 
     // NBI input constants
     public static final String LCM_NBI_CSAR_NAME = "nsdId";
