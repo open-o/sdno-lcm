@@ -21,6 +21,9 @@ import java.util.List;
 import org.openo.sdno.lcm.templatemodel.csar.Csar;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
 
+import org.openo.sdno.lcm.workplan.WorkPlan;
+
+
 public interface Decomposer {
 
     /**
@@ -35,9 +38,8 @@ public interface Decomposer {
      * @param operation
      * @param csar the Csar model containing the required artifacts (swagger for Node SBIs)
      * @return the Workplan with list of WorkplanItem (Node + artifacts) in the order that they need
-     *         to be visited to perform the given
-     *         operation
+     *         to be visited to perform the given operation
      */
-    List<Object> decompose(Instance serviceTemplateInstance, String operation, Csar csar);
+    WorkPlan decompose(Instance serviceTemplateInstance, String operation, Csar csar);
 
 }
