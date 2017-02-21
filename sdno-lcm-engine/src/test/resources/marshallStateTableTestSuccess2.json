@@ -1,0 +1,115 @@
+{
+  "type_name": "StateMachineType",
+  "value": {
+    "rows": [
+      {
+        "newState": "created",
+        "transitionWorkflow": "create",
+        "currentState": "none",
+        "apiOperation": "create"
+      },
+      {
+        "newState": "created",
+        "transitionWorkflow": "error",
+        "currentState": "created",
+        "apiOperation": "create"
+      },
+      {
+        "newState": "deployed",
+        "transitionWorkflow": "error",
+        "currentState": "deployed",
+        "apiOperation": "create"
+      },
+      {
+        "newState": "deployed",
+        "transitionWorkflow": "deploy",
+        "currentState": "none",
+        "apiOperation": "deploy"
+      },
+      {
+        "newState": "deployed",
+        "transitionWorkflow": "deployCreated",
+        "currentState": "created",
+        "apiOperation": "deploy"
+      },
+      {
+        "newState": "deployed",
+        "transitionWorkflow": "ERR",
+        "currentState": "deployed",
+        "apiOperation": "deploy"
+      },
+      {
+        "newState": "none",
+        "transitionWorkflow": "ERR",
+        "currentState": "none",
+        "apiOperation": "get"
+      },
+      {
+        "newState": "created",
+        "transitionWorkflow": "get",
+        "currentState": "created",
+        "apiOperation": "get"
+      },
+      {
+        "newState": "deployed",
+        "transitionWorkflow": "get",
+        "currentState": "deployed",
+        "apiOperation": "get"
+      },
+      {
+        "newState": "none",
+        "transitionWorkflow": "ERR",
+        "currentState": "none",
+        "apiOperation": "update"
+      },
+      {
+        "newState": "created",
+        "transitionWorkflow": "updatecreated",
+        "currentState": "created",
+        "apiOperation": "update"
+      },
+      {
+        "newState": "deployed",
+        "transitionWorkflow": "updateDeployed",
+        "currentState": "deployed",
+        "apiOperation": "update"
+      },
+      {
+        "newState": "none",
+        "transitionWorkflow": "ERR",
+        "currentState": "none",
+        "apiOperation": "undeploy"
+      },
+      {
+        "newState": "created",
+        "transitionWorkflow": "ERR",
+        "currentState": "created",
+        "apiOperation": "undeploy"
+      },
+      {
+        "newState": "created",
+        "transitionWorkflow": "undeploy",
+        "currentState": "deployed",
+        "apiOperation": "undeploy"
+      },
+      {
+        "newState": "none",
+        "transitionWorkflow": "ERR",
+        "currentState": "none",
+        "apiOperation": "delete"
+      },
+      {
+        "newState": "none",
+        "transitionWorkflow": "deleteCreated",
+        "currentState": "created",
+        "apiOperation": "delete"
+      },
+      {
+        "newState": "none",
+        "transitionWorkflow": "deleteDeployed",
+        "currentState": "deployed",
+        "apiOperation": "delete"
+      }
+    ]
+  }
+}

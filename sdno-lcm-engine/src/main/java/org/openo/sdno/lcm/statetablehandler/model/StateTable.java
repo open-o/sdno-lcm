@@ -17,6 +17,25 @@
 
 package org.openo.sdno.lcm.statetablehandler.model;
 
+import org.openo.sdno.lcm.templatemodel.statetable.Row;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * State table object contains the valid state and transition.
+ *
+ */
 public class StateTable {
+
+    private List<Row> rows = new ArrayList<Row>();
+
+    public List<Row> getRows() {
+        return rows;
+    }
+
+    public void setRows(List<Row> rows) {
+        this.rows = rows;
+    }
 
 }

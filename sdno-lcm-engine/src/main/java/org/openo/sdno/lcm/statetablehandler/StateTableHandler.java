@@ -16,44 +16,61 @@
 
 package org.openo.sdno.lcm.statetablehandler;
 
-import java.util.List;
-
+import org.openo.sdno.lcm.exception.InvalidInputException;
+import org.openo.sdno.lcm.exception.InvalidStateTableException;
+import org.openo.sdno.lcm.exception.InvalidTransitionException;
 import org.openo.sdno.lcm.statetablehandler.model.StateTable;
+import com.fasterxml.jackson.databind.JsonNode;
+
+import java.util.List;
 
 public interface StateTableHandler {
 
-	/**
-	 * Check if the transitionId is in the allowedTransitions of the current
-	 * state.
-	 * 
-	 * @param currentStateId
-	 * @param transitionId
-	 * @param stateTable
-	 * 
-	 * @exception if
-	 *                check fails (we can print the allowed transitions for the
-	 *                user)
-	 * @exception if
-	 *                currentStateId or transitionId are not in the
-	 *                stateMachineModel
-	 * @exception if
-	 *                the stateMachineModel is invalid
-	 * 
-	 * @return the stateId of the destination state of the transition for
-	 *         success
-	 */
-	String validateServiceTransition(String currentStateId, String transitionId, StateTable stateTable);
+    /**
+     * Check if the transitionId is in the allowedTransitions of the current
+     * state.
+     *
+     * @param currentStateId current state id
+     * @param apiOperation api operation
+     * @param stateTable allowed state table
+     *
+     * @exception if
+     *                check fails (we can print the allowed transitions for the
+     *                user)
+     * @exception if
+     *                currentStateId or transitionId are not in the
+     *                stateMachineModel
+     * @exception if
+     *                the stateMachineModel is invalid
+     *
+     * @return the the transitionWorkflow of the transition for success
+     * @throws InvalidInputException
+     * @throws InvalidTransitionException
+     */
+    String validateServiceTransition(String currentStateId, String apiOperation, StateTable stateTable);
 
-	/**
-	 * return the allowed transition IDs for the state
-	 * 
-	 * @param stateId
-	 * @param stateTable
-	 * 
-	 * @exception if
-	 *                the state is not in the stateTable
-	 * @return
-	 */
-	List<String> getAllowedTransitions(String stateId, StateTable stateTable);
+    /**
+     * Return the allowed api operations for the state
+     *
+     * @param currentState current state
+     * @param stateTable allowed state table
+     *
+     * @exception if
+     *                the state is not in the stateTable
+     * @return the list of allowed api operations on success
+     * @throws InvalidInputException
+     */
+    List<String> getAllowedApiOperations(String currentState, StateTable stateTable);
 
+    /**
+     * Return the state table.
+     *
+     * @param stateTableObject json object contains allowed state table
+     *
+     * @exception if
+     *                the parsing of the stateTable encounters any issue.
+     * @return the list of allowed transaction on success
+     * @throws InvalidStateTableException
+     */
+    StateTable marshallStateTable(JsonNode stateTableObject);
 }

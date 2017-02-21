@@ -1,0 +1,25 @@
+{
+  "type_name": "StateMachineType",
+  "value": {
+    "rows": [
+      {
+        "newState": "none",
+        "transitionWorkflow": "create",
+        "currentState": "none",
+        "apiOperation": "create"
+      },
+      {
+        "newState": "deployed",
+        "transitionWorkflow": "deployCreated",
+        "currentState": "created",
+        "apiOperation": "deploy"
+      },
+      {
+        "newState": "created",
+        "transitionWorkflow": "unDeploy",
+        "currentState": "deployed",
+        "apiOperation": "deploy"
+      }
+    ]
+  }
+}
