@@ -19,6 +19,8 @@ package org.openo.sdno.lcm.templatemodel.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openo.sdno.lcm.exception.LcmInternalException;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -51,8 +53,31 @@ public class Node {
     @JsonProperty("relationships")
     private List<Relationship> relationships = new ArrayList<Relationship>();
     
-    // eg swagger spec - added by decomposer
-    private Object artifacts; 
+    /**
+     * Flag to set in the decomposer when a Node has been examined during tree traversal.
+     */
+    private boolean examined = false;
+    
+    public void setExamined() {
+        
+        if(examined) {
+            throw new LcmInternalException("Tried to set an examined Node to examined again");
+        }
+        examined = true;
+    }
+    
+    public boolean isExamined() {
+        
+        return examined;
+    }
+    
+    public void clearExamined() {
+        
+        if(!examined) {
+            throw new LcmInternalException("Tried to clear a Node that was not examined");
+        }
+        examined = false;
+    }
 
     private final static long serialVersionUID = 2435488133886152314L;
 

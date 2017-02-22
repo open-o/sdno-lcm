@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.commons.validator.routines.InetAddressValidator;
-import org.openo.sdno.lcm.exception.ExternalComponentException;
 import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.msbclient.MsbServiceApiClient;
 import org.openo.sdno.lcm.restclient.msb.api.MSBServiceResourceApi;
@@ -91,8 +90,10 @@ public class MsbServiceApiClientImpl implements MsbServiceApiClient {
             log.info("Registration status " + registration.getStatus());
             return registration;
         } catch(Exception e) {
-            log.severe("Failed to register with the microservice bus due to " + e.getMessage());
-            throw new ExternalComponentException("Failed to add microservice", e);
+            log.severe("Failed to register with the microservice bus at "
+                    + getMSBServiceResourceApi().getApiClient().getBasePath() + " due to " + e.getMessage());
+            // throw new ExternalComponentException("Failed to add microservice", e);
+            return null;
         }
     }
 
