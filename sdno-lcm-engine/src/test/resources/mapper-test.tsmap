@@ -1,0 +1,36 @@
+{
+  "ServiceChainPath": {
+    "id": "id",
+    "*name": "name",
+    "description": "description",
+    
+    "sfcName": "sfcName",
+    "sfcId": "sfcId",
+    "popId": "popId",
+    "*scfNeId": "scfNeId",
+    "symmetric": "symmetric",
+    "transportType": "transportType",
+    "servicePathHops[]#ServicePathHop#": "servicePathHops[]#ServicePathHopType#",
+    "classifiers[]#ServiceClassifier#": "classifiers[]#ServiceClassifierType#"
+  },
+  "ServicePathHop": {
+    "*hopNumber": "hopNumber",
+    "*sfiId": "sfiId",
+    "sfgId": "sfgId"
+  },
+  "ServiceClassifier": {
+    "*interfaceName": "interfaceName",
+    "*zone": "zone",
+    "rules[]#Rule#": "rules[]#RuleType#"
+  },
+  "Rule": {
+    "*protocol": "protocol",
+    "*policy": "policy",
+    "*srcPort": "srcPort",
+    "*dstPort": "dstPort",
+    "*srcIp": "srcIp",
+    "*srcMask": "srcMask",
+    "*destIp": "destIp",
+    "*destMask": "destMask"
+  }
+}

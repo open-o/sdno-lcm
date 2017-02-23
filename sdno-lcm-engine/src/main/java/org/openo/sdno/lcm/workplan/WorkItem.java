@@ -17,7 +17,8 @@
 package org.openo.sdno.lcm.workplan;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.apache.commons.httpclient.HttpMethod;
+
+import io.swagger.models.HttpMethod;
 import io.swagger.models.Swagger; 
 
 import org.openo.sdno.lcm.templatemodel.service.Node;
@@ -27,7 +28,7 @@ import org.openo.sdno.lcm.templatemodel.service.Node;
  */
 public class WorkItem {
 
-    Node nodeProperties;  //node properties from service instance
+    Node node;  //we mainly use node properties from service instance
     Swagger swaggerSpec;  //swagger specification
     JsonNode mapperSpec;  //mapper specification (from node property to API)
     String apiUrl;  //API URL
