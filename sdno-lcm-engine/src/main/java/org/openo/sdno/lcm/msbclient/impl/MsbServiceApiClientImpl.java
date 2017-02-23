@@ -54,6 +54,9 @@ public class MsbServiceApiClientImpl implements MsbServiceApiClient {
     @Autowired
     private Environment env;
 
+    /* (non-Javadoc)
+     * @see org.openo.sdno.lcm.msbclient.MsbServiceApiClient#register()
+     */
     @Override
     public MicroServiceFullInfo register() {
 

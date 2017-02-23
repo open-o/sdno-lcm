@@ -18,6 +18,7 @@ package org.openo.sdno.lcm.templatemodel.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.exception.LcmInternalException;
 
@@ -27,12 +28,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
 
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"id", "type_name", "template_name", "properties", "interfaces", "capabilities", "relationships"})
 public class Node {
-    
+
+    private final Logger log = Logger.getLogger("Node");
+
     private JsonNode propertiesJson;
 
     @JsonProperty("id")
@@ -52,31 +54,92 @@ public class Node {
 
     @JsonProperty("relationships")
     private List<Relationship> relationships = new ArrayList<Relationship>();
-    
+
     /**
      * Flag to set in the decomposer when a Node has been examined during tree traversal.
      */
     private boolean examined = false;
-    
+
+    /**
+     * Set the examined flag to true.
+     */
     public void setExamined() {
-        
+
         if(examined) {
             throw new LcmInternalException("Tried to set an examined Node to examined again");
         }
         examined = true;
     }
-    
+
+    /**
+     * @return true if the examined flag is set to true
+     */
     public boolean isExamined() {
-        
+
         return examined;
     }
-    
+
+    /**
+     * Set the examined flag to false.
+     */
     public void clearExamined() {
-        
+
         if(!examined) {
             throw new LcmInternalException("Tried to clear a Node that was not examined");
         }
         examined = false;
+    }
+
+    /**
+     * Get the dependencies of this Node for the provided operation name
+     * 
+     * @param operationName the name of the operation
+     * @return List of Dependency
+     */
+    public List<Dependency> getDependencies(final String operationName) {
+
+        return this.getOperation(operationName).getDependencyList();
+    }
+
+    /**
+     * Get the Operation identified by the provided name.
+     * 
+     * @param operationName
+     * @return the Operation
+     */
+    public Operation getOperation(final String operationName) {
+
+        List<Operation> operations = interfaces.get(1).getOperations();
+        for(Operation operation : operations) {
+
+            if(operation.getName().equals(operationName)) {
+                return operation;
+            }
+        }
+        log.warning("Failed to get operation with name " + operationName);
+        return null;
+    }
+
+    /**
+     * Get all the child Nodes that are identified in the relationships of this Node and are the
+     * same type as the dependency prefix eg 'sdno.node.Connection.VpcSubnet'
+     * 
+     * @param type the type of Nodes to get
+     * @param instance the instance reference to get the Nodes
+     * @return the list of related Nodes of the specified type
+     */
+    public List<Node> getRelatedNodesOfType(final String type, final Instance instance) {
+
+        List<Node> childrenOfType = new ArrayList<>();
+        for(Relationship relationship : this.getRelationships()) {
+
+            Node relatedNode = instance.getNode(relationship.getTargetNodeId());
+            if(relatedNode.getTypeName().equals(type)) {
+
+                childrenOfType.add(relatedNode);
+            }
+        }
+        return childrenOfType;
     }
 
     private final static long serialVersionUID = 2435488133886152314L;
@@ -141,12 +204,10 @@ public class Node {
         this.relationships = relationships;
     }
 
-    
     public JsonNode getProperties() {
         return propertiesJson;
     }
 
-    
     public void setProperties(JsonNode propertiesJson) {
         this.propertiesJson = propertiesJson;
     }

@@ -18,6 +18,9 @@ package org.openo.sdno.lcm.templatemodel.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
+import org.openo.sdno.lcm.exception.LcmInternalException;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -29,7 +32,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"description", "metadata", "nodes", "inputs"})
 public class Instance {
-    
+
+    private static final String UNABLE_TO_DETERMINE_ROOT_ERR = "Unable to determine root Node";
+
+    private static final String UNABLE_TO_FIND_NODE_ERR = "Unable to find Node with ID ";
+
+    private final Logger log = Logger.getLogger("Instance");
+
     private JsonNode inputsJson;
 
     @JsonProperty("description")
@@ -73,14 +82,50 @@ public class Instance {
         this.nodes = nodes;
     }
 
-    
     public JsonNode getInputs() {
         return inputsJson;
     }
 
-    
     public void setInputs(JsonNode inputs) {
         this.inputsJson = inputs;
+    }
+
+    /**
+     * Get the root Node of the hierarchy in this instance, identified by the type prefix
+     * sdno.node.ConnectivityService.
+     * 
+     * @throws LcmInternalException if the root cannot be determined
+     * @return the root Node
+     */
+    public Node getRootNode() {
+
+        for(Node n : this.getNodes()) {
+
+            if(n.getTypeName().startsWith("sdno.node.ConnectivityService")) {
+                return n;
+            }
+        }
+        log.severe(UNABLE_TO_DETERMINE_ROOT_ERR);
+        throw new LcmInternalException(UNABLE_TO_DETERMINE_ROOT_ERR);
+    }
+
+    /**
+     * Get the node with the ID provided.
+     * 
+     * @param nodeId the ID
+     * @throws LcmInternalException if no matching Node is found
+     * @return the Node
+     */
+    public Node getNode(String nodeId) {
+
+        for(Node n : this.getNodes()) {
+
+            if(n.getId().equals(nodeId)) {
+                return n;
+            }
+        }
+        log.severe(UNABLE_TO_FIND_NODE_ERR + nodeId);
+        throw new LcmInternalException(UNABLE_TO_FIND_NODE_ERR + nodeId);
     }
 
 }

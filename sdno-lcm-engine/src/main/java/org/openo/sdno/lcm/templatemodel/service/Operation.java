@@ -39,6 +39,8 @@ public class Operation {
     @JsonProperty("dependencies")
     private List<String> dependencies = new ArrayList<String>();
 
+    private List<Dependency> dependencyList = null;
+
     private final static long serialVersionUID = 35592049828049386L;
 
     @JsonProperty("name")
@@ -78,7 +80,24 @@ public class Operation {
 
     @JsonProperty("dependencies")
     public void setDependencies(List<String> dependencies) {
+        dependencyList = null;
         this.dependencies = dependencies;
+    }
+
+    /**
+     * Get the list of Dependency objects of this Operation
+     * 
+     * @return List of Dependency
+     */
+    public List<Dependency> getDependencyList() {
+
+        if(null == dependencyList) {
+            dependencyList = new ArrayList<>();
+            for(String depStr : this.getDependencies()) {
+                dependencyList.add(new Dependency(depStr));
+            }
+        }
+        return dependencyList;
     }
 
 }

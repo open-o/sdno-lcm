@@ -1,8 +1,5 @@
-
-
 {
-
-"instance": {
+  "instance": {
     "description": "sdno basic types",
     "metadata": {
       "template_name": "enterprise2Dc",
@@ -13,17 +10,25 @@
     },
     "nodes": [
       {
-        "id": "thinCpe_lxfwggrxi2hh7pk21lcrm3j0b",
-        "type_name": "sdno.node.ConnectionEndPoint.ThinCpe",
-        "template_name": "thinCpe",
+        "id": "site_uziswppa151na59rcxce4sr95",
+        "type_name": "sdno.node.Connection.Site",
+        "template_name": "site",
         "properties": {
-          "id": {
-            "type_name": "string",
-            "value": "thinCpe01"
-          },
           "name": {
             "type_name": "string",
-            "value": "thinCpe"
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -50,10 +55,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -69,6 +74,16 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          },
+          "deployCloudCpeByDeafult": {
+            "type_name": "string",
+            "value": "True",
+            "description": null
           }
         },
         "interfaces": [
@@ -105,27 +120,32 @@
             "operations": [
               {
                 "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
-                "implementation": "DELETE /openoapi/sdnolocalsite/v1/local-cpes/{uuid}"
+                "description": "Standard lifecycle undeploy operation.",
+                "implementation": "DELETE /openoapi/sdnolocalsite/v1/sites/{uuid}"
               },
               {
                 "name": "get",
-                "description": "Standard lifecycle delete operation.",
-                "implementation": "GET /openoapi/sdnolocalsite/v1/local-cpes"
+                "description": "Standard lifecycle get operation.",
+                "implementation": "GET /openoapi/sdnolocalsite/v1/sites"
               },
               {
                 "name": "create",
-                "description": "Standard lifecycle create operation.",
-                "implementation": "POST /openoapi/sdnolocalsite/v1/local-cpes"
+                "description": "Standard lifecycle create operation."
               },
               {
                 "name": "deploy",
-                "description": "Standard lifecycle start operation.",
-                "implementation": "POST /openoapi/sdnolocalsite/v1/local-cpes"
+                "description": "Standard lifecycle deploy operation.",
+                "implementation": "POST /openoapi/sdnolocalsite/v1/sites",
+                "dependencies": [
+                  "sdno.node.ConnectionEndPoint.ThinCpe/deploy",
+                  "sdno.node.ConnectionEndPoint.VCpe/deploy",
+                  "sdno.node.Connection.Site/deploy"
+                ]
               },
               {
                 "name": "update",
-                "description": "Standard lifecycle configure and update operation."
+                "description": "Standard lifecycle configure and update operation.",
+                "implementation": "PUT /openoapi/sdnolocalsite/v1/sites/{uuid}"
               },
               {
                 "name": "delete",
@@ -152,31 +172,138 @@
             "type_name": "tosca.capabilities.Node"
           },
           {
-            "name": "endPoint",
-            "type_name": "sdno.capability.ConnectionEndPoint"
+            "name": "realizes",
+            "type_name": "sdno.capability.Realizes"
           }
         ],
         "relationships": [
           {
-            "name": "realizes",
+            "name": "endPoint",
             "source_requirement_index": 0,
-            "target_node_id": "site_fkuvg8p00gy6fz97vavm0qhkd",
-            "target_capability_name": "feature"
+            "target_node_id": "vCpeConnectionEndPoint_97w9ty5yrwo9anzsb3ii35vb2"
+          },
+          {
+            "name": "endPoint",
+            "source_requirement_index": 1,
+            "target_node_id": "thinCpeConnectionEndPoint_o1wubuqm0ejk7bpj620qhkg1e"
           }
         ]
       },
       {
-        "id": "vlan_794d02wzjzt1zac592rnciknb",
-        "type_name": "sdno.node.Connection.Vlan",
-        "template_name": "vlan",
+        "id": "thinCpe_vhrqgypwfdh9afv4jh1j62ae4",
+        "type_name": "sdno.node.Node",
+        "template_name": "thinCpe",
         "properties": {
+          "siteName": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
           "id": {
             "type_name": "string",
-            "value": "vlan01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "vlan"
+            "value": "none"
+          },
+          "nativeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "controllerID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "logicID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "ipAddress": {
+            "type_name": "string",
+            "value": "0.0.0.0"
+          },
+          "phyNeID": {
+            "type_name": "string",
+            "value": "none"
+          }
+        },
+        "interfaces": [
+          {
+            "name": "Standard",
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "type_name": "tosca.interfaces.node.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "stop",
+                "description": "Standard lifecycle stop operation."
+              },
+              {
+                "name": "start",
+                "description": "Standard lifecycle start operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              },
+              {
+                "name": "configure",
+                "description": "Standard lifecycle configure operation."
+              }
+            ]
+          }
+        ],
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
+          }
+        ]
+      },
+      {
+        "id": "vlan_gohe2xgglp6zh25vvyzh4h5m7",
+        "type_name": "sdno.node.Connection.Vlan",
+        "template_name": "vlan",
+        "properties": {
+          "vlanId": {
+            "type_name": "integer",
+            "value": 0,
+            "description": "vlan id"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -203,10 +330,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -222,6 +349,11 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
           }
         },
         "interfaces": [
@@ -258,12 +390,12 @@
             "operations": [
               {
                 "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
+                "description": "Standard lifecycle undeploy operation.",
                 "implementation": "DELETE /openoapi/sdnolocalsite/v1/vlans/{uuid}"
               },
               {
                 "name": "get",
-                "description": "Standard lifecycle delete operation.",
+                "description": "Standard lifecycle get operation.",
                 "implementation": "GET /openoapi/sdnolocalsite/v1/vlans"
               },
               {
@@ -272,7 +404,7 @@
               },
               {
                 "name": "deploy",
-                "description": "Standard lifecycle start operation.",
+                "description": "Standard lifecycle deploy operation.",
                 "implementation": "POST /openoapi/sdnolocalsite/v1/vlans",
                 "dependencies": [
                   "sdno.node.Connection.Site/deploy",
@@ -317,71 +449,54 @@
           {
             "name": "realizes",
             "source_requirement_index": 0,
-            "target_node_id": "site_fkuvg8p00gy6fz97vavm0qhkd"
+            "target_node_id": "site_uziswppa151na59rcxce4sr95"
           }
         ]
       },
       {
-        "id": "dcEndpoint_aqhsw222b3fvlkg0rmp2odsj0",
-        "type_name": "sdno.node.ServiceEndPoint.DcEndpoint",
-        "template_name": "dcEndpoint",
+        "id": "dcLb_qw8uq5nmrc3wu4haw6q456w87",
+        "type_name": "sdno.node.Node",
+        "template_name": "dcLb",
         "properties": {
+          "ipAddress": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "0"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
           "version": {
             "type_name": "string",
             "value": "1.0"
           },
-          "id": {
-            "type_name": "string",
-            "value": "dcEndpoint01"
-          },
           "name": {
             "type_name": "string",
-            "value": "dcEndpoint"
+            "value": "none"
           },
-          "adminStatus": {
-            "type_name": "AdministrationStateType",
-            "value": "none",
-            "description": "Used to administratively activate or deactivate already deployed service object"
-          },
-          "updateTime": {
+          "siteName": {
             "type_name": "string",
-            "value": "none",
-            "description": "update time"
+            "value": "none"
           },
-          "operStatus": {
-            "type_name": "OperationalStateType",
-            "value": "none",
-            "description": "Used to indicate if the service entity is operational."
-          },
-          "statusReason": {
+          "nativeID": {
             "type_name": "string",
-            "value": "none",
-            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+            "value": "none"
           },
-          "tenantID": {
+          "controllerID": {
             "type_name": "string",
-            "value": "none",
-            "description": "ID of the tenant"
+            "value": "none"
           },
-          "location": {
+          "logicID": {
             "type_name": "string",
-            "value": "none",
-            "description": "Location if on single location"
+            "value": "none"
           },
-          "ownerID": {
+          "phyNeID": {
             "type_name": "string",
-            "value": "sdno",
-            "description": "ID of the owner of the object, can contain controllerID"
-          },
-          "createTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "create time"
-          },
-          "actionState": {
-            "type_name": "ActionStateType",
-            "value": "none",
-            "description": "Stores the result of the last action on the service object."
+            "value": "none"
           }
         },
         "interfaces": [
@@ -419,23 +534,35 @@
             "type_name": "tosca.capabilities.Node"
           },
           {
-            "name": "endPoint",
-            "type_name": "sdno.capability.ServiceEndPoint"
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
           }
         ]
       },
       {
-        "id": "siteGateway_02zv8tps5gtsfvh4xlmepii86",
+        "id": "siteGateway_5sydw6v03x3rit5781tila4l5",
         "type_name": "sdno.node.ConnectionEndPoint.SiteGateway",
         "template_name": "siteGateway",
         "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
           "id": {
             "type_name": "string",
-            "value": "siteGw01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "siteGw"
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -462,10 +589,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -481,6 +608,11 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
           }
         },
         "interfaces": [
@@ -517,12 +649,12 @@
             "operations": [
               {
                 "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
+                "description": "Standard lifecycle undeploy operation.",
                 "implementation": "DELETE /openoapi/sdnooverlay/v1/vpn-gateways/{uuid}"
               },
               {
                 "name": "get",
-                "description": "Standard lifecycle delete operation.",
+                "description": "Standard lifecycle get operation.",
                 "implementation": "GET /openoapi/sdnooverlay/v1/vpn-gateways"
               },
               {
@@ -531,7 +663,7 @@
               },
               {
                 "name": "deploy",
-                "description": "Standard lifecycle start operation.",
+                "description": "Standard lifecycle deploy operation.",
                 "implementation": "POST /openoapi/sdnooverlay/v1/vpn-gateways"
               },
               {
@@ -570,17 +702,25 @@
         ]
       },
       {
-        "id": "vpcSubnet_q03xowiw9hhn9yk6g4y9028j3",
-        "type_name": "sdno.node.Connection.VpcSubnet",
-        "template_name": "vpcSubnet",
+        "id": "vpcGateway_y2mkqwubn89t4ov29yn17wpab",
+        "type_name": "sdno.node.ConnectionEndPoint.VpcGateway",
+        "template_name": "vpcGateway",
         "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
           "id": {
             "type_name": "string",
-            "value": "vpcSubnet01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "vpcSbnet"
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -607,10 +747,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -626,6 +766,11 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
           }
         },
         "interfaces": [
@@ -662,12 +807,372 @@
             "operations": [
               {
                 "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
+                "description": "Standard lifecycle undeploy operation.",
+                "implementation": "DELETE /openoapi/sdnooverlay/v1/vpn-gateways/{uuid}"
+              },
+              {
+                "name": "get",
+                "description": "Standard lifecycle get operation.",
+                "implementation": "GET /openoapi/sdnooverlay/v1/vpn-gateways"
+              },
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "deploy",
+                "description": "Standard lifecycle deploy operation.",
+                "implementation": "POST /openoapi/sdnooverlay/v1/vpn-gateways"
+              },
+              {
+                "name": "update",
+                "description": "Standard lifecycle configure and update operation.",
+                "implementation": "PUT /openoapi/sdnooverlay/v1/vpn-gateways/{uuid}"
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              }
+            ]
+          }
+        ],
+        "artifacts": [
+          {
+            "name": "mapper",
+            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
+            "source_path": "swagger/overlay.tsmap"
+          },
+          {
+            "name": "swagger",
+            "type_name": "sdno.artifacts.Implementation.Swagger",
+            "source_path": "swagger/overlay.jaml"
+          }
+        ],
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ConnectionEndPoint"
+          }
+        ]
+      },
+      {
+        "id": "sfc_va6f5ts5tqgcn0q638x7ghhx5",
+        "type_name": "sdno.node.Connection.Sfc",
+        "template_name": "sfc",
+        "properties": {
+          "scfNeId": {
+            "type_name": "string",
+            "value": {
+              "get_attribute": [
+                "dcGw",
+                "id"
+              ]
+            },
+            "description": "The id of scf NE"
+          },
+          "servicePathHops": {
+            "type_name": "list",
+            "value": [
+              {
+                "hopNumber": 1,
+                "sfgId": null,
+                "sfiId": {
+                  "get_attribute": [
+                    "dcFw",
+                    "id"
+                  ]
+                }
+              },
+              {
+                "hopNumber": 2,
+                "sfgId": null,
+                "sfiId": {
+                  "get_attribute": [
+                    "dcLb",
+                    "id"
+                  ]
+                }
+              }
+            ],
+            "description": "Hop Number of the SFC"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interfaces": [
+          {
+            "name": "Standard",
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "type_name": "tosca.interfaces.node.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "stop",
+                "description": "Standard lifecycle stop operation."
+              },
+              {
+                "name": "start",
+                "description": "Standard lifecycle start operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              },
+              {
+                "name": "configure",
+                "description": "Standard lifecycle configure operation."
+              }
+            ]
+          },
+          {
+            "name": "standard",
+            "type_name": "sdno.interfaces.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "undeploy",
+                "description": "Standard lifecycle undeploy operation.",
+                "implementation": "DELETE /openoapi/sdnoservicechain/v1/paths/{uuid}"
+              },
+              {
+                "name": "get",
+                "description": "Standard lifecycle get operation."
+              },
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "deploy",
+                "description": "Standard lifecycle deploy operation.",
+                "implementation": "POST /openoapi/sdnoservicechain/v1/paths"
+              },
+              {
+                "name": "update",
+                "description": "Standard lifecycle configure and update operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              }
+            ]
+          }
+        ],
+        "artifacts": [
+          {
+            "name": "mapper",
+            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
+            "source_path": "swagger/sfc.tsmap"
+          },
+          {
+            "name": "swagger",
+            "type_name": "sdno.artifacts.Implementation.Swagger",
+            "source_path": "swagger/sfc.jaml"
+          }
+        ],
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "realizes",
+            "type_name": "sdno.capability.Realizes"
+          }
+        ]
+      },
+      {
+        "id": "vpcSubnet_ou4g2yw08dfj0ns28shi4zk6b",
+        "type_name": "sdno.node.Connection.VpcSubnet",
+        "template_name": "vpcSubnet",
+        "properties": {
+          "cidr": {
+            "type_name": "string",
+            "value": "none",
+            "description": "VPC subnet IP network, should be in format CIDR format."
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "vni": {
+            "type_name": "integer",
+            "value": 0,
+            "description": "The Vxlan id"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interfaces": [
+          {
+            "name": "Standard",
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "type_name": "tosca.interfaces.node.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "stop",
+                "description": "Standard lifecycle stop operation."
+              },
+              {
+                "name": "start",
+                "description": "Standard lifecycle start operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              },
+              {
+                "name": "configure",
+                "description": "Standard lifecycle configure operation."
+              }
+            ]
+          },
+          {
+            "name": "standard",
+            "type_name": "sdno.interfaces.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "undeploy",
+                "description": "Standard lifecycle undeploy operation.",
                 "implementation": "DELETE/openoapi/sdnovpc/v1/subnets/{subnetId}"
               },
               {
                 "name": "get",
-                "description": "Standard lifecycle delete operation.",
+                "description": "Standard lifecycle get operation.",
                 "implementation": "GET /openoapi/sdnovpc/v1/subnets/{subnetId}"
               },
               {
@@ -676,7 +1181,7 @@
               },
               {
                 "name": "deploy",
-                "description": "Standard lifecycle start operation.",
+                "description": "Standard lifecycle deploy operation.",
                 "implementation": "POST /openoapi/sdnovpc/v1/subnets",
                 "dependencies": [
                   "sdno.node.Connection.Vpc/deploy",
@@ -720,22 +1225,40 @@
           {
             "name": "realizes",
             "source_requirement_index": 0,
-            "target_node_id": "vpc_ohfa2nbceotiob3rbh74iecse"
+            "target_node_id": "vpc_uo79o6jw6nra9kqyqeqx8lhx7"
           }
         ]
       },
       {
-        "id": "siteSubnet_ek6fht5n3xivn8n0qo2r201b3",
+        "id": "siteSubnet_4jbanhgmvffdkjmgsnpldgk6e",
         "type_name": "sdno.node.Connection.SiteSubnet",
         "template_name": "siteSubnet",
         "properties": {
+          "cidrBlock": {
+            "type_name": "string",
+            "value": "none",
+            "description": "cidr block"
+          },
+          "vni": {
+            "type_name": "string",
+            "value": 0,
+            "description": "vni"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
           "id": {
             "type_name": "string",
-            "value": "siteSubnet01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "siteSubnet"
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -762,10 +1285,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -781,6 +1304,11 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
           }
         },
         "interfaces": [
@@ -817,12 +1345,12 @@
             "operations": [
               {
                 "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
+                "description": "Standard lifecycle undeploy operation.",
                 "implementation": "DELETE /openoapi/sdnolocalsite/v1/subnets/{uuid}"
               },
               {
                 "name": "get",
-                "description": "Standard lifecycle delete operation.",
+                "description": "Standard lifecycle get operation.",
                 "implementation": "GET /openoapi/sdnolocalsite/v1/subnets"
               },
               {
@@ -831,7 +1359,7 @@
               },
               {
                 "name": "deploy",
-                "description": "Standard lifecycle start operation.",
+                "description": "Standard lifecycle deploy operation.",
                 "implementation": "POST /openoapi/sdnolocalsite/v1/subnets",
                 "dependencies": [
                   "sdno.node.Connection.Vlan/deploy",
@@ -876,72 +1404,54 @@
           {
             "name": "realizes",
             "source_requirement_index": 0,
-            "target_node_id": "vlan_794d02wzjzt1zac592rnciknb"
+            "target_node_id": "vlan_gohe2xgglp6zh25vvyzh4h5m7"
           }
         ]
       },
       {
-        "id": "site_fkuvg8p00gy6fz97vavm0qhkd",
-        "type_name": "sdno.node.Connection.Site",
-        "template_name": "site",
+        "id": "dcGw_o59wpu1l3wo7qnjbkci8y5hd9",
+        "type_name": "sdno.node.Node",
+        "template_name": "dcGw",
         "properties": {
+          "ipAddress": {
+            "type_name": "string",
+            "value": "none"
+          },
           "id": {
             "type_name": "string",
-            "value": "site01"
+            "value": "0"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
           },
           "name": {
             "type_name": "string",
-            "value": "site"
+            "value": "none"
           },
-          "adminStatus": {
-            "type_name": "AdministrationStateType",
-            "value": "none",
-            "description": "Used to administratively activate or deactivate already deployed service object"
-          },
-          "updateTime": {
+          "siteName": {
             "type_name": "string",
-            "value": "none",
-            "description": "update time"
+            "value": "none"
           },
-          "operStatus": {
-            "type_name": "OperationalStateType",
-            "value": "none",
-            "description": "Used to indicate if the service entity is operational."
-          },
-          "statusReason": {
+          "nativeID": {
             "type_name": "string",
-            "value": "none",
-            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+            "value": "none"
           },
-          "tenantID": {
+          "controllerID": {
             "type_name": "string",
-            "value": "none",
-            "description": "ID of the tenant"
+            "value": "none"
           },
-          "location": {
+          "logicID": {
             "type_name": "string",
-            "value": "none",
-            "description": "Location if on single location"
+            "value": "none"
           },
-          "ownerID": {
+          "phyNeID": {
             "type_name": "string",
-            "value": "sdno",
-            "description": "ID of the owner of the object, can contain controllerID"
-          },
-          "createTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "create time"
-          },
-          "actionState": {
-            "type_name": "ActionStateType",
-            "value": "none",
-            "description": "Stores the result of the last action on the service object."
-          },
-          "deployCloudCpeByDeafult": {
-            "type_name": "string",
-            "value": "True",
-            "description": null
+            "value": "none"
           }
         },
         "interfaces": [
@@ -971,57 +1481,6 @@
                 "description": "Standard lifecycle configure operation."
               }
             ]
-          },
-          {
-            "name": "standard",
-            "type_name": "sdno.interfaces.lifecycle.Standard",
-            "operations": [
-              {
-                "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
-                "implementation": "DELETE /openoapi/sdnolocalsite/v1/sites/{uuid}"
-              },
-              {
-                "name": "get",
-                "description": "Standard lifecycle delete operation.",
-                "implementation": "GET /openoapi/sdnolocalsite/v1/sites"
-              },
-              {
-                "name": "create",
-                "description": "Standard lifecycle create operation."
-              },
-              {
-                "name": "deploy",
-                "description": "Standard lifecycle start operation.",
-                "implementation": "POST /openoapi/sdnolocalsite/v1/sites",
-                "dependencies": [
-                  "sdno.node.Connection.ThinCpe/deploy",
-                  "sdno.node.Connection.vCpe/deploy",
-                  "sdno.node.Connection.Site/deploy"
-                ]
-              },
-              {
-                "name": "update",
-                "description": "Standard lifecycle configure and update operation.",
-                "implementation": "PUT /openoapi/sdnolocalsite/v1/sites/{uuid}"
-              },
-              {
-                "name": "delete",
-                "description": "Standard lifecycle delete operation."
-              }
-            ]
-          }
-        ],
-        "artifacts": [
-          {
-            "name": "mapper",
-            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/site.tsmap"
-          },
-          {
-            "name": "swagger",
-            "type_name": "sdno.artifacts.Implementation.Swagger",
-            "source_path": "swagger/site.jaml"
           }
         ],
         "capabilities": [
@@ -1030,27 +1489,35 @@
             "type_name": "tosca.capabilities.Node"
           },
           {
-            "name": "realizes",
-            "type_name": "sdno.capability.Realizes"
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
           }
         ]
       },
       {
-        "id": "enterprise2Dc_swe8o7219eozsrkuqkl4baoj0",
+        "id": "enterprise2Dc_xbpbqwg7ri6fi2q3ohhp2vl02",
         "type_name": "sdno.node.ConnectivityService.Enterprise2Dc",
         "template_name": "enterprise2Dc",
         "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
           "version": {
             "type_name": "string",
             "value": "1.0"
           },
           "id": {
             "type_name": "string",
-            "value": "ent3DC01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "enterprise2Dc"
+            "value": "none"
           },
           "state_machine": {
             "type_name": "StateMachineType",
@@ -1210,12 +1677,12 @@
             "operations": [
               {
                 "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
+                "description": "Standard lifecycle undeploy operation.",
                 "implementation": "POST /openoapi/sdnonslcm/v1/ns/{instanceid}/terminate"
               },
               {
                 "name": "get",
-                "description": "Standard lifecycle delete operation.",
+                "description": "Standard lifecycle get operation.",
                 "implementation": "GET /openoapi/sdnonslcm/v1/ns/{instanceid}"
               },
               {
@@ -1257,47 +1724,55 @@
           {
             "name": "endPoint",
             "source_requirement_index": 0,
-            "target_node_id": "thinCpe_lxfwggrxi2hh7pk21lcrm3j0b"
+            "target_node_id": "thinCpeServiceEndpoint_e3v4usj1p6bmxroa35azlah2e"
           },
           {
             "name": "endPoint",
             "source_requirement_index": 1,
-            "target_node_id": "dcEndpoint_aqhsw222b3fvlkg0rmp2odsj0"
+            "target_node_id": "dcServiceEndpoint_6smrnaihpoe6ym5hhtbfmiw17"
           },
           {
             "name": "realizes",
             "source_requirement_index": 2,
-            "target_node_id": "siteSubnet_ek6fht5n3xivn8n0qo2r201b3"
+            "target_node_id": "siteSubnet_4jbanhgmvffdkjmgsnpldgk6e"
           },
           {
             "name": "realizes",
             "source_requirement_index": 3,
-            "target_node_id": "vpn_moj0oj83e5larnbeh40wqgxra"
+            "target_node_id": "vpn_h9phk7qp8mda6nrmbba8b4cr7"
           },
           {
             "name": "realizes",
             "source_requirement_index": 4,
-            "target_node_id": "vpcSubnet_q03xowiw9hhn9yk6g4y9028j3"
+            "target_node_id": "vpcSubnet_ou4g2yw08dfj0ns28shi4zk6b"
           },
           {
             "name": "realizes",
             "source_requirement_index": 5,
-            "target_node_id": "sfc_jk3bynsut6u9qpkngn0hx4uj2"
+            "target_node_id": "sfc_va6f5ts5tqgcn0q638x7ghhx5"
           }
         ]
       },
       {
-        "id": "vpnConnection_ncn7dloyvgdsicaw37eyhtft4",
-        "type_name": "sdno.node.Connection.VpnConnection",
-        "template_name": "vpnConnection",
+        "id": "vCpeConnectionEndPoint_97w9ty5yrwo9anzsb3ii35vb2",
+        "type_name": "sdno.node.ConnectionEndPoint.VCpe",
+        "template_name": "vCpeConnectionEndPoint",
         "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
           "id": {
             "type_name": "string",
-            "value": "vpnConnection01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "vpnConnection"
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -1324,10 +1799,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -1343,6 +1818,11 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
           }
         },
         "interfaces": [
@@ -1379,12 +1859,979 @@
             "operations": [
               {
                 "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
+                "description": "Standard lifecycle undeploy operation.",
+                "implementation": "DELETE /openoapi/sdnolocalsite/v1/cloud-cpes/{uuid}"
+              },
+              {
+                "name": "get",
+                "description": "Standard lifecycle get operation.",
+                "implementation": "GET /openoapi/sdnolocalsite/v1/cloud-cpes"
+              },
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "deploy",
+                "description": "Standard lifecycle deploy operation.",
+                "implementation": "POST /openoapi/sdnolocalsite/v1/cloud-cpes"
+              },
+              {
+                "name": "update",
+                "description": "Standard lifecycle configure and update operation.",
+                "implementation": "PUT /openoapi/sdnolocalsite/v1/cloud-cpes/{uuid}"
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              }
+            ]
+          }
+        ],
+        "artifacts": [
+          {
+            "name": "mapper",
+            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
+            "source_path": "swagger/site.tsmap"
+          },
+          {
+            "name": "swagger",
+            "type_name": "sdno.artifacts.Implementation.Swagger",
+            "source_path": "swagger/site.jaml"
+          }
+        ],
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ConnectionEndPoint"
+          }
+        ],
+        "relationships": [
+          {
+            "name": "realizes",
+            "source_requirement_index": 0,
+            "target_node_id": "site_uziswppa151na59rcxce4sr95"
+          },
+          {
+            "name": "node",
+            "source_requirement_index": 1,
+            "target_node_id": "vCpe_p3a2uvjzrzttzz1y0qs5nd7t8"
+          }
+        ]
+      },
+      {
+        "id": "dcFw_gqx3ij1pzgqu8bpdh3d9cgpd4",
+        "type_name": "sdno.node.Node",
+        "template_name": "dcFw",
+        "properties": {
+          "ipAddress": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "0"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "siteName": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "nativeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "controllerID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "logicID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "phyNeID": {
+            "type_name": "string",
+            "value": "none"
+          }
+        },
+        "interfaces": [
+          {
+            "name": "Standard",
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "type_name": "tosca.interfaces.node.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "stop",
+                "description": "Standard lifecycle stop operation."
+              },
+              {
+                "name": "start",
+                "description": "Standard lifecycle start operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              },
+              {
+                "name": "configure",
+                "description": "Standard lifecycle configure operation."
+              }
+            ]
+          }
+        ],
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
+          }
+        ]
+      },
+      {
+        "id": "vpc_uo79o6jw6nra9kqyqeqx8lhx7",
+        "type_name": "sdno.node.Connection.Vpc",
+        "template_name": "vpc",
+        "properties": {
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interfaces": [
+          {
+            "name": "Standard",
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "type_name": "tosca.interfaces.node.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "stop",
+                "description": "Standard lifecycle stop operation."
+              },
+              {
+                "name": "start",
+                "description": "Standard lifecycle start operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              },
+              {
+                "name": "configure",
+                "description": "Standard lifecycle configure operation."
+              }
+            ]
+          },
+          {
+            "name": "standard",
+            "type_name": "sdno.interfaces.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "undeploy",
+                "description": "Standard lifecycle undeploy operation.",
+                "implementation": "DELETE/openoapi/sdnovpc/v1/vpcs/{vpcId}"
+              },
+              {
+                "name": "get",
+                "description": "Standard lifecycle get operation.",
+                "implementation": "GET /openoapi/sdnovpc/v1/vpcs/{vpcId}"
+              },
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "deploy",
+                "description": "Standard lifecycle deploy operation.",
+                "implementation": "POST /openoapi/sdnovpc/v1/vpcs"
+              },
+              {
+                "name": "update",
+                "description": "Standard lifecycle configure and update operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              }
+            ]
+          }
+        ],
+        "artifacts": [
+          {
+            "name": "mapper",
+            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
+            "source_path": "swagger/vpc.tsmap"
+          },
+          {
+            "name": "swagger",
+            "type_name": "sdno.artifacts.Implementation.Swagger",
+            "source_path": "swagger/vpc.jaml"
+          }
+        ],
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "realizes",
+            "type_name": "sdno.capability.Realizes"
+          }
+        ]
+      },
+      {
+        "id": "thinCpeConnectionEndPoint_o1wubuqm0ejk7bpj620qhkg1e",
+        "type_name": "sdno.node.ConnectionEndPoint.ThinCpe",
+        "template_name": "thinCpeConnectionEndPoint",
+        "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interfaces": [
+          {
+            "name": "Standard",
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "type_name": "tosca.interfaces.node.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "stop",
+                "description": "Standard lifecycle stop operation."
+              },
+              {
+                "name": "start",
+                "description": "Standard lifecycle start operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              },
+              {
+                "name": "configure",
+                "description": "Standard lifecycle configure operation."
+              }
+            ]
+          },
+          {
+            "name": "standard",
+            "type_name": "sdno.interfaces.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "undeploy",
+                "description": "Standard lifecycle undeploy operation.",
+                "implementation": "DELETE /openoapi/sdnolocalsite/v1/local-cpes/{uuid}"
+              },
+              {
+                "name": "get",
+                "description": "Standard lifecycle get operation.",
+                "implementation": "GET /openoapi/sdnolocalsite/v1/local-cpes"
+              },
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation.",
+                "implementation": "POST /openoapi/sdnolocalsite/v1/local-cpes"
+              },
+              {
+                "name": "deploy",
+                "description": "Standard lifecycle deploy operation.",
+                "implementation": "POST /openoapi/sdnolocalsite/v1/local-cpes"
+              },
+              {
+                "name": "update",
+                "description": "Standard lifecycle configure and update operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              }
+            ]
+          }
+        ],
+        "artifacts": [
+          {
+            "name": "mapper",
+            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
+            "source_path": "swagger/site.tsmap"
+          },
+          {
+            "name": "swagger",
+            "type_name": "sdno.artifacts.Implementation.Swagger",
+            "source_path": "swagger/site.jaml"
+          }
+        ],
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ConnectionEndPoint"
+          }
+        ],
+        "relationships": [
+          {
+            "name": "realizes",
+            "source_requirement_index": 0,
+            "target_node_id": "site_uziswppa151na59rcxce4sr95"
+          },
+          {
+            "name": "node",
+            "source_requirement_index": 1,
+            "target_node_id": "thinCpe_vhrqgypwfdh9afv4jh1j62ae4"
+          }
+        ]
+      },
+      {
+        "id": "vCpe_p3a2uvjzrzttzz1y0qs5nd7t8",
+        "type_name": "sdno.node.Node",
+        "template_name": "vCpe",
+        "properties": {
+          "siteName": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "nativeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "controllerID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "logicID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "ipAddress": {
+            "type_name": "string",
+            "value": "0.0.0.0"
+          },
+          "phyNeID": {
+            "type_name": "string",
+            "value": "none"
+          }
+        },
+        "interfaces": [
+          {
+            "name": "Standard",
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "type_name": "tosca.interfaces.node.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "stop",
+                "description": "Standard lifecycle stop operation."
+              },
+              {
+                "name": "start",
+                "description": "Standard lifecycle start operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              },
+              {
+                "name": "configure",
+                "description": "Standard lifecycle configure operation."
+              }
+            ]
+          }
+        ],
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
+          }
+        ]
+      },
+      {
+        "id": "vpn_h9phk7qp8mda6nrmbba8b4cr7",
+        "type_name": "sdno.node.Connection.Vpn",
+        "template_name": "vpn",
+        "properties": {
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interfaces": [
+          {
+            "name": "Standard",
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "type_name": "tosca.interfaces.node.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "stop",
+                "description": "Standard lifecycle stop operation."
+              },
+              {
+                "name": "start",
+                "description": "Standard lifecycle start operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              },
+              {
+                "name": "configure",
+                "description": "Standard lifecycle configure operation."
+              }
+            ]
+          },
+          {
+            "name": "standard",
+            "type_name": "sdno.interfaces.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "undeploy",
+                "description": "Standard lifecycle undeploy operation.",
+                "implementation": "DELETE /openoapi/sdnooverlay/v1/vpns/action/undeploy"
+              },
+              {
+                "name": "get",
+                "description": "Standard lifecycle get operation.",
+                "implementation": "GET /openoapi/sdnooverlay/v1/vpns"
+              },
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation.",
+                "implementation": "POST /openoapi/sdnooverlay/v1/vpns"
+              },
+              {
+                "name": "deploy",
+                "description": "Standard lifecycle deploy operation.",
+                "implementation": "POST /openoapi/sdnooverlay/v1/vpns/action/deploy",
+                "dependencies": [
+                  "sdno.node.Connection.Vpn/deploy",
+                  "sdno.node.Connection.VpnConnection/deploy"
+                ]
+              },
+              {
+                "name": "update",
+                "description": "Standard lifecycle configure and update operation.",
+                "implementation": "PUT /openoapi/sdnooverlay/v1/vpns/{uuid}"
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation.",
+                "implementation": "DELETE /openoapi/sdnooverlay/v1/vpns/{uuid}"
+              }
+            ]
+          }
+        ],
+        "artifacts": [
+          {
+            "name": "mapper",
+            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
+            "source_path": "swagger/overlay.tsmap"
+          },
+          {
+            "name": "swagger",
+            "type_name": "sdno.artifacts.Implementation.Swagger",
+            "source_path": "swagger/overlay.jaml"
+          }
+        ],
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "realizes",
+            "type_name": "sdno.capability.Realizes"
+          }
+        ],
+        "relationships": [
+          {
+            "name": "realizes",
+            "source_requirement_index": 0,
+            "target_node_id": "vpnConnection_q4hqsg74906hkytpcnyiiuw14"
+          }
+        ]
+      },
+      {
+        "id": "thinCpeServiceEndpoint_e3v4usj1p6bmxroa35azlah2e",
+        "type_name": "sdno.node.ServiceEndPoint.ThinCpe",
+        "template_name": "thinCpeServiceEndpoint",
+        "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interfaces": [
+          {
+            "name": "Standard",
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "type_name": "tosca.interfaces.node.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "stop",
+                "description": "Standard lifecycle stop operation."
+              },
+              {
+                "name": "start",
+                "description": "Standard lifecycle start operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              },
+              {
+                "name": "configure",
+                "description": "Standard lifecycle configure operation."
+              }
+            ]
+          }
+        ],
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ServiceEndPoint"
+          }
+        ],
+        "relationships": [
+          {
+            "name": "node",
+            "source_requirement_index": 0,
+            "target_node_id": "thinCpe_vhrqgypwfdh9afv4jh1j62ae4"
+          }
+        ]
+      },
+      {
+        "id": "vpnConnection_q4hqsg74906hkytpcnyiiuw14",
+        "type_name": "sdno.node.Connection.VpnConnection",
+        "template_name": "vpnConnection",
+        "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interfaces": [
+          {
+            "name": "Standard",
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "type_name": "tosca.interfaces.node.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "create",
+                "description": "Standard lifecycle create operation."
+              },
+              {
+                "name": "stop",
+                "description": "Standard lifecycle stop operation."
+              },
+              {
+                "name": "start",
+                "description": "Standard lifecycle start operation."
+              },
+              {
+                "name": "delete",
+                "description": "Standard lifecycle delete operation."
+              },
+              {
+                "name": "configure",
+                "description": "Standard lifecycle configure operation."
+              }
+            ]
+          },
+          {
+            "name": "standard",
+            "type_name": "sdno.interfaces.lifecycle.Standard",
+            "operations": [
+              {
+                "name": "undeploy",
+                "description": "Standard lifecycle undeploy operation.",
                 "implementation": "POST /openoapi/sdnooverlay/v1/vpn-connections/action/undeploy"
               },
               {
                 "name": "get",
-                "description": "Standard lifecycle delete operation.",
+                "description": "Standard lifecycle get operation.",
                 "implementation": "GET /openoapi/sdnooverlay/v1/vpn-connections"
               },
               {
@@ -1394,7 +2841,7 @@
               },
               {
                 "name": "deploy",
-                "description": "Standard lifecycle start operation.",
+                "description": "Standard lifecycle deploy operation.",
                 "implementation": "POST /openoapi/sdnooverlay/v1/vpn-connections/action/deploy",
                 "dependencies": [
                   "sdno.node.ConnectionEndPoint.SiteGateway/deploy",
@@ -1441,27 +2888,35 @@
           {
             "name": "endPoint",
             "source_requirement_index": 0,
-            "target_node_id": "siteGateway_02zv8tps5gtsfvh4xlmepii86"
+            "target_node_id": "siteGateway_5sydw6v03x3rit5781tila4l5"
           },
           {
             "name": "endPoint",
             "source_requirement_index": 1,
-            "target_node_id": "vpcGateway_ldwdmsfqbfjqe6vesvps0x1b5"
+            "target_node_id": "vpcGateway_y2mkqwubn89t4ov29yn17wpab"
           }
         ]
       },
       {
-        "id": "vpc_ohfa2nbceotiob3rbh74iecse",
-        "type_name": "sdno.node.Connection.Vpc",
-        "template_name": "vpc",
+        "id": "dcServiceEndpoint_6smrnaihpoe6ym5hhtbfmiw17",
+        "type_name": "sdno.node.ServiceEndPoint.DcEndpoint",
+        "template_name": "dcServiceEndpoint",
         "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
           "id": {
             "type_name": "string",
-            "value": "vpc01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "vpc"
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -1488,10 +2943,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -1507,6 +2962,11 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
           }
         },
         "interfaces": [
@@ -1536,196 +2996,6 @@
                 "description": "Standard lifecycle configure operation."
               }
             ]
-          },
-          {
-            "name": "standard",
-            "type_name": "sdno.interfaces.lifecycle.Standard",
-            "operations": [
-              {
-                "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
-                "implementation": "DELETE/openoapi/sdnovpc/v1/vpcs/{vpcId}"
-              },
-              {
-                "name": "get",
-                "description": "Standard lifecycle delete operation.",
-                "implementation": "GET /openoapi/sdnovpc/v1/vpcs/{vpcId}"
-              },
-              {
-                "name": "create",
-                "description": "Standard lifecycle create operation."
-              },
-              {
-                "name": "deploy",
-                "description": "Standard lifecycle start operation.",
-                "implementation": "POST /openoapi/sdnovpc/v1/vpcs"
-              },
-              {
-                "name": "update",
-                "description": "Standard lifecycle configure and update operation."
-              },
-              {
-                "name": "delete",
-                "description": "Standard lifecycle delete operation."
-              }
-            ]
-          }
-        ],
-        "artifacts": [
-          {
-            "name": "mapper",
-            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/vpc.tsmap"
-          },
-          {
-            "name": "swagger",
-            "type_name": "sdno.artifacts.Implementation.Swagger",
-            "source_path": "swagger/vpc.jaml"
-          }
-        ],
-        "capabilities": [
-          {
-            "name": "feature",
-            "type_name": "tosca.capabilities.Node"
-          },
-          {
-            "name": "realizes",
-            "type_name": "sdno.capability.Realizes"
-          }
-        ]
-      },
-      {
-        "id": "vpcGateway_ldwdmsfqbfjqe6vesvps0x1b5",
-        "type_name": "sdno.node.ConnectionEndPoint.VpcGateway",
-        "template_name": "vpcGateway",
-        "properties": {
-          "id": {
-            "type_name": "string",
-            "value": "vpcGw01"
-          },
-          "name": {
-            "type_name": "string",
-            "value": "vpcGw"
-          },
-          "adminStatus": {
-            "type_name": "AdministrationStateType",
-            "value": "none",
-            "description": "Used to administratively activate or deactivate already deployed service object"
-          },
-          "updateTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "update time"
-          },
-          "operStatus": {
-            "type_name": "OperationalStateType",
-            "value": "none",
-            "description": "Used to indicate if the service entity is operational."
-          },
-          "statusReason": {
-            "type_name": "string",
-            "value": "none",
-            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
-          },
-          "tenantID": {
-            "type_name": "string",
-            "value": "none",
-            "description": "ID of the tenant"
-          },
-          "location": {
-            "type_name": "string",
-            "value": "none",
-            "description": "Location if on single location"
-          },
-          "ownerID": {
-            "type_name": "string",
-            "value": "sdno",
-            "description": "ID of the owner of the object, can contain controllerID"
-          },
-          "createTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "create time"
-          },
-          "actionState": {
-            "type_name": "ActionStateType",
-            "value": "none",
-            "description": "Stores the result of the last action on the service object."
-          }
-        },
-        "interfaces": [
-          {
-            "name": "Standard",
-            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
-            "type_name": "tosca.interfaces.node.lifecycle.Standard",
-            "operations": [
-              {
-                "name": "create",
-                "description": "Standard lifecycle create operation."
-              },
-              {
-                "name": "stop",
-                "description": "Standard lifecycle stop operation."
-              },
-              {
-                "name": "start",
-                "description": "Standard lifecycle start operation."
-              },
-              {
-                "name": "delete",
-                "description": "Standard lifecycle delete operation."
-              },
-              {
-                "name": "configure",
-                "description": "Standard lifecycle configure operation."
-              }
-            ]
-          },
-          {
-            "name": "standard",
-            "type_name": "sdno.interfaces.lifecycle.Standard",
-            "operations": [
-              {
-                "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
-                "implementation": "DELETE /openoapi/sdnooverlay/v1/vpn-gateways/{uuid}"
-              },
-              {
-                "name": "get",
-                "description": "Standard lifecycle delete operation.",
-                "implementation": "GET /openoapi/sdnooverlay/v1/vpn-gateways"
-              },
-              {
-                "name": "create",
-                "description": "Standard lifecycle create operation."
-              },
-              {
-                "name": "deploy",
-                "description": "Standard lifecycle start operation.",
-                "implementation": "POST /openoapi/sdnooverlay/v1/vpn-gateways"
-              },
-              {
-                "name": "update",
-                "description": "Standard lifecycle configure and update operation.",
-                "implementation": "PUT /openoapi/sdnooverlay/v1/vpn-gateways/{uuid}"
-              },
-              {
-                "name": "delete",
-                "description": "Standard lifecycle delete operation."
-              }
-            ]
-          }
-        ],
-        "artifacts": [
-          {
-            "name": "mapper",
-            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/overlay.tsmap"
-          },
-          {
-            "name": "swagger",
-            "type_name": "sdno.artifacts.Implementation.Swagger",
-            "source_path": "swagger/overlay.jaml"
           }
         ],
         "capabilities": [
@@ -1735,461 +3005,14 @@
           },
           {
             "name": "endPoint",
-            "type_name": "sdno.capability.ConnectionEndPoint"
-          }
-        ]
-      },
-      {
-        "id": "vCpe_p4h4tdy7samgtjnga11p3o713",
-        "type_name": "sdno.node.ConnectionEndPoint.VCpe",
-        "template_name": "vCpe",
-        "properties": {
-          "id": {
-            "type_name": "string",
-            "value": "vCpe01"
-          },
-          "name": {
-            "type_name": "string",
-            "value": "vCpe"
-          },
-          "adminStatus": {
-            "type_name": "AdministrationStateType",
-            "value": "none",
-            "description": "Used to administratively activate or deactivate already deployed service object"
-          },
-          "updateTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "update time"
-          },
-          "operStatus": {
-            "type_name": "OperationalStateType",
-            "value": "none",
-            "description": "Used to indicate if the service entity is operational."
-          },
-          "statusReason": {
-            "type_name": "string",
-            "value": "none",
-            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
-          },
-          "tenantID": {
-            "type_name": "string",
-            "value": "none",
-            "description": "ID of the tenant"
-          },
-          "location": {
-            "type_name": "string",
-            "value": "none",
-            "description": "Location if on single location"
-          },
-          "ownerID": {
-            "type_name": "string",
-            "value": "sdno",
-            "description": "ID of the owner of the object, can contain controllerID"
-          },
-          "createTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "create time"
-          },
-          "actionState": {
-            "type_name": "ActionStateType",
-            "value": "none",
-            "description": "Stores the result of the last action on the service object."
-          }
-        },
-        "interfaces": [
-          {
-            "name": "Standard",
-            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
-            "type_name": "tosca.interfaces.node.lifecycle.Standard",
-            "operations": [
-              {
-                "name": "create",
-                "description": "Standard lifecycle create operation."
-              },
-              {
-                "name": "stop",
-                "description": "Standard lifecycle stop operation."
-              },
-              {
-                "name": "start",
-                "description": "Standard lifecycle start operation."
-              },
-              {
-                "name": "delete",
-                "description": "Standard lifecycle delete operation."
-              },
-              {
-                "name": "configure",
-                "description": "Standard lifecycle configure operation."
-              }
-            ]
-          },
-          {
-            "name": "standard",
-            "type_name": "sdno.interfaces.lifecycle.Standard",
-            "operations": [
-              {
-                "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
-                "implementation": "DELETE /openoapi/sdnolocalsite/v1/cloud-cpes/{uuid}"
-              },
-              {
-                "name": "get",
-                "description": "Standard lifecycle delete operation.",
-                "implementation": "GET /openoapi/sdnolocalsite/v1/cloud-cpes"
-              },
-              {
-                "name": "create",
-                "description": "Standard lifecycle create operation."
-              },
-              {
-                "name": "deploy",
-                "description": "Standard lifecycle start operation.",
-                "implementation": "POST /openoapi/sdnolocalsite/v1/cloud-cpes"
-              },
-              {
-                "name": "update",
-                "description": "Standard lifecycle configure and update operation.",
-                "implementation": "PUT /openoapi/sdnolocalsite/v1/cloud-cpes/{uuid}"
-              },
-              {
-                "name": "delete",
-                "description": "Standard lifecycle delete operation."
-              }
-            ]
-          }
-        ],
-        "artifacts": [
-          {
-            "name": "mapper",
-            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/site.tsmap"
-          },
-          {
-            "name": "swagger",
-            "type_name": "sdno.artifacts.Implementation.Swagger",
-            "source_path": "swagger/site.jaml"
-          }
-        ],
-        "capabilities": [
-          {
-            "name": "feature",
-            "type_name": "tosca.capabilities.Node"
-          },
-          {
-            "name": "endPoint",
-            "type_name": "sdno.capability.ConnectionEndPoint"
+            "type_name": "sdno.capability.ServiceEndPoint"
           }
         ],
         "relationships": [
           {
-            "name": "realizes",
+            "name": "node",
             "source_requirement_index": 0,
-            "target_node_id": "site_fkuvg8p00gy6fz97vavm0qhkd",
-            "target_capability_name": "feature"
-          }
-        ]
-      },
-      {
-        "id": "vpn_moj0oj83e5larnbeh40wqgxra",
-        "type_name": "sdno.node.Connection.Vpn",
-        "template_name": "vpn",
-        "properties": {
-          "id": {
-            "type_name": "string",
-            "value": "vpn01"
-          },
-          "name": {
-            "type_name": "string",
-            "value": "vpn"
-          },
-          "adminStatus": {
-            "type_name": "AdministrationStateType",
-            "value": "none",
-            "description": "Used to administratively activate or deactivate already deployed service object"
-          },
-          "updateTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "update time"
-          },
-          "operStatus": {
-            "type_name": "OperationalStateType",
-            "value": "none",
-            "description": "Used to indicate if the service entity is operational."
-          },
-          "statusReason": {
-            "type_name": "string",
-            "value": "none",
-            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
-          },
-          "tenantID": {
-            "type_name": "string",
-            "value": "none",
-            "description": "ID of the tenant"
-          },
-          "location": {
-            "type_name": "string",
-            "value": "none",
-            "description": "Location if on single location"
-          },
-          "ownerID": {
-            "type_name": "string",
-            "value": "sdno",
-            "description": "ID of the owner of the object, can contain controllerID"
-          },
-          "createTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "create time"
-          },
-          "actionState": {
-            "type_name": "ActionStateType",
-            "value": "none",
-            "description": "Stores the result of the last action on the service object."
-          }
-        },
-        "interfaces": [
-          {
-            "name": "Standard",
-            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
-            "type_name": "tosca.interfaces.node.lifecycle.Standard",
-            "operations": [
-              {
-                "name": "create",
-                "description": "Standard lifecycle create operation."
-              },
-              {
-                "name": "stop",
-                "description": "Standard lifecycle stop operation."
-              },
-              {
-                "name": "start",
-                "description": "Standard lifecycle start operation."
-              },
-              {
-                "name": "delete",
-                "description": "Standard lifecycle delete operation."
-              },
-              {
-                "name": "configure",
-                "description": "Standard lifecycle configure operation."
-              }
-            ]
-          },
-          {
-            "name": "standard",
-            "type_name": "sdno.interfaces.lifecycle.Standard",
-            "operations": [
-              {
-                "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
-                "implementation": "DELETE /openoapi/sdnooverlay/v1/vpns/action/undeploy"
-              },
-              {
-                "name": "get",
-                "description": "Standard lifecycle delete operation.",
-                "implementation": "GET /openoapi/sdnooverlay/v1/vpns"
-              },
-              {
-                "name": "create",
-                "description": "Standard lifecycle create operation.",
-                "implementation": "POST /openoapi/sdnooverlay/v1/vpns"
-              },
-              {
-                "name": "deploy",
-                "description": "Standard lifecycle start operation.",
-                "implementation": "POST /openoapi/sdnooverlay/v1/vpns/action/deploy",
-                "dependencies": [
-                  "sdno.node.Connection.VpnConnection/deploy",
-                  "sdno.node.Connection.Vpn/deploy"
-                ]
-              },
-              {
-                "name": "update",
-                "description": "Standard lifecycle configure and update operation.",
-                "implementation": "PUT /openoapi/sdnooverlay/v1/vpns/{uuid}"
-              },
-              {
-                "name": "delete",
-                "description": "Standard lifecycle delete operation.",
-                "implementation": "DELETE /openoapi/sdnooverlay/v1/vpns/{uuid}"
-              }
-            ]
-          }
-        ],
-        "artifacts": [
-          {
-            "name": "mapper",
-            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/overlay.tsmap"
-          },
-          {
-            "name": "swagger",
-            "type_name": "sdno.artifacts.Implementation.Swagger",
-            "source_path": "swagger/overlay.jaml"
-          }
-        ],
-        "capabilities": [
-          {
-            "name": "feature",
-            "type_name": "tosca.capabilities.Node"
-          },
-          {
-            "name": "realizes",
-            "type_name": "sdno.capability.Realizes"
-          }
-        ],
-        "relationships": [
-          {
-            "name": "realizes",
-            "source_requirement_index": 0,
-            "target_node_id": "vpnConnection_ncn7dloyvgdsicaw37eyhtft4"
-          }
-        ]
-      },
-      {
-        "id": "sfc_jk3bynsut6u9qpkngn0hx4uj2",
-        "type_name": "sdno.node.Connection.Sfc",
-        "template_name": "sfc",
-        "properties": {
-          "id": {
-            "type_name": "string",
-            "value": "sfc01"
-          },
-          "name": {
-            "type_name": "string",
-            "value": "sfc"
-          },
-          "adminStatus": {
-            "type_name": "AdministrationStateType",
-            "value": "none",
-            "description": "Used to administratively activate or deactivate already deployed service object"
-          },
-          "updateTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "update time"
-          },
-          "operStatus": {
-            "type_name": "OperationalStateType",
-            "value": "none",
-            "description": "Used to indicate if the service entity is operational."
-          },
-          "statusReason": {
-            "type_name": "string",
-            "value": "none",
-            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
-          },
-          "tenantID": {
-            "type_name": "string",
-            "value": "none",
-            "description": "ID of the tenant"
-          },
-          "location": {
-            "type_name": "string",
-            "value": "none",
-            "description": "Location if on single location"
-          },
-          "ownerID": {
-            "type_name": "string",
-            "value": "sdno",
-            "description": "ID of the owner of the object, can contain controllerID"
-          },
-          "createTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "create time"
-          },
-          "actionState": {
-            "type_name": "ActionStateType",
-            "value": "none",
-            "description": "Stores the result of the last action on the service object."
-          }
-        },
-        "interfaces": [
-          {
-            "name": "Standard",
-            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
-            "type_name": "tosca.interfaces.node.lifecycle.Standard",
-            "operations": [
-              {
-                "name": "create",
-                "description": "Standard lifecycle create operation."
-              },
-              {
-                "name": "stop",
-                "description": "Standard lifecycle stop operation."
-              },
-              {
-                "name": "start",
-                "description": "Standard lifecycle start operation."
-              },
-              {
-                "name": "delete",
-                "description": "Standard lifecycle delete operation."
-              },
-              {
-                "name": "configure",
-                "description": "Standard lifecycle configure operation."
-              }
-            ]
-          },
-          {
-            "name": "standard",
-            "type_name": "sdno.interfaces.lifecycle.Standard",
-            "operations": [
-              {
-                "name": "undeploy",
-                "description": "Standard lifecycle stop operation.",
-                "implementation": "DELETE /openoapi/sdnoservicechain/v1/paths/{uuid}"
-              },
-              {
-                "name": "get",
-                "description": "Standard lifecycle delete operation."
-              },
-              {
-                "name": "create",
-                "description": "Standard lifecycle create operation."
-              },
-              {
-                "name": "deploy",
-                "description": "Standard lifecycle start operation.",
-                "implementation": "POST /openoapi/sdnoservicechain/v1/paths"
-              },
-              {
-                "name": "update",
-                "description": "Standard lifecycle configure and update operation."
-              },
-              {
-                "name": "delete",
-                "description": "Standard lifecycle delete operation."
-              }
-            ]
-          }
-        ],
-        "artifacts": [
-          {
-            "name": "mapper",
-            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/sfc.tsmap"
-          },
-          {
-            "name": "swagger",
-            "type_name": "sdno.artifacts.Implementation.Swagger",
-            "source_path": "swagger/sfc.jaml"
-          }
-        ],
-        "capabilities": [
-          {
-            "name": "feature",
-            "type_name": "tosca.capabilities.Node"
-          },
-          {
-            "name": "realizes",
-            "type_name": "sdno.capability.Realizes"
+            "target_node_id": "dcGw_o59wpu1l3wo7qnjbkci8y5hd9"
           }
         ]
       }
@@ -2197,60 +3020,67 @@
     "inputs": {
       "dcGwIp": {
         "type_name": "string",
+        "value": "none",
         "description": "mgrIp of dcGW"
       },
       "siteName": {
         "type_name": "string",
+        "value": "none",
         "description": "Name of Site"
       },
       "subnetVlan": {
         "type_name": "integer",
+        "value": 0,
         "description": "Vlan value of Subnet"
       },
       "siteCidr": {
         "type_name": "string",
-        "value": "10.100.100.0/24",
+        "value": "none",
         "description": "enterprise site cidr"
       },
       "vpcVni": {
         "type_name": "integer",
-        "value": 10001,
+        "value": 0,
         "description": "vpc subnet vxlanID, should keep consistent with NFVO"
       },
       "dcLbIp": {
         "type_name": "string",
+        "value": "none",
         "description": "mgrIp of dc Load Balancer"
       },
       "vpcName": {
         "type_name": "string",
-        "value": "vdc0/vpc1",
+        "value": "none",
         "description": "in format of domain/project, should keep consistent with NFVO"
       },
       "siteVni": {
         "type_name": "integer",
-        "value": 20001,
+        "value": 0,
         "description": "VxLAN ID connect site to vCPE"
       },
       "dcFwIp": {
         "type_name": "string",
+        "value": "none",
         "description": "mgrIp of dc Firewall"
       },
       "vpnDescription": {
         "type_name": "string",
+        "value": "none",
         "description": "description of Overlayvpn"
       },
       "vpcSubnetName": {
         "type_name": "string",
-        "value": "sn",
+        "value": "none",
         "description": "name of subnet in VPC, should keep consistent with NFVO"
       },
       "vpcSubnetCidr": {
         "type_name": "string",
-        "value": "10.21.3.0/24",
+        "value": "none",
         "description": "vpc cidr"
       },
       "vpnName": {
         "type_name": "string",
+        "value": "none",
         "description": "Name of Overlayvpn"
       }
     }
@@ -2266,18 +3096,28 @@
     },
     "node_templates": [
       {
-        "name": "thinCpe",
-        "type_name": "sdno.node.ConnectionEndPoint.ThinCpe",
+        "name": "site",
+        "type_name": "sdno.node.Connection.Site",
         "default_instances": 1,
         "min_instances": 0,
         "properties": {
-          "id": {
-            "type_name": "string",
-            "value": "thinCpe01"
-          },
           "name": {
             "type_name": "string",
-            "value": "thinCpe"
+            "value": {
+              "get_input": "siteName"
+            }
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -2304,10 +3144,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -2323,15 +3163,25 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          },
+          "deployCloudCpeByDeafult": {
+            "type_name": "string",
+            "value": "True",
+            "description": null
           }
         },
         "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7e03dfe10>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7e03df610>"
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x230e950>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x230ef90>"
         ],
         "artifact_templates": [
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7e03df050>",
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7e03d1490>"
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x1e6efd0>",
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x1e6eed0>"
         ],
         "capability_templates": [
           {
@@ -2339,17 +3189,91 @@
             "type_name": "tosca.capabilities.Node"
           },
           {
-            "name": "endPoint",
-            "type_name": "sdno.capability.ConnectionEndPoint"
+            "name": "realizes",
+            "type_name": "sdno.capability.Realizes"
           }
         ],
         "requirement_templates": [
           {
-            "name": "realizes",
-            "target_node_type_name": "sdno.node.Connection.Site",
+            "name": "endPoint",
+            "target_node_template_name": "vCpeConnectionEndPoint",
             "relationship_template": {
-              "type_name": "sdno.relationship.RealizedBy"
+              "type_name": "sdno.relationship.ConnectionEndPoint"
             }
+          },
+          {
+            "name": "endPoint",
+            "target_node_template_name": "thinCpeConnectionEndPoint",
+            "relationship_template": {
+              "type_name": "sdno.relationship.ConnectionEndPoint"
+            }
+          }
+        ]
+      },
+      {
+        "name": "thinCpe",
+        "type_name": "sdno.node.Node",
+        "default_instances": 1,
+        "min_instances": 0,
+        "properties": {
+          "siteName": {
+            "type_name": "string",
+            "value": {
+              "get_input": "siteName"
+            }
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "nativeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "controllerID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "logicID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "ipAddress": {
+            "type_name": "string",
+            "value": "0.0.0.0"
+          },
+          "phyNeID": {
+            "type_name": "string",
+            "value": "none"
+          }
+        },
+        "interface_templates": [
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x1e3fb90>"
+        ],
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
           }
         ]
       },
@@ -2359,13 +3283,28 @@
         "default_instances": 1,
         "min_instances": 0,
         "properties": {
+          "vlanId": {
+            "type_name": "integer",
+            "value": {
+              "get_input": "subnetVlan"
+            },
+            "description": "vlan id"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
           "id": {
             "type_name": "string",
-            "value": "vlan01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "vlan"
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -2392,10 +3331,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -2411,15 +3350,20 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
           }
         },
         "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7c43b7d90>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7c43b7250>"
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f3788068e10>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x1d9f2d0>"
         ],
         "artifact_templates": [
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7c43b7150>",
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7c43b70d0>"
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x1d9f150>",
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x1d9fd90>"
         ],
         "capability_templates": [
           {
@@ -2442,71 +3386,56 @@
         ]
       },
       {
-        "name": "dcEndpoint",
-        "type_name": "sdno.node.ServiceEndPoint.DcEndpoint",
+        "name": "dcLb",
+        "type_name": "sdno.node.Node",
         "default_instances": 1,
         "min_instances": 0,
         "properties": {
+          "ipAddress": {
+            "type_name": "string",
+            "value": {
+              "get_input": "dcLbIp"
+            }
+          },
+          "id": {
+            "type_name": "string",
+            "value": "0"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
           "version": {
             "type_name": "string",
             "value": "1.0"
           },
-          "id": {
-            "type_name": "string",
-            "value": "dcEndpoint01"
-          },
           "name": {
             "type_name": "string",
-            "value": "dcEndpoint"
+            "value": "none"
           },
-          "adminStatus": {
-            "type_name": "AdministrationStateType",
-            "value": "none",
-            "description": "Used to administratively activate or deactivate already deployed service object"
-          },
-          "updateTime": {
+          "siteName": {
             "type_name": "string",
-            "value": "none",
-            "description": "update time"
+            "value": "none"
           },
-          "operStatus": {
-            "type_name": "OperationalStateType",
-            "value": "none",
-            "description": "Used to indicate if the service entity is operational."
-          },
-          "statusReason": {
+          "nativeID": {
             "type_name": "string",
-            "value": "none",
-            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+            "value": "none"
           },
-          "tenantID": {
+          "controllerID": {
             "type_name": "string",
-            "value": "none",
-            "description": "ID of the tenant"
+            "value": "none"
           },
-          "location": {
+          "logicID": {
             "type_name": "string",
-            "value": "none",
-            "description": "Location if on single location"
+            "value": "none"
           },
-          "ownerID": {
+          "phyNeID": {
             "type_name": "string",
-            "value": "sdno",
-            "description": "ID of the owner of the object, can contain controllerID"
-          },
-          "createTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "create time"
-          },
-          "actionState": {
-            "type_name": "ActionStateType",
-            "value": "none",
-            "description": "Stores the result of the last action on the service object."
+            "value": "none"
           }
         },
         "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7cc22d290>"
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f379c189b10>"
         ],
         "capability_templates": [
           {
@@ -2514,8 +3443,12 @@
             "type_name": "tosca.capabilities.Node"
           },
           {
-            "name": "endPoint",
-            "type_name": "sdno.capability.ServiceEndPoint"
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
           }
         ]
       },
@@ -2525,13 +3458,21 @@
         "default_instances": 1,
         "min_instances": 0,
         "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
           "id": {
             "type_name": "string",
-            "value": "siteGw01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "siteGw"
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -2558,10 +3499,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -2577,15 +3518,20 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
           }
         },
         "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7cc237d50>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7cc237f10>"
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f379c19de90>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f379c19d510>"
         ],
         "artifact_templates": [
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7e025e790>",
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7e025e090>"
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x2388550>",
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x23880d0>"
         ],
         "capability_templates": [
           {
@@ -2599,18 +3545,26 @@
         ]
       },
       {
-        "name": "vpcSubnet",
-        "type_name": "sdno.node.Connection.VpcSubnet",
+        "name": "vpcGateway",
+        "type_name": "sdno.node.ConnectionEndPoint.VpcGateway",
         "default_instances": 1,
         "min_instances": 0,
         "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
           "id": {
             "type_name": "string",
-            "value": "vpcSubnet01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "vpcSbnet"
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -2637,10 +3591,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -2656,15 +3610,256 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
           }
         },
         "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x2837150>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x2837750>"
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f3788054c10>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f3788054cd0>"
         ],
         "artifact_templates": [
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x2837610>",
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x28379d0>"
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x1e72c10>",
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x1e72dd0>"
+        ],
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ConnectionEndPoint"
+          }
+        ]
+      },
+      {
+        "name": "sfc",
+        "type_name": "sdno.node.Connection.Sfc",
+        "default_instances": 1,
+        "min_instances": 0,
+        "properties": {
+          "scfNeId": {
+            "type_name": "string",
+            "value": {
+              "get_attribute": [
+                "dcGw",
+                "id"
+              ]
+            },
+            "description": "The id of scf NE"
+          },
+          "servicePathHops": {
+            "type_name": "list",
+            "value": [
+              {
+                "hopNumber": 1,
+                "sfgId": null,
+                "sfiId": {
+                  "get_attribute": [
+                    "dcFw",
+                    "id"
+                  ]
+                }
+              },
+              {
+                "hopNumber": 2,
+                "sfgId": null,
+                "sfiId": {
+                  "get_attribute": [
+                    "dcLb",
+                    "id"
+                  ]
+                }
+              }
+            ],
+            "description": "Hop Number of the SFC"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interface_templates": [
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f378c6362d0>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f378c636cd0>"
+        ],
+        "artifact_templates": [
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7f379c19b390>",
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7f379c19bcd0>"
+        ],
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "realizes",
+            "type_name": "sdno.capability.Realizes"
+          }
+        ]
+      },
+      {
+        "name": "vpcSubnet",
+        "type_name": "sdno.node.Connection.VpcSubnet",
+        "default_instances": 1,
+        "min_instances": 0,
+        "properties": {
+          "cidr": {
+            "type_name": "string",
+            "value": {
+              "get_input": "vpcSubnetCidr"
+            },
+            "description": "VPC subnet IP network, should be in format CIDR format."
+          },
+          "name": {
+            "type_name": "string",
+            "value": {
+              "get_input": "vpcSubnetName"
+            }
+          },
+          "vni": {
+            "type_name": "integer",
+            "value": {
+              "get_input": "vpcVni"
+            },
+            "description": "The Vxlan id"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interface_templates": [
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x290c350>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x290ced0>"
+        ],
+        "artifact_templates": [
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x290c250>",
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x290c710>"
         ],
         "capability_templates": [
           {
@@ -2692,13 +3887,35 @@
         "default_instances": 1,
         "min_instances": 0,
         "properties": {
+          "cidrBlock": {
+            "type_name": "string",
+            "value": {
+              "get_input": "siteCidr"
+            },
+            "description": "cidr block"
+          },
+          "vni": {
+            "type_name": "string",
+            "value": {
+              "get_input": "siteVni"
+            },
+            "description": "vni"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
           "id": {
             "type_name": "string",
-            "value": "siteSubnet01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "siteSubnet"
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -2725,10 +3942,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -2744,15 +3961,20 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
           }
         },
         "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7cc233ad0>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7cc233850>"
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x1dcc290>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x1dcc890>"
         ],
         "artifact_templates": [
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7cc233e90>",
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7cc233a10>"
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x1dcc250>",
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x1dccc90>"
         ],
         "capability_templates": [
           {
@@ -2775,77 +3997,56 @@
         ]
       },
       {
-        "name": "site",
-        "type_name": "sdno.node.Connection.Site",
+        "name": "dcGw",
+        "type_name": "sdno.node.Node",
         "default_instances": 1,
         "min_instances": 0,
         "properties": {
+          "ipAddress": {
+            "type_name": "string",
+            "value": {
+              "get_input": "dcGwIp"
+            }
+          },
           "id": {
             "type_name": "string",
-            "value": "site01"
+            "value": "0"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
           },
           "name": {
             "type_name": "string",
-            "value": "site"
+            "value": "none"
           },
-          "adminStatus": {
-            "type_name": "AdministrationStateType",
-            "value": "none",
-            "description": "Used to administratively activate or deactivate already deployed service object"
-          },
-          "updateTime": {
+          "siteName": {
             "type_name": "string",
-            "value": "none",
-            "description": "update time"
+            "value": "none"
           },
-          "operStatus": {
-            "type_name": "OperationalStateType",
-            "value": "none",
-            "description": "Used to indicate if the service entity is operational."
-          },
-          "statusReason": {
+          "nativeID": {
             "type_name": "string",
-            "value": "none",
-            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+            "value": "none"
           },
-          "tenantID": {
+          "controllerID": {
             "type_name": "string",
-            "value": "none",
-            "description": "ID of the tenant"
+            "value": "none"
           },
-          "location": {
+          "logicID": {
             "type_name": "string",
-            "value": "none",
-            "description": "Location if on single location"
+            "value": "none"
           },
-          "ownerID": {
+          "phyNeID": {
             "type_name": "string",
-            "value": "sdno",
-            "description": "ID of the owner of the object, can contain controllerID"
-          },
-          "createTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "create time"
-          },
-          "actionState": {
-            "type_name": "ActionStateType",
-            "value": "none",
-            "description": "Stores the result of the last action on the service object."
-          },
-          "deployCloudCpeByDeafult": {
-            "type_name": "string",
-            "value": "True",
-            "description": null
+            "value": "none"
           }
         },
         "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x283e450>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x283e250>"
-        ],
-        "artifact_templates": [
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x283ef50>",
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x283ef10>"
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f379c192d50>"
         ],
         "capability_templates": [
           {
@@ -2853,8 +4054,12 @@
             "type_name": "tosca.capabilities.Node"
           },
           {
-            "name": "realizes",
-            "type_name": "sdno.capability.Realizes"
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
           }
         ]
       },
@@ -2864,17 +4069,21 @@
         "default_instances": 1,
         "min_instances": 0,
         "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
           "version": {
             "type_name": "string",
             "value": "1.0"
           },
           "id": {
             "type_name": "string",
-            "value": "ent3DC01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "enterprise2Dc"
+            "value": "none"
           },
           "state_machine": {
             "type_name": "StateMachineType",
@@ -3001,8 +4210,8 @@
           }
         },
         "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7cc212850>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7cc212bd0>"
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x298d190>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x298d990>"
         ],
         "capability_templates": [
           {
@@ -3013,14 +4222,14 @@
         "requirement_templates": [
           {
             "name": "endPoint",
-            "target_node_template_name": "thinCpe",
+            "target_node_template_name": "thinCpeServiceEndpoint",
             "relationship_template": {
               "type_name": "sdno.relationship.ServiceEndPoint"
             }
           },
           {
             "name": "endPoint",
-            "target_node_template_name": "dcEndpoint",
+            "target_node_template_name": "dcServiceEndpoint",
             "relationship_template": {
               "type_name": "sdno.relationship.ServiceEndPoint"
             }
@@ -3056,18 +4265,26 @@
         ]
       },
       {
-        "name": "vpnConnection",
-        "type_name": "sdno.node.Connection.VpnConnection",
+        "name": "vCpeConnectionEndPoint",
+        "type_name": "sdno.node.ConnectionEndPoint.VCpe",
         "default_instances": 1,
         "min_instances": 0,
         "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
           "id": {
             "type_name": "string",
-            "value": "vpnConnection01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "vpnConnection"
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -3094,10 +4311,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -3113,15 +4330,665 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
           }
         },
         "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7e027f790>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7e027fe90>"
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x2368650>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x2368790>"
         ],
         "artifact_templates": [
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7e42602d0>",
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7e4260450>"
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x23943d0>",
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x2394110>"
+        ],
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ConnectionEndPoint"
+          }
+        ],
+        "requirement_templates": [
+          {
+            "name": "realizes",
+            "target_node_template_name": "site",
+            "relationship_template": {
+              "type_name": "sdno.relationship.RealizedBy"
+            }
+          },
+          {
+            "name": "node",
+            "target_node_template_name": "vCpe",
+            "relationship_template": {
+              "type_name": "sdno.relationship.HostedOn"
+            }
+          }
+        ]
+      },
+      {
+        "name": "dcFw",
+        "type_name": "sdno.node.Node",
+        "default_instances": 1,
+        "min_instances": 0,
+        "properties": {
+          "ipAddress": {
+            "type_name": "string",
+            "value": {
+              "get_input": "dcFwIp"
+            }
+          },
+          "id": {
+            "type_name": "string",
+            "value": "0"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "siteName": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "nativeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "controllerID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "logicID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "phyNeID": {
+            "type_name": "string",
+            "value": "none"
+          }
+        },
+        "interface_templates": [
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x29af6d0>"
+        ],
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
+          }
+        ]
+      },
+      {
+        "name": "vpc",
+        "type_name": "sdno.node.Connection.Vpc",
+        "default_instances": 1,
+        "min_instances": 0,
+        "properties": {
+          "name": {
+            "type_name": "string",
+            "value": {
+              "get_input": "vpcName"
+            }
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interface_templates": [
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f3798742d90>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x299a190>"
+        ],
+        "artifact_templates": [
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x299a9d0>",
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x299a850>"
+        ],
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "realizes",
+            "type_name": "sdno.capability.Realizes"
+          }
+        ]
+      },
+      {
+        "name": "thinCpeConnectionEndPoint",
+        "type_name": "sdno.node.ConnectionEndPoint.ThinCpe",
+        "default_instances": 1,
+        "min_instances": 0,
+        "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interface_templates": [
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f37a86e0dd0>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f37a86e0950>"
+        ],
+        "artifact_templates": [
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7f37880802d0>",
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7f3788080710>"
+        ],
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ConnectionEndPoint"
+          }
+        ],
+        "requirement_templates": [
+          {
+            "name": "realizes",
+            "target_node_template_name": "site",
+            "relationship_template": {
+              "type_name": "sdno.relationship.RealizedBy"
+            }
+          },
+          {
+            "name": "node",
+            "target_node_template_name": "thinCpe",
+            "relationship_template": {
+              "type_name": "sdno.relationship.HostedOn"
+            }
+          }
+        ]
+      },
+      {
+        "name": "vCpe",
+        "type_name": "sdno.node.Node",
+        "default_instances": 1,
+        "min_instances": 0,
+        "properties": {
+          "siteName": {
+            "type_name": "string",
+            "value": {
+              "get_input": "siteName"
+            }
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "nativeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "controllerID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "logicID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "ipAddress": {
+            "type_name": "string",
+            "value": "0.0.0.0"
+          },
+          "phyNeID": {
+            "type_name": "string",
+            "value": "none"
+          }
+        },
+        "interface_templates": [
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x239d490>"
+        ],
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
+          }
+        ]
+      },
+      {
+        "name": "vpn",
+        "type_name": "sdno.node.Connection.Vpn",
+        "default_instances": 1,
+        "min_instances": 0,
+        "properties": {
+          "name": {
+            "type_name": "string",
+            "value": {
+              "get_input": "vpnName"
+            }
+          },
+          "description": {
+            "type_name": "string",
+            "value": {
+              "get_input": "vpnDescription"
+            }
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interface_templates": [
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f3788086850>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f3788086d90>"
+        ],
+        "artifact_templates": [
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7f3788076250>",
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7f3788076190>"
+        ],
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "realizes",
+            "type_name": "sdno.capability.Realizes"
+          }
+        ],
+        "requirement_templates": [
+          {
+            "name": "realizes",
+            "target_node_template_name": "vpnConnection",
+            "relationship_template": {
+              "type_name": "sdno.relationship.RealizedBy"
+            }
+          }
+        ]
+      },
+      {
+        "name": "thinCpeServiceEndpoint",
+        "type_name": "sdno.node.ServiceEndPoint.ThinCpe",
+        "default_instances": 1,
+        "min_instances": 0,
+        "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interface_templates": [
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f3788074d90>"
+        ],
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ServiceEndPoint"
+          }
+        ],
+        "requirement_templates": [
+          {
+            "name": "node",
+            "target_node_template_name": "thinCpe",
+            "relationship_template": {
+              "type_name": "sdno.relationship.HostedOn"
+            }
+          }
+        ]
+      },
+      {
+        "name": "vpnConnection",
+        "type_name": "sdno.node.Connection.VpnConnection",
+        "default_instances": 1,
+        "min_instances": 0,
+        "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+          },
+          "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+          },
+          "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+          },
+          "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+          },
+          "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+          },
+          "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+          },
+          "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+          },
+          "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+          },
+          "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+          },
+          "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+          }
+        },
+        "interface_templates": [
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x2337990>",
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x23377d0>"
+        ],
+        "artifact_templates": [
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7f379c1bfb50>",
+          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7f379c1bfc10>"
         ],
         "capability_templates": [
           {
@@ -3151,18 +5018,26 @@
         ]
       },
       {
-        "name": "vpc",
-        "type_name": "sdno.node.Connection.Vpc",
+        "name": "dcServiceEndpoint",
+        "type_name": "sdno.node.ServiceEndPoint.DcEndpoint",
         "default_instances": 1,
         "min_instances": 0,
         "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
           "id": {
             "type_name": "string",
-            "value": "vpc01"
+            "value": "none"
           },
           "name": {
             "type_name": "string",
-            "value": "vpc"
+            "value": "none"
           },
           "adminStatus": {
             "type_name": "AdministrationStateType",
@@ -3189,10 +5064,10 @@
             "value": "none",
             "description": "ID of the tenant"
           },
-          "location": {
-            "type_name": "string",
+          "syncStatus": {
+            "type_name": "SyncStateType",
             "value": "none",
-            "description": "Location if on single location"
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
           },
           "ownerID": {
             "type_name": "string",
@@ -3208,94 +5083,15 @@
             "type_name": "ActionStateType",
             "value": "none",
             "description": "Stores the result of the last action on the service object."
-          }
-        },
-        "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x2664dd0>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x26642d0>"
-        ],
-        "artifact_templates": [
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7c43a5810>",
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7c43a57d0>"
-        ],
-        "capability_templates": [
-          {
-            "name": "feature",
-            "type_name": "tosca.capabilities.Node"
-          },
-          {
-            "name": "realizes",
-            "type_name": "sdno.capability.Realizes"
-          }
-        ]
-      },
-      {
-        "name": "vpcGateway",
-        "type_name": "sdno.node.ConnectionEndPoint.VpcGateway",
-        "default_instances": 1,
-        "min_instances": 0,
-        "properties": {
-          "id": {
-            "type_name": "string",
-            "value": "vpcGw01"
-          },
-          "name": {
-            "type_name": "string",
-            "value": "vpcGw"
-          },
-          "adminStatus": {
-            "type_name": "AdministrationStateType",
-            "value": "none",
-            "description": "Used to administratively activate or deactivate already deployed service object"
-          },
-          "updateTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "update time"
-          },
-          "operStatus": {
-            "type_name": "OperationalStateType",
-            "value": "none",
-            "description": "Used to indicate if the service entity is operational."
-          },
-          "statusReason": {
-            "type_name": "string",
-            "value": "none",
-            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
-          },
-          "tenantID": {
-            "type_name": "string",
-            "value": "none",
-            "description": "ID of the tenant"
           },
           "location": {
             "type_name": "string",
             "value": "none",
             "description": "Location if on single location"
-          },
-          "ownerID": {
-            "type_name": "string",
-            "value": "sdno",
-            "description": "ID of the owner of the object, can contain controllerID"
-          },
-          "createTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "create time"
-          },
-          "actionState": {
-            "type_name": "ActionStateType",
-            "value": "none",
-            "description": "Stores the result of the last action on the service object."
           }
         },
         "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7cc219850>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7cc20ead0>"
-        ],
-        "artifact_templates": [
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7cc20e5d0>",
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7cc20e990>"
+          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7f3788060450>"
         ],
         "capability_templates": [
           {
@@ -3304,262 +5100,16 @@
           },
           {
             "name": "endPoint",
-            "type_name": "sdno.capability.ConnectionEndPoint"
-          }
-        ]
-      },
-      {
-        "name": "vCpe",
-        "type_name": "sdno.node.ConnectionEndPoint.VCpe",
-        "default_instances": 1,
-        "min_instances": 0,
-        "properties": {
-          "id": {
-            "type_name": "string",
-            "value": "vCpe01"
-          },
-          "name": {
-            "type_name": "string",
-            "value": "vCpe"
-          },
-          "adminStatus": {
-            "type_name": "AdministrationStateType",
-            "value": "none",
-            "description": "Used to administratively activate or deactivate already deployed service object"
-          },
-          "updateTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "update time"
-          },
-          "operStatus": {
-            "type_name": "OperationalStateType",
-            "value": "none",
-            "description": "Used to indicate if the service entity is operational."
-          },
-          "statusReason": {
-            "type_name": "string",
-            "value": "none",
-            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
-          },
-          "tenantID": {
-            "type_name": "string",
-            "value": "none",
-            "description": "ID of the tenant"
-          },
-          "location": {
-            "type_name": "string",
-            "value": "none",
-            "description": "Location if on single location"
-          },
-          "ownerID": {
-            "type_name": "string",
-            "value": "sdno",
-            "description": "ID of the owner of the object, can contain controllerID"
-          },
-          "createTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "create time"
-          },
-          "actionState": {
-            "type_name": "ActionStateType",
-            "value": "none",
-            "description": "Stores the result of the last action on the service object."
-          }
-        },
-        "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x264d7d0>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x264d750>"
-        ],
-        "artifact_templates": [
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x264d650>",
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x264d890>"
-        ],
-        "capability_templates": [
-          {
-            "name": "feature",
-            "type_name": "tosca.capabilities.Node"
-          },
-          {
-            "name": "endPoint",
-            "type_name": "sdno.capability.ConnectionEndPoint"
+            "type_name": "sdno.capability.ServiceEndPoint"
           }
         ],
         "requirement_templates": [
           {
-            "name": "realizes",
-            "target_node_type_name": "sdno.node.Connection.Site",
+            "name": "node",
+            "target_node_template_name": "dcGw",
             "relationship_template": {
-              "type_name": "sdno.relationship.RealizedBy"
+              "type_name": "sdno.relationship.HostedOn"
             }
-          }
-        ]
-      },
-      {
-        "name": "vpn",
-        "type_name": "sdno.node.Connection.Vpn",
-        "default_instances": 1,
-        "min_instances": 0,
-        "properties": {
-          "id": {
-            "type_name": "string",
-            "value": "vpn01"
-          },
-          "name": {
-            "type_name": "string",
-            "value": "vpn"
-          },
-          "adminStatus": {
-            "type_name": "AdministrationStateType",
-            "value": "none",
-            "description": "Used to administratively activate or deactivate already deployed service object"
-          },
-          "updateTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "update time"
-          },
-          "operStatus": {
-            "type_name": "OperationalStateType",
-            "value": "none",
-            "description": "Used to indicate if the service entity is operational."
-          },
-          "statusReason": {
-            "type_name": "string",
-            "value": "none",
-            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
-          },
-          "tenantID": {
-            "type_name": "string",
-            "value": "none",
-            "description": "ID of the tenant"
-          },
-          "location": {
-            "type_name": "string",
-            "value": "none",
-            "description": "Location if on single location"
-          },
-          "ownerID": {
-            "type_name": "string",
-            "value": "sdno",
-            "description": "ID of the owner of the object, can contain controllerID"
-          },
-          "createTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "create time"
-          },
-          "actionState": {
-            "type_name": "ActionStateType",
-            "value": "none",
-            "description": "Stores the result of the last action on the service object."
-          }
-        },
-        "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7d0144bd0>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7d035ee10>"
-        ],
-        "artifact_templates": [
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7d035ead0>",
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7d035ea90>"
-        ],
-        "capability_templates": [
-          {
-            "name": "feature",
-            "type_name": "tosca.capabilities.Node"
-          },
-          {
-            "name": "realizes",
-            "type_name": "sdno.capability.Realizes"
-          }
-        ],
-        "requirement_templates": [
-          {
-            "name": "realizes",
-            "target_node_template_name": "vpnConnection",
-            "relationship_template": {
-              "type_name": "sdno.relationship.RealizedBy"
-            }
-          }
-        ]
-      },
-      {
-        "name": "sfc",
-        "type_name": "sdno.node.Connection.Sfc",
-        "default_instances": 1,
-        "min_instances": 0,
-        "properties": {
-          "id": {
-            "type_name": "string",
-            "value": "sfc01"
-          },
-          "name": {
-            "type_name": "string",
-            "value": "sfc"
-          },
-          "adminStatus": {
-            "type_name": "AdministrationStateType",
-            "value": "none",
-            "description": "Used to administratively activate or deactivate already deployed service object"
-          },
-          "updateTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "update time"
-          },
-          "operStatus": {
-            "type_name": "OperationalStateType",
-            "value": "none",
-            "description": "Used to indicate if the service entity is operational."
-          },
-          "statusReason": {
-            "type_name": "string",
-            "value": "none",
-            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
-          },
-          "tenantID": {
-            "type_name": "string",
-            "value": "none",
-            "description": "ID of the tenant"
-          },
-          "location": {
-            "type_name": "string",
-            "value": "none",
-            "description": "Location if on single location"
-          },
-          "ownerID": {
-            "type_name": "string",
-            "value": "sdno",
-            "description": "ID of the owner of the object, can contain controllerID"
-          },
-          "createTime": {
-            "type_name": "string",
-            "value": "none",
-            "description": "create time"
-          },
-          "actionState": {
-            "type_name": "ActionStateType",
-            "value": "none",
-            "description": "Stores the result of the last action on the service object."
-          }
-        },
-        "interface_templates": [
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7e03fe090>",
-          "<aria.modeling.model_elements.InterfaceTemplate object at 0x7fc7c43a7b50>"
-        ],
-        "artifact_templates": [
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7c43a7b90>",
-          "<aria.modeling.model_elements.ArtifactTemplate object at 0x7fc7c43a7a90>"
-        ],
-        "capability_templates": [
-          {
-            "name": "feature",
-            "type_name": "tosca.capabilities.Node"
-          },
-          {
-            "name": "realizes",
-            "type_name": "sdno.capability.Realizes"
           }
         ]
       }
@@ -3567,60 +5117,67 @@
     "inputs": {
       "dcGwIp": {
         "type_name": "string",
+        "value": "none",
         "description": "mgrIp of dcGW"
       },
       "siteName": {
         "type_name": "string",
+        "value": "none",
         "description": "Name of Site"
       },
       "subnetVlan": {
         "type_name": "integer",
+        "value": 0,
         "description": "Vlan value of Subnet"
       },
       "siteCidr": {
         "type_name": "string",
-        "value": "10.100.100.0/24",
+        "value": "none",
         "description": "enterprise site cidr"
       },
       "vpcVni": {
         "type_name": "integer",
-        "value": 10001,
+        "value": 0,
         "description": "vpc subnet vxlanID, should keep consistent with NFVO"
       },
       "dcLbIp": {
         "type_name": "string",
+        "value": "none",
         "description": "mgrIp of dc Load Balancer"
       },
       "vpcName": {
         "type_name": "string",
-        "value": "vdc0/vpc1",
+        "value": "none",
         "description": "in format of domain/project, should keep consistent with NFVO"
       },
       "siteVni": {
         "type_name": "integer",
-        "value": 20001,
+        "value": 0,
         "description": "VxLAN ID connect site to vCPE"
       },
       "dcFwIp": {
         "type_name": "string",
+        "value": "none",
         "description": "mgrIp of dc Firewall"
       },
       "vpnDescription": {
         "type_name": "string",
+        "value": "none",
         "description": "description of Overlayvpn"
       },
       "vpcSubnetName": {
         "type_name": "string",
-        "value": "sn",
+        "value": "none",
         "description": "name of subnet in VPC, should keep consistent with NFVO"
       },
       "vpcSubnetCidr": {
         "type_name": "string",
-        "value": "10.21.3.0/24",
+        "value": "none",
         "description": "vpc cidr"
       },
       "vpnName": {
         "type_name": "string",
+        "value": "none",
         "description": "Name of Overlayvpn"
       }
     }
@@ -3689,7 +5246,7 @@
       },
       {
         "name": "sdno.node.Root",
-        "description": "sdno root type",
+        "description": "The SDNO Node Type all other SDNO base Node Types derive from",
         "parent": "tosca.nodes.Root"
       },
       {
@@ -3709,7 +5266,7 @@
       },
       {
         "name": "sdno.node.ConnectionEndPoint",
-        "description": "It represents the ingress/egress port aspects that access the forwarding function provided by the Connection.",
+        "description": "It represents the ingress/egress port aspects that access the forwarding function provided  by the Connection.",
         "parent": "sdno.node.Root"
       },
       {
@@ -3744,7 +5301,7 @@
       },
       {
         "name": "sdno.node.ConnectivityService",
-        "description": "It represents an intent-like request for connectivity between two or more ServiceEndPoints. As such, ConnectivityService is a container for connectivity request details and is distinct from the Connection that realizes the request",
+        "description": "It represents an “intent-like” request for connectivity between two or more ServiceEndPoints. As such, ConnectivityService is a container for connectivity request details and is distinct  from the Connection that realizes the request",
         "parent": "sdno.node.Root"
       },
       {
@@ -3930,7 +5487,7 @@
       },
       {
         "name": "sdno.relationship.ConnectionEndPoint",
-        "description": "The relationship specifies which ConnectionEndPonts are terminating the Connection. The association of the Connection to ConnectionEndPoints is made via the Ports of the Connection, where each Port of the Connection has a role and directionality in the context of the Connection.",
+        "description": "The relationship specifies which ConnectionEndPonts are terminating the Connection. The association of the Connection to ConnectionEndPoints is made via the Ports of the Connection, where each Port of the Connection has a role and directionality in the context of the Connection. ",
         "parent": "tosca.relationships.Root"
       },
       {
@@ -3940,7 +5497,7 @@
       },
       {
         "name": "sdno.relationship.HostedOn",
-        "description": "The relationship specifies what Node the Endpoint is hosted on.",
+        "description": "The relationship specifies what Node the Endpoint is hosted on. ",
         "parent": "tosca.relationships.Root"
       },
       {
@@ -3996,7 +5553,9 @@
         "parent": "tosca.policies.Root"
       }
     ],
-    "policy_trigger_types": [],
+    "policy_trigger_types": [
+       
+    ],
     "artifact_types": [
       {
         "name": "tosca.artifacts.Root",
@@ -4073,5 +5632,3 @@
     ]
   }
 }
-
-

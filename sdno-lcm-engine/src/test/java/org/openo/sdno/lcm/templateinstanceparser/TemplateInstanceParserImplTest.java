@@ -38,12 +38,15 @@ public class TemplateInstanceParserImplTest {
     String instanceJson;
     Metadata expectedMetadata;
 
+    /**
+     * Test the template instance JSON is parsed as expected.
+     */
     @Test
     public void testParse() {
         Instance instance = templateInstanceParserImpl.parse(instanceJson);
         Assert.assertNotNull(instance);
         Assert.assertEquals(instance.getDescription(), "sdno basic types");
-        Assert.assertEquals(instance.getNodes().size(), 14);
+        Assert.assertEquals(instance.getNodes().size(), 20);
         Assert.assertEquals(instance.getMetadata(), expectedMetadata);
         Assert.assertNotNull(instance.getInputs());
         

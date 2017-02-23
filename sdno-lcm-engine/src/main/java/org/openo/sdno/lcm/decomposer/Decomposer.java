@@ -16,11 +16,8 @@
 
 package org.openo.sdno.lcm.decomposer;
 
-import java.util.List;
-
 import org.openo.sdno.lcm.templatemodel.csar.Csar;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
-
 import org.openo.sdno.lcm.workplan.WorkPlan;
 
 
@@ -30,9 +27,10 @@ public interface Decomposer {
      * Decomposes the Instance of service template: determines the correct order to visit the Nodes
      * of the Node.
      * Receives the Instance with all input values already included.
-     * We don't address any parallel processing.
-     * We don't do any traffic engineering yet.
-     * We don't allow to hook custom behaviour into a generic workflow here.
+     * We do assume operation is the same for every node
+     * We do not address any parallel processing.
+     * We do not do any traffic engineering yet.
+     * We do not allow to hook custom behaviour into a generic workflow here.
      * 
      * @param serviceTemplateInstance
      * @param operation
