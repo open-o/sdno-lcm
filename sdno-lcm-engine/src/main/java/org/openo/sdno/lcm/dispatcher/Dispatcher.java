@@ -17,9 +17,9 @@
 package org.openo.sdno.lcm.dispatcher;
 
 import java.util.List;
-import org.openo.sdno.lcm.workplan.WorkPlan;
-import org.openo.sdno.lcm.workplan.WorkPlanExecutionResult;
-import org.openo.sdno.lcm.workplan.WorkPlanExecutionStrategy;
+import org.openo.sdno.lcm.model.workplan.WorkPlan;
+import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionResult;
+import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionStrategy;
 
 public interface Dispatcher {
 

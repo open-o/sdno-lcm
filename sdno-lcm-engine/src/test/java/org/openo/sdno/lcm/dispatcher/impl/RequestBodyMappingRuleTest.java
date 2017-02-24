@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.lcm.dispatcher;
+package org.openo.sdno.lcm.dispatcher.impl;
 
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;

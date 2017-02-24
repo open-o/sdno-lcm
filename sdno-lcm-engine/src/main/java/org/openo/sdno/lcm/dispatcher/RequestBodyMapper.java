@@ -16,7 +16,7 @@
 
 package org.openo.sdno.lcm.dispatcher;
 
-import org.openo.sdno.lcm.workplan.WorkItem;
+import org.openo.sdno.lcm.model.workplan.WorkItem;
 import com.fasterxml.jackson.databind.JsonNode;
 
 

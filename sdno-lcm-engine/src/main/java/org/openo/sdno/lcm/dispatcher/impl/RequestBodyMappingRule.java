@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openo.sdno.lcm.dispatcher;
+package org.openo.sdno.lcm.dispatcher.impl;
 
+import static com.google.common.base.Preconditions.*;
 /**
  * this class represents a mapping rule.
  */
@@ -25,14 +26,14 @@ public class RequestBodyMappingRule {
      * It parses either key or value of one rule in mapping file inside its constructor.
      * One required field/property starts with "*" and follows with its name.
      * For one array field/property, "[]" will be appended immediately after its name.
-     * If the field/property or its array item is one object, its type will be specified 
+     * If the field/property or its array item is one object, its type will be specified
      * at the end with the format "#TypeName#"
      *
      * For example:
      *    1. "*mode" represents one REQUIRED field/property whose name is "mode".
-     *    2. "classifiers[]" represents one optional array whose name is "classifiers" 
+     *    2. "classifiers[]" represents one optional array whose name is "classifiers"
      *        and its array item is a scalar type.
-     *    3. "path#SfcPath#" represents one optional field/property whose name is "path" and 
+     *    3. "path#SfcPath#" represents one optional field/property whose name is "path" and
      *        it is a complex data defined in "SfcPath"
      *    4. "flows[]#TrafficFlow#" represents one optional  field/property whose name is "flows",
      *        it is an array, and its item is a complex data defined in "TrafficFlow".
@@ -45,6 +46,8 @@ public class RequestBodyMappingRule {
 
         //constructor
         public RequestBodyMappingRuleItem(final String itemStr) {
+            checkArgument((itemStr!=null)&&(itemStr.length()>0), "ItemStr cannot be null or empty.");
+
             int nameStartIndex = 0;
             int nameEndIndex = itemStr.length();
 
@@ -52,11 +55,11 @@ public class RequestBodyMappingRule {
                 required = true;
                 nameStartIndex = 1;
             } else required = false;
-            
+
             if(itemStr.matches("(.*)#(.*)#")) {
                 int objectModelNameStartIndex = 0;
                 int objectModelNameEndIndex = itemStr.length() - 1;
-                
+
                 if(itemStr.matches("(.*)\\[\\]#(.*)#")) {
                     itemType = RequestBodyMappingRuleType.OBJECT_ARRAY;
                     nameEndIndex = itemStr.indexOf("[]");

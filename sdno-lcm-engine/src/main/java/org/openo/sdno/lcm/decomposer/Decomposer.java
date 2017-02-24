@@ -18,7 +18,7 @@ package org.openo.sdno.lcm.decomposer;
 
 import org.openo.sdno.lcm.templatemodel.csar.Csar;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
-import org.openo.sdno.lcm.workplan.WorkPlan;
+import org.openo.sdno.lcm.model.workplan.WorkPlan;
 
 
 public interface Decomposer {

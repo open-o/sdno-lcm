@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.lcm.dispatcher;
+package org.openo.sdno.lcm.dispatcher.impl;
 
-import org.openo.sdno.lcm.workplan.WorkItem;
-import com.fasterxml.jackson.databind.JsonNode;
-
+import java.util.List;
+import org.openo.sdno.lcm.model.workplan.WorkPlan;
+import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionResult;
+import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionStrategy;
 
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -27,10 +28,10 @@ import org.testng.annotations.Test;
 
 @Test(groups = {"sdno-lcm-unit"})
 @ContextConfiguration(locations = {"classpath:spring-test-config.xml"})
-public class RequestBodyMapperImplTest extends AbstractTestNGSpringContextTests {
+public class DispatcherImplTest extends AbstractTestNGSpringContextTests {
 
     @Test
-    public void testWithEmptyMapSpec() {
+    public void testWithEmptyWorkPlan() {
         return;
     }
 

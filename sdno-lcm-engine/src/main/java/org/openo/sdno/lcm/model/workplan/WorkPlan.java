@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.lcm.dispatcher;
+package org.openo.sdno.lcm.model.workplan;
 
 import java.util.List;
-import org.openo.sdno.lcm.workplan.WorkPlan;
-import org.openo.sdno.lcm.workplan.WorkPlanExecutionResult;
-import org.openo.sdno.lcm.workplan.WorkPlanExecutionStrategy;
 
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.Test;
+/**
+ * This class represents a work plan
+ */
+public class WorkPlan {
 
+    /**
+     * work items that compose a work plan.
+     * Note:
+     * We should execute from the head to the tail of this list.
+     */
+    List<WorkItem> workItems;
 
-@Test(groups = {"sdno-lcm-unit"})
-@ContextConfiguration(locations = {"classpath:spring-test-config.xml"})
-public class DispatcherImplTest extends AbstractTestNGSpringContextTests {
+    //constructor
 
-    @Test
-    public void testWithEmptyWorkPlan() {
-        return;
-    }
+    //various variants of insert()
 
+    //getNext()
 }

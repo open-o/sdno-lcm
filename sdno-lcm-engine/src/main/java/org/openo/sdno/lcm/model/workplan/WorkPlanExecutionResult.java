@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.openo.sdno.lcm.workplan;
+package org.openo.sdno.lcm.model.workplan;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class WorkPlanExecutionResult {
     boolean success;  //whether the whole work plan is executed successfully.
-    List<WorkItem> succeededItems;  //work items that have been executed successfully.   
+    List<WorkItem> succeededItems;  //work items that have been executed successfully.
     List<WorkItem> failedItems;  //work items that failed during their execution.
     List<WorkItem> unprocessedItems;  //work items that haven't been executed (due to fast-fail or node dependency).
 

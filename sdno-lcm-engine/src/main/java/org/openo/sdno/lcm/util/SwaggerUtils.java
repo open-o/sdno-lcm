@@ -42,7 +42,7 @@ public class SwaggerUtils {
      * Notes:
      * Consumes defined in specific operation will override consumes in the whole swagger.
      * It is the value of Content-Type header to be sent in the corresponding Http request.
-     * Hence, althrough a list is used, there should be one value. 
+     * Hence, althrough a list is used, there should be one value.
      *
      * @param swagger Swagger Specification
      * @param apiUrl URL used for this operation
@@ -51,7 +51,7 @@ public class SwaggerUtils {
      */
     public static String getConsumeFromSwagger(final Swagger swagger, final String apiUrl, final HttpMethod method) {
         List<String> swaggerConsumes = swagger.getConsumes();
-        
+
         Operation operation = getOperationFromSwagger(swagger, apiUrl, method);
         if(operation == null) return null;
 
@@ -75,7 +75,7 @@ public class SwaggerUtils {
      */
     public static List<HeaderParameter> getHeaderParametersFromSwagger(final Swagger swagger, final String apiUrl, final HttpMethod method) {
         ArrayList<HeaderParameter> result = new ArrayList<HeaderParameter>();
-        
+
         List<Parameter> parameters = getAllParametersFromSwagger(swagger,apiUrl, method);
         for(Parameter p : parameters) {
             if(p.getIn().equals(HEADER_PARAMETER_STR)) {
@@ -90,7 +90,7 @@ public class SwaggerUtils {
     /**
      * Get a list of Path Parameters of the corresponding operation from Swagger.
      * Notes:
-     * Path parameters are the parameters locates in API Path. 
+     * Path parameters are the parameters locates in API Path.
      * We need substitute some placeholder of API path with corresponding value.
      *
      * @param swagger Swagger Specification
@@ -116,7 +116,7 @@ public class SwaggerUtils {
     /**
      * Get body model name of the corresponding operation from Swagger.
      * Notes:
-     * It is the name of the schema (model name) used by the body of Http request. 
+     * It is the name of the schema (model name) used by the body of Http request.
      * BodyParameter (hence schema) may not exist for some operations, such as GET and DELETE operations.
      *
      * @param swagger Swagger Specification
@@ -154,7 +154,7 @@ public class SwaggerUtils {
      */
     private static BodyParameter getBodyParameterFromSwagger(final Swagger swagger, final String apiUrl, final HttpMethod method) {
         List<Parameter> parameters = getAllParametersFromSwagger(swagger,apiUrl, method);
-        
+
         for(Parameter p : parameters) {
             if(p.getIn().equals(BODY_PARAMETER_STR)) {
                 BodyParameter bp = (BodyParameter)p;
@@ -223,10 +223,10 @@ public class SwaggerUtils {
     private static Path getPathFromSwagger(final Swagger swagger, final String apiUrl) {
         String baseUrl = swagger.getBasePath();
         if(baseUrl.length() > apiUrl.length()) return null;
-        
+
         Map<String, Path> paths = swagger.getPaths();
         String searchKey = apiUrl.substring(baseUrl.length());
-        
+
         return paths.get(searchKey);
     }
 }

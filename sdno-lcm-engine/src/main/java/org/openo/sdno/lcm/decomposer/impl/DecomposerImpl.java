@@ -25,7 +25,7 @@ import org.openo.sdno.lcm.templatemodel.csar.Csar;
 import org.openo.sdno.lcm.templatemodel.service.Dependency;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
 import org.openo.sdno.lcm.templatemodel.service.Node;
-import org.openo.sdno.lcm.workplan.WorkPlan;
+import org.openo.sdno.lcm.model.workplan.WorkPlan;
 import org.springframework.stereotype.Component;
 
 /**
