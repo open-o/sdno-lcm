@@ -45,13 +45,6 @@ public class TemplateInstanceParserImpl implements TemplateInstanceParser {
 
             return instancePojo;
 
-            // JsonNode nodesNode = instanceNode.path("nodes");
-            //
-            // Iterator<JsonNode> elements = nodesNode.elements();
-            // ((Iterable<JsonNode>)elements).forEach((k) -> System.out.println("element : " + k));
-
-            // StreamSupport.stream(root.spliterator(), false /* or whatever */);
-
         } catch(Exception e) {
             throw new LcmInternalException("Failed to parse serviceInstanceJson", e);
         }

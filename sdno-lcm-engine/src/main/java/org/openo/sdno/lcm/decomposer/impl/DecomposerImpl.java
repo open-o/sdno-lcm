@@ -18,6 +18,7 @@ package org.openo.sdno.lcm.decomposer.impl;
 
 import java.util.List;
 import java.util.Stack;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.decomposer.Decomposer;
@@ -46,7 +47,6 @@ public class DecomposerImpl implements Decomposer {
     public WorkPlan decompose(final Instance serviceTemplateInstance, final String operation, final Csar csar) {
 
         // PSEUDO:
-        // generate UUIDs for Nodes that will be created by atomic services
         // TODO
         // retrieve resources from BRS and fill required data as defined by the template
         // TODO
@@ -70,6 +70,7 @@ public class DecomposerImpl implements Decomposer {
             if(nodeDependencies.isEmpty()) {
                 // if there are no dependencies, add the Node to the WorkItem list as it is a leaf
                 // Node
+                node.setExamined();
                 this.addWorkItem(workplan, node);
             } else if(node.isExamined()) {
                 // or if there are dependencies but we have added them to the Node stack already add
@@ -100,25 +101,30 @@ public class DecomposerImpl implements Decomposer {
             }
         }
 
-        //// clean examined flag from all Nodes
-        while(!nodeStack.isEmpty())
-
-        {
-            Node node = nodeStack.pop();
-            node.clearExamined();
+        return workplan;
+    }
+    
+    private void decorateNode(final Node node) {
+        
+        // generate UUIDs for Nodes that will be created by atomic services
+        if(node.isConnectionNode()) {
+            String uuid = UUID.randomUUID().toString();
+            node.setProperty("id", uuid, "string");
+            log.info(String.format("Generated random ID property %s for Node %s", uuid, node.getId()));
         }
-
         // attach artifacts to WorkItems
         //// swagger spec
         //// TODO
         //// mapper spec
         //// TODO
-        return workplan;
     }
 
     private void addWorkItem(WorkPlan workplan, final Node node) {
-        // TODO Auto-generated method stub
-        int i = 0;
-        log.info(i++ + " " + node.getTypeName() + " " + node.getId());
+
+        // add required extras to the node itself eg ID property
+        this.decorateNode(node);
+        // clean examined flag from all Nodes that are added to WorkPlan
+        node.clearExamined();
+        log.info(node.getTypeName() + " " + node.getId());
     }
 }

@@ -16,6 +16,7 @@
 
 package org.openo.sdno.lcm.templatemodel.service;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -27,11 +28,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"id", "type_name", "template_name", "properties", "interfaces", "capabilities", "relationships"})
 public class Node {
+
+    private static final String SDNO_NODE_CONNECTION_ENDPOINT = "sdno.node.ConnectionEndPoint.";
+
+    private static final String SDNO_NODE_CONNECTION = "sdno.node.Connection.";
 
     private final Logger log = Logger.getLogger("Node");
 
@@ -140,6 +147,47 @@ public class Node {
             }
         }
         return childrenOfType;
+    }
+
+    /**
+     * Check if this Node is a connection Node, ie if it's type begins with 'sdno.node.Connection.'
+     * or 'sdno.node.ConnectionEndpoint.'
+     * 
+     * @throws LcmInternalException if the typeName of this Node is null or empty
+     * @return true if this is a connection Node
+     */
+    public boolean isConnectionNode() {
+        final String typeName = this.getTypeName();
+        if(null == typeName || typeName.isEmpty()) {
+            String err = String.format(
+                    "Failed to determine if Node %s is a connection Node because it's typeName is null or empty",
+                    this.getId());
+            log.severe(err);
+            throw new LcmInternalException(err);
+        }
+        return typeName.startsWith(SDNO_NODE_CONNECTION) || typeName.startsWith(SDNO_NODE_CONNECTION_ENDPOINT);
+    }
+
+    public void setProperty(String propertyName, String value, String typeName) {
+
+        try {
+            if(propertyName.isEmpty() || value.isEmpty() || typeName.isEmpty()) {
+                
+                throw new InvalidParameterException();
+            }
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode propertiesNode = this.getProperties();
+
+            String newProperty =
+                    String.format("{\"type_name\": \"%s\", \"value\": \"%s\"}", typeName, value);
+            JsonNode newPropertyNode = objectMapper.readTree(newProperty);
+
+            ((ObjectNode)propertiesNode).put(propertyName, newPropertyNode);
+
+        } catch(Exception e) {
+            throw new LcmInternalException(
+                    String.format("Failed to set property: %s, %s, %s due to %s", propertyName, typeName, value, e.getMessage()), e);
+        }
     }
 
     private final static long serialVersionUID = 2435488133886152314L;
