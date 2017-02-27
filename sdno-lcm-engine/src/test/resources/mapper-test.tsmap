@@ -1,36 +1,28 @@
 {
-  "ServiceChainPath": {
-    "id": "id",
-    "*name": "name",
-    "description": "description",
-    
-    "sfcName": "sfcName",
-    "sfcId": "sfcId",
-    "popId": "popId",
-    "*scfNeId": "scfNeId",
-    "symmetric": "symmetric",
-    "transportType": "transportType",
-    "servicePathHops[]#ServicePathHop#": "servicePathHops[]#ServicePathHopType#",
-    "classifiers[]#ServiceClassifier#": "classifiers[]#ServiceClassifierType#"
+  "ModelWithScalar": {
+    "*id": "id",
+    "name": "name",
+    "size": "length",
+    "enabled": "activated"
   },
-  "ServicePathHop": {
-    "*hopNumber": "hopNumber",
-    "*sfiId": "sfiId",
-    "sfgId": "sfgId"
+  "ModelWithScalarArray": {
+    "*id": "id",
+    "numbers[]": "numbers[]"
   },
-  "ServiceClassifier": {
-    "*interfaceName": "interfaceName",
-    "*zone": "zone",
+  "ModelWithSubModel": {
+    "*id": "id",
+    "address#Address#": "address#AddressType#"
+  },
+  "Address": {
+    "*ip": "ipv4",
+    "*port": "port"
+  },
+  "ModelWithObjectArray": {
+    "*id": "id",
     "rules[]#Rule#": "rules[]#RuleType#"
   },
   "Rule": {
     "*protocol": "protocol",
-    "*policy": "policy",
-    "*srcPort": "srcPort",
-    "*dstPort": "dstPort",
-    "*srcIp": "srcIp",
-    "*srcMask": "srcMask",
-    "*destIp": "destIp",
-    "*destMask": "destMask"
+    "*policy": "policy"
   }
 }

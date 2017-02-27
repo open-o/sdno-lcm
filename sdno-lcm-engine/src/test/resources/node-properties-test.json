@@ -1,0 +1,60 @@
+{
+  "id": {
+      "type_name": "string",
+      "value": "MyId"
+  },
+  "name": {
+      "type_name": "string",
+      "value": "MyName"
+  },
+  "length": {
+      "type_name": "integer",
+      "value": 1
+  },
+  "activated": {
+      "type_name": "boolean",
+      "value": true
+  },
+  "numbers": [
+      {
+          "type_name": "integer",
+          "value": 1
+      },
+	  {
+          "type_name": "integer",
+          "value": 2
+      }
+  ],
+  "address": {
+      "ipv4": {
+          "type_name": "string",
+          "value": "10.0.0.1"
+      },
+      "port": {
+          "type_name": "integer",
+          "value": 80
+      }
+  },
+  "rules": [
+      {
+          "protocol": {
+              "type_name": "string",
+              "value": "Protocol1"
+          },
+          "policy": {
+              "type_name": "string",
+              "value": "Policy1"
+          }
+      },
+      {
+          "protocol": {
+              "type_name": "string",
+              "value": "Protocol2"
+          },
+          "policy": {
+              "type_name": "string",
+              "value": "Policy2"
+          }
+      }
+  ]
+}
