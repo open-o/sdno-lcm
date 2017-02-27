@@ -23,7 +23,6 @@ import org.openo.sdno.lcm.templatemodel.csar.Csar;
  * them
  */
 public interface CsarHandler {
-    
 
     Csar getCsar(String csarName);
 

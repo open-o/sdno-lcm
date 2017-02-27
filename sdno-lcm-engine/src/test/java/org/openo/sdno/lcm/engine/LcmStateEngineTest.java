@@ -24,12 +24,10 @@ import java.util.Map;
 
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
-
-
-import org.openo.sdno.lcm.engine.LcmStateEngine;
-import org.openo.sdno.lcm.util.Constants;
-import org.openo.sdno.lcm.exception.ExternalComponentException;
+import org.openo.sdno.lcm.engine.impl.LcmStateEngineImpl;
+import org.openo.sdno.lcm.engine.impl.WorkflowRegistry;
 import org.openo.sdno.lcm.exception.LcmInternalException;
+import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -42,7 +40,10 @@ import org.testng.annotations.Test;
 public class LcmStateEngineTest extends AbstractTestNGSpringContextTests {
 
     @Autowired
-    LcmStateEngine lcmStateEngine;
+    LcmStateEngineImpl lcmStateEngine;
+
+    @Autowired
+    WorkflowRegistry workflowRegistry;
 
     ModelResourceApiClient mockModelResourceApiClient;
 
@@ -67,41 +68,39 @@ public class LcmStateEngineTest extends AbstractTestNGSpringContextTests {
         replay(mockModelResourceApiClient);
         replay(mockPackageResourceApiClient);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, Object> params = new HashMap<String, Object>();
         lcmStateEngine.execute(params);
     }
-    
-    @Test(expectedExceptions = ExternalComponentException.class)
+
+    /**
+     * Test no such workflow registered (create)
+     */
+    @Test(expectedExceptions = LcmInternalException.class)
     public void executeCsarName() {
 
         // simple test to exercise the code a little for now
         replay(mockModelResourceApiClient);
         replay(mockPackageResourceApiClient);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put(Constants.LCM_NBI_CSAR_NAME, "myLittleCsar");
         lcmStateEngine.execute(params);
     }
-    
+
+    /**
+     * Test no such workflow registered (non-create)
+     */
+    @Test(expectedExceptions = LcmInternalException.class)
     public void executeServiceId() {
 
         // simple test to exercise the code a little for now
         replay(mockModelResourceApiClient);
         replay(mockPackageResourceApiClient);
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put(Constants.LCM_NBI_SERVICE_ID, "slimShady");
         // workflows are not implemented
         Assert.assertNull(lcmStateEngine.execute(params));
     }
 
-    @Test(expectedExceptions = ExternalComponentException.class)
-    public void executeCreate() {
-
-        // simple test to exercise the code a little for now
-        replay(mockModelResourceApiClient);
-        replay(mockPackageResourceApiClient);
-
-        lcmStateEngine.executeCreate("csarName");
-    }
 }

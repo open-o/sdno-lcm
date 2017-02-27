@@ -18,7 +18,10 @@ package org.openo.sdno.lcm.engine;
 
 import java.util.Map;
 
-public interface LcmStateEngine {
+/**
+ * Identifies a component that can be executed to perform a workflow action.
+ */
+public interface Workflow {
 
     Map<String, Object> execute(Map<String, Object> params);
 

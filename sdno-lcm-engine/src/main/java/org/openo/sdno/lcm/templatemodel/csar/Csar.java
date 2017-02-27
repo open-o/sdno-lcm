@@ -16,8 +16,49 @@
 
 package org.openo.sdno.lcm.templatemodel.csar;
 
-
 public class Csar {
- 
-//    hold artifacts etc
+
+    /**
+     * @param csarId
+     * @param name
+     */
+    public Csar(String csarId, String name, String downloadUri) {
+        super();
+        this.csarId = csarId;
+        this.name = name;
+        this.downloadUri = downloadUri;
+    }
+
+    private String csarId = null;
+
+    private String name = null;
+
+    private String downloadUri = null;
+
+    
+    public String getDownloadUri() {
+        return downloadUri;
+    }
+
+    
+    public void setDownloadUri(String downloadUri) {
+        this.downloadUri = downloadUri;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCsarId() {
+        return csarId;
+    }
+
+    public void setCsarId(String csarId) {
+        this.csarId = csarId;
+    }
+
 }

@@ -32,13 +32,14 @@ public class NsApiControllerFacade {
 
     private LcmStateEngine lcmStateEngine;
 
-    public Map<String, Object> nsCreationPost(Map<String, String> params) {
+    public Map<String, Object> nsCreationPost(Map<String, Object> params) {
 
         log.info("begin nsCreationPost");
         log.fine("params: " + params.toString());
 
         // check if the csar id is included in params
-        if(params.containsKey(Constants.LCM_NBI_CSAR_NAME) && !params.get(Constants.LCM_NBI_CSAR_NAME).isEmpty()) {
+        if(params.containsKey(Constants.LCM_NBI_CSAR_NAME)
+                && !((String)params.get(Constants.LCM_NBI_CSAR_NAME)).isEmpty()) {
 
             // need to fill default values for input params because this create doesn't correspond
             // exactly to our semantic of create in our state machine

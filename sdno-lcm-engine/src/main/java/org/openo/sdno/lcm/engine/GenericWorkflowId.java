@@ -16,10 +16,22 @@
 
 package org.openo.sdno.lcm.engine;
 
-import java.util.Map;
+/**
+ * @author mark
+ */
+public enum GenericWorkflowId {
 
-public interface LcmStateEngine {
+    CREATE("create"), DEPLOY("deploy"), DEPLOYCREATED("deployCreated"), GET("get"), UPDATECREATED("updateCreated"),
+    UPDATEDEPLOYED("updateDeployed"), UNDEPLOY("undeploy"), DELETECREATED("deleteCreated"),
+    DELETEDEPLOYED("deleteDeployed");
 
-    Map<String, Object> execute(Map<String, Object> params);
+    private String idString;
 
+    GenericWorkflowId(String idString) {
+        this.idString = idString;
+    }
+    
+    public String toString() {
+        return idString;
+    }
 }

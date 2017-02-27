@@ -16,6 +16,7 @@
 
 package org.openo.sdno.lcm.webapp;
 
+import org.openo.sdno.lcm.engine.impl.WorkflowRegistry;
 import org.openo.sdno.lcm.msbclient.MsbServiceApiClient;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
@@ -41,6 +42,7 @@ public class Swagger2SpringBoot implements CommandLineRunner {
 	public static void main(String[] args) throws Exception {
 		ConfigurableApplicationContext context = new SpringApplication(Swagger2SpringBoot.class).run(args);
 		context.getBean(MsbServiceApiClient.class).register();
+		context.getBean(WorkflowRegistry.class).registerWorkflows();
 	}
 
 	class ExitException extends RuntimeException implements ExitCodeGenerator {

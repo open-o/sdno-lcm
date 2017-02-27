@@ -16,10 +16,24 @@
 
 package org.openo.sdno.lcm.engine;
 
-import java.util.Map;
+/**
+ * Components implementing this can register Workflows to the WorkflowRegistry. Workflows could be
+ * Generic Java or custom.
+ */
+public interface RegisterWorkflow {
 
-public interface LcmStateEngine {
+    /**
+     * Return the Workflow that can be registered by a callback from the WorkflowRegistry.
+     * 
+     * @return the List of registered Workflow
+     */
+    public Workflow getWorkflowToRegister();
 
-    Map<String, Object> execute(Map<String, Object> params);
+    /**
+     * Get the id for the registered workflow.
+     * 
+     * @return the id
+     */
+    public String getWorkflowId();
 
 }

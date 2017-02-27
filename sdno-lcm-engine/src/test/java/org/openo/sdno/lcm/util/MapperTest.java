@@ -26,168 +26,169 @@ import org.testng.annotations.Test;
 @SuppressWarnings("unused")
 public class MapperTest {
 
-	// private Map<String,String> map;
+    // private Map<String,String> map;
 
-	private Mapper mapper = new Mapper();
+    private Mapper mapper = new Mapper();
 
-	@DataProvider(name = "successProvider")
-	public Object[][] successProvider() {
-		return new Object[][] { { new Bean1() }, { new Bean2() }, { new Bean4() }, { new Bean5() } };
-	}
+    @DataProvider(name = "successProvider")
+    public Object[][] successProvider() {
+        return new Object[][] {{new Bean1()}, {new Bean2()}, {new Bean4()}, {new Bean5()}};
+    }
 
-	@Test(dataProvider = "successProvider", groups = { "sdno-lcm-unit" })
-	public void beanToMap(Beany bean) {
+    @Test(dataProvider = "successProvider", groups = {"sdno-lcm-unit"})
+    public void beanToMap(Beany bean) {
 
-		Map<String, String> mapperResultMap = mapper.beanToMap(bean);
-		Map<String, String> expectMap = bean.obtainExpectMap();
-		for (String expectKey : expectMap.keySet()) {
+        Map<String, Object> mapperResultMap = mapper.beanToMap(bean);
+        Map<String, String> expectMap = bean.obtainExpectMap();
+        for(String expectKey : expectMap.keySet()) {
 
-			if (null == expectMap.get(expectKey)) {
-				Assert.isNull(mapperResultMap.get(expectKey));
-			} else {
-				Assert.isTrue((null != mapperResultMap.get(expectKey))
-						&& mapperResultMap.get(expectKey).equals(expectMap.get(expectKey)));
-			}
-		}
-	}
+            if(null == expectMap.get(expectKey)) {
+                Assert.isNull(mapperResultMap.get(expectKey));
+            } else {
+                Assert.isTrue((null != mapperResultMap.get(expectKey))
+                        && mapperResultMap.get(expectKey).equals(expectMap.get(expectKey)));
+            }
+        }
+    }
 
-	// @Test(dataProvider = "dp")
-	// public void beanToMapException]() {
-	//
-	// throw new RuntimeException("Test not implemented");
-	// }
-	//
+    // @Test(dataProvider = "dp")
+    // public void beanToMapException]() {
+    //
+    // throw new RuntimeException("Test not implemented");
+    // }
+    //
 
-	private interface Beany {
+    private interface Beany {
 
-		/**
-		 * Should be ignored by the mapper as it is a method not property
-		 * 
-		 * @return the expected map of values from mapping an instance of the
-		 *         bean
-		 */
-		Map<String, String> obtainExpectMap();
-	}
+        /**
+         * Should be ignored by the mapper as it is a method not property
+         * 
+         * @return the expected map of values from mapping an instance of the
+         *         bean
+         */
+        Map<String, String> obtainExpectMap();
+    }
 
-	private class Bean1 implements Beany {
+    private class Bean1 implements Beany {
 
-		private String stringA = "str";
+        private String stringA = "str";
 
-		public Map<String, String> obtainExpectMap() {
+        public Map<String, String> obtainExpectMap() {
 
-			Map<String, String> expectMap = new HashMap<String, String>();
-			expectMap.put("stringA", "str");
-			return expectMap;
-		}
+            Map<String, String> expectMap = new HashMap<String, String>();
+            expectMap.put("stringA", "str");
+            return expectMap;
+        }
 
-		public String getStringA() {
-			return stringA;
-		}
+        public String getStringA() {
+            return stringA;
+        }
 
-		public void setStringA(String stringA) {
-			this.stringA = stringA;
-		}
-	}
+        public void setStringA(String stringA) {
+            this.stringA = stringA;
+        }
+    }
 
-	private class Bean2 implements Beany {
+    private class Bean2 implements Beany {
 
-		private String aString = "str";
-		private String anotherString = "strrr";
+        private String aString = "str";
 
-		public Map<String, String> obtainExpectMap() {
+        private String anotherString = "strrr";
 
-			Map<String, String> expectMap = new HashMap<String, String>();
-			expectMap.put("aString", "str");
-			expectMap.put("anotherString", "strrr");
-			return expectMap;
-		}
+        public Map<String, String> obtainExpectMap() {
 
-		public String getaString() {
-			return aString;
-		}
+            Map<String, String> expectMap = new HashMap<String, String>();
+            expectMap.put("aString", "str");
+            expectMap.put("anotherString", "strrr");
+            return expectMap;
+        }
 
-		public void setaString(String aString) {
-			this.aString = aString;
-		}
+        public String getaString() {
+            return aString;
+        }
 
-		public String getAnotherString() {
-			return anotherString;
-		}
+        public void setaString(String aString) {
+            this.aString = aString;
+        }
 
-		void setAnotherString(String anotherString) {
-			this.anotherString = anotherString;
-		}
-	}
+        public String getAnotherString() {
+            return anotherString;
+        }
 
-	// mapping fails as there are no properties
-	private class Bean3 implements Beany {
+        void setAnotherString(String anotherString) {
+            this.anotherString = anotherString;
+        }
+    }
 
-		public Map<String, String> obtainExpectMap() {
+    // mapping fails as there are no properties
+    private class Bean3 implements Beany {
 
-			Map<String, String> expectMap = new HashMap<String, String>();
-			return expectMap;
-		}
-	}
+        public Map<String, String> obtainExpectMap() {
 
-	private class Bean4 implements Beany {
+            Map<String, String> expectMap = new HashMap<String, String>();
+            return expectMap;
+        }
+    }
 
-		private String nullStr = null;
+    private class Bean4 implements Beany {
 
-		public Map<String, String> obtainExpectMap() {
+        private String nullStr = null;
 
-			Map<String, String> expectMap = new HashMap<String, String>();
-			expectMap.put("nullStr", null);
-			return expectMap;
-		}
+        public Map<String, String> obtainExpectMap() {
 
-		public String getNullStr() {
-			return nullStr;
-		}
+            Map<String, String> expectMap = new HashMap<String, String>();
+            expectMap.put("nullStr", null);
+            return expectMap;
+        }
 
-		void setNullStr(String nullStr) {
-			this.nullStr = nullStr;
-		}
-	}
+        public String getNullStr() {
+            return nullStr;
+        }
 
-	private class Bean5 implements Beany {
+        void setNullStr(String nullStr) {
+            this.nullStr = nullStr;
+        }
+    }
 
-		private String emptyStr = "";
+    private class Bean5 implements Beany {
 
-		public Map<String, String> obtainExpectMap() {
+        private String emptyStr = "";
 
-			Map<String, String> expectMap = new HashMap<String, String>();
-			expectMap.put("emptyStr", "");
-			return expectMap;
-		}
+        public Map<String, String> obtainExpectMap() {
 
-		public String getEmptyStr() {
-			return emptyStr;
-		}
+            Map<String, String> expectMap = new HashMap<String, String>();
+            expectMap.put("emptyStr", "");
+            return expectMap;
+        }
 
-		void setEmptyStr(String emptyStr) {
-			this.emptyStr = emptyStr;
-		}
-	}
+        public String getEmptyStr() {
+            return emptyStr;
+        }
 
-	// mapping fails as Integer is not handled
-	private class Bean6 implements Beany {
+        void setEmptyStr(String emptyStr) {
+            this.emptyStr = emptyStr;
+        }
+    }
 
-		private int anInt = 123;
+    // mapping fails as Integer is not handled
+    private class Bean6 implements Beany {
 
-		public Map<String, String> obtainExpectMap() {
+        private int anInt = 123;
 
-			Map<String, String> expectMap = new HashMap<String, String>();
-			expectMap.put("anInt", "123");
-			return expectMap;
-		}
+        public Map<String, String> obtainExpectMap() {
 
-		public int getAnInt() {
-			return anInt;
-		}
+            Map<String, String> expectMap = new HashMap<String, String>();
+            expectMap.put("anInt", "123");
+            return expectMap;
+        }
 
-		void setAnInt(int anInt) {
-			this.anInt = anInt;
-		}
-	}
+        public int getAnInt() {
+            return anInt;
+        }
+
+        void setAnInt(int anInt) {
+            this.anInt = anInt;
+        }
+    }
 
 }
