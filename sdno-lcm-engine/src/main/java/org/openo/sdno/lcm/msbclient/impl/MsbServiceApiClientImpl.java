@@ -86,15 +86,16 @@ public class MsbServiceApiClientImpl implements MsbServiceApiClient {
         microServiceInfo.setLbPolicy(LbPolicyEnum.ROUND_ROBIN);
 
         log.info("LCM registration info for MSB:\n" + microServiceInfo.toString());
+        MSBServiceResourceApi msbServiceResourceApi = this.getMSBServiceResourceApi(); 
         try {
             // false param so we remove nslcm if it was registered!
             MicroServiceFullInfo registration =
-                    getMSBServiceResourceApi().addMicroService(microServiceInfo, false, null);
+                    msbServiceResourceApi.addMicroService(microServiceInfo, false, null);
             log.info("Registration status " + registration.getStatus());
             return registration;
         } catch(Exception e) {
             log.severe("Failed to register with the microservice bus at "
-                    + getMSBServiceResourceApi().getApiClient().getBasePath() + " due to " + e.getMessage());
+                    + msbServiceResourceApi.getApiClient().getBasePath() + " due to " + e.getMessage());
             // throw new ExternalComponentException("Failed to add microservice", e);
             return null;
         }
