@@ -167,6 +167,20 @@ public class Node {
         }
         return typeName.startsWith(SDNO_NODE_CONNECTION) || typeName.startsWith(SDNO_NODE_CONNECTION_ENDPOINT);
     }
+    
+    /**
+     * Get the value for a property within the Properties JsonNode
+     * 
+     * @param propertyName the name of the property to get
+     * @return the value of the property as a String
+     */
+    public String getPropertyValue(String propertyName) {
+        
+        // TODO check error handling logic
+        JsonNode propertiesNode = this.getProperties();
+        JsonNode propertyNode = propertiesNode.get(propertyName);
+        return propertyNode.get("value").asText();
+    }
 
     public void setProperty(String propertyName, String value, String typeName) {
 

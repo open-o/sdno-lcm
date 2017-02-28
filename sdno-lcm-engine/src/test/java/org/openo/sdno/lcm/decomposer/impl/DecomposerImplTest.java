@@ -20,9 +20,12 @@ import java.nio.charset.Charset;
 
 import org.apache.commons.io.FileUtils;
 import org.openo.sdno.lcm.decomposer.Decomposer;
+import org.openo.sdno.lcm.model.workplan.WorkItem;
+import org.openo.sdno.lcm.model.workplan.WorkPlan;
 import org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser;
 import org.openo.sdno.lcm.templateinstanceparser.impl.TemplateInstanceParserImpl;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -44,7 +47,29 @@ public class DecomposerImplTest {
     }
 
     @Test
-    public void decompose() {
-        decomposer.decompose(instance, "deploy", null);
+    public void decomposeDeployTest() {
+        WorkPlan workplan = decomposer.decompose(instance, "deploy", null);
+        this.checkWorkItem(0, workplan.getWorkItem(0), "vpc_");
+        this.checkWorkItem(1, workplan.getWorkItem(1), "vpcSubnet_");
+        this.checkWorkItem(2, workplan.getWorkItem(2), "thinCpeConnectionEndPoint_");
+        this.checkWorkItem(3, workplan.getWorkItem(3), "vCpeConnectionEndPoint_");
+        this.checkWorkItem(4, workplan.getWorkItem(4), "site_");
+        this.checkWorkItem(5, workplan.getWorkItem(5), "vlan_");
+        this.checkWorkItem(6, workplan.getWorkItem(6), "siteSubnet_");
+        this.checkWorkItem(7, workplan.getWorkItem(7), "vpn_");
+        this.checkWorkItem(8, workplan.getWorkItem(8), "siteGateway_");
+        this.checkWorkItem(9, workplan.getWorkItem(9), "vpcGateway_");
+        this.checkWorkItem(10, workplan.getWorkItem(10), "vpnConnection_");
+        this.checkWorkItem(11, workplan.getWorkItem(11), "sfc_");
+    }
+
+    private void checkWorkItem(int index, WorkItem workItem, String prefix) {
+        String workItemId = workItem.getNode().getId();
+        Assert.assertTrue(workItemId.startsWith(prefix),
+                String.format(
+                        "The Node in the WorkItem at index %s did not have the expected id prefix %s. The Node id is: %s",
+                        index, prefix, workItemId));
+        // check the id has been added
+        Assert.assertNotNull(workItem.getNode().getPropertyValue("id"));
     }
 }

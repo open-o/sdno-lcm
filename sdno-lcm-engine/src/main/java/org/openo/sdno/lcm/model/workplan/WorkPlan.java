@@ -16,7 +16,10 @@
 
 package org.openo.sdno.lcm.model.workplan;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.openo.sdno.lcm.exception.LcmInternalException;
 
 /**
  * This class represents a work plan
@@ -28,11 +31,23 @@ public class WorkPlan {
      * Note:
      * We should execute from the head to the tail of this list.
      */
-    List<WorkItem> workItems;
+    List<WorkItem> workItems = new ArrayList<>();
 
-    //constructor
+    // constructor
 
-    //various variants of insert()
+    // various variants of insert()
 
-    //getNext()
+    public void insert(WorkItem workItem) {
+
+        workItems.add(workItem);
+    }
+    // getNext()
+
+    public WorkItem getWorkItem(int index) {
+        if(index > workItems.size()) {
+
+            throw new LcmInternalException("No workitem exists with index " + index);
+        }
+        return workItems.get(index);
+    }
 }

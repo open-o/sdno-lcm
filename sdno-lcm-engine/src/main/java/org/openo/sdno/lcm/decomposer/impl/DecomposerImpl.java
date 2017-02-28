@@ -22,15 +22,21 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.decomposer.Decomposer;
+import org.openo.sdno.lcm.model.workplan.WorkItem;
+import org.openo.sdno.lcm.model.workplan.WorkPlan;
 import org.openo.sdno.lcm.templatemodel.csar.Csar;
 import org.openo.sdno.lcm.templatemodel.service.Dependency;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
 import org.openo.sdno.lcm.templatemodel.service.Node;
-import org.openo.sdno.lcm.model.workplan.WorkPlan;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+import io.swagger.models.HttpMethod;
+import io.swagger.models.Swagger;
+
 /**
- * @author mark
+ *
  */
 @Component
 public class DecomposerImpl implements Decomposer {
@@ -103,9 +109,9 @@ public class DecomposerImpl implements Decomposer {
 
         return workplan;
     }
-    
+
     private void decorateNode(final Node node) {
-        
+
         // generate UUIDs for Nodes that will be created by atomic services
         if(node.isConnectionNode()) {
             String uuid = UUID.randomUUID().toString();
@@ -125,6 +131,11 @@ public class DecomposerImpl implements Decomposer {
         this.decorateNode(node);
         // clean examined flag from all Nodes that are added to WorkPlan
         node.clearExamined();
+        Swagger swaggerSpec = new Swagger();
+        JsonNode mapperSpec = node.getProperties();
+        String apiUrl = "/blah/v1";
+        HttpMethod method = HttpMethod.GET;
+        workplan.insert(new WorkItem(node, swaggerSpec, mapperSpec, apiUrl, method));
         log.info(node.getTypeName() + " " + node.getId());
     }
 }
