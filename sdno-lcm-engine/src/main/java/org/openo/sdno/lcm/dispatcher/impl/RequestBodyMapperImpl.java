@@ -67,7 +67,8 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
 
         //prepare input parameters needed by mapping();
         JsonNode mapperSpec = workItem.getMapperSpec();
-        String modelName = SwaggerUtils.getBodyModelNameFromSwagger(workItem.getSwaggerSpec(), workItem.getApiUrl(), workItem.getMethod());
+        String modelName = SwaggerUtils.getBodyModelNameFromSwagger(workItem.getSwaggerSpec(),
+                                                                    workItem.getApiUrl(), workItem.getMethod());
 
         JsonNode nodeProperties = workItem.getNode().getProperties();
 
@@ -81,8 +82,11 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
         try {
             resultNode = (JsonNode) new ObjectMapper().readTree(objectNode.toString());
         } catch(IOException e) {
-            logger.severe(String.format("Unexpected error happens when converting ObjectNode to JsonNode. ObjectNode: %s", objectNode.toString()));
-            throw new LcmInternalException(e.toString());
+            logger.severe(
+                String.format("Unexpected error happens when converting ObjectNode to JsonNode. ObjectNode: %s",
+                              objectNode.toString()));
+
+            throw new LcmInternalException("JSON format error.", e);
         }
         return resultNode;
     }
@@ -109,8 +113,10 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
         try {
             mappingRules = (ObjectNode) new ObjectMapper().readTree((mapperSpec.get(modelName)).toString());
         } catch(IOException e) {
-            logger.severe(String.format("Unexpected error happens when converting mapper specification to ObjectNode. Mapper Spec: %s", mapperSpec.get(modelName).toString()));
-            throw new LcmInternalException(e.toString());
+            logger.severe(
+                String.format("Unexpected error happens when converting mapper spec to ObjectNode. Mapper Spec: %s",
+                              mapperSpec.get(modelName).toString()));
+            throw new LcmInternalException("JSON format error.", e);
         }
 
         //process mapping rules one by one
@@ -155,8 +161,10 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
                     try {
                         valueArray = (ArrayNode) new ObjectMapper().readTree(valueNode.toString());
                     } catch(IOException e) {
-                        logger.severe(String.format("Unexpected error happens when converting value node to ArrayNode. value node: %s", valueNode.toString()));
-                        throw new LcmInternalException(e.toString());
+                        logger.severe(
+                            String.format("Unexpected error when converting value node to ArrayNode. value node: %s",
+                                          valueNode.toString()));
+                        throw new LcmInternalException("JSON format error", e);
                     }
 
                     //mapping array items one by one
@@ -176,8 +184,10 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
                     try {
                         valueArray = (ArrayNode) new ObjectMapper().readTree(valueNode.toString());
                     } catch(IOException e) {
-                        logger.severe(String.format("Unexpected error happens when converting value node to ArrayNode. value node: %s", valueNode.toString()));
-                        throw new LcmInternalException(e.toString());
+                        logger.severe(
+                            String.format("Unexpected error when converting value node to ArrayNode. value node: %s",
+                                          valueNode.toString()));
+                        throw new LcmInternalException("JSON format error", e);
                     }
 
                     //mapping array items (sub-model) one by one
@@ -190,7 +200,8 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
 
                     break;
                 default:
-                    throw new LcmInternalException(String.format("Unknown API Field Type is found in mapping rule. mapping key: %s", keyStr));
+                    throw new LcmInternalException(
+                        String.format("Unknown API Field Type is found in mapping rule. mapping key: %s", keyStr));
             }
         }
     }
