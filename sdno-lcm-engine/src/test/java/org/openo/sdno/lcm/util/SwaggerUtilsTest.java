@@ -33,6 +33,7 @@ import io.swagger.util.Yaml;
 import io.swagger.models.HttpMethod;
 import io.swagger.models.parameters.BodyParameter;
 import io.swagger.models.parameters.PathParameter;
+import io.swagger.models.parameters.QueryParameter;
 import io.swagger.models.parameters.HeaderParameter;
 
 /**
@@ -95,6 +96,12 @@ public class SwaggerUtilsTest extends AbstractTestNGSpringContextTests {
     public void testGetPathParametersFromNonexistOperation() {
         List<PathParameter> pps = SwaggerUtils.getPathParametersFromSwagger(swagger, "/openoapi/sdnoservicechain/v1/XXX", HttpMethod.POST);
         assertEquals(pps.size(), 0, "Unexpected path parameters are returned!");
+    }
+
+    @Test
+    public void testGetNonexistQueryParameters() {
+        List<QueryParameter> qps = SwaggerUtils.getQueryParametersFromSwagger(swagger, "/openoapi/sdnoservicechain/v1/paths", HttpMethod.POST);
+        assertEquals(qps.size(), 0, "Unexpected query parameters are returned!");
     }
 
     @Test

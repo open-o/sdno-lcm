@@ -24,7 +24,9 @@ public class Constants {
     public static final String COMMON_TOSCA_ARIA_BASE_PATH = "common-tosca-aria.base-path";
     
     public static final String COMMON_SERVICES_MSB_BASE_PATH = "common-services-msb.base-path";
-    
+
+    public static final String COMMON_SERVICES_MSB_BASE_URL = "common-services-msb.base4apicall";
+
     public static final String SDNO_BRS_SERVICEINVENTORY_BASE_PATH = "sdno-brs.serviceinventory.base-path";
     
     public static final String SDNO_LCM_DEFAULT_IP = "sdno-lcm.default-ip";

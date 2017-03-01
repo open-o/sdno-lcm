@@ -21,6 +21,7 @@ import org.apache.http.HttpResponse;
 import io.swagger.models.HttpMethod;
 import io.swagger.models.parameters.HeaderParameter;
 import io.swagger.models.parameters.PathParameter;
+import io.swagger.models.parameters.QueryParameter;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.openo.sdno.lcm.exception.ExternalComponentException;
@@ -33,13 +34,16 @@ public interface GenericApiClient {
      * @param apiUrl the original api url
      * @param method HTTP method to be used
      * @param contentTypeValue the value of ContentType header
+     * @param properties node properties
+     * @param pathParameters Path Parameters
+     * @param queryParameters Query Parameters
      * @param headers header parameters in swagger
-     * @param pathParameters path parameters in swagger
      * @param body the request body (in JSON format)
      * @return HttpResponse from the service to be called.
      *         Note that ExternalComponentException will be thrown if exceptions happen during service call;
      */
     HttpResponse execute(final String apiUrl, final HttpMethod method,
-                         final String contentTypeValue, final List<HeaderParameter> headers,
-                         final List<PathParameter> pathParameters, final JsonNode body);
+                                final String contentTypeValue, final JsonNode properties,
+                                final List<PathParameter> pathParameters, List<QueryParameter> queryParameters,
+                                final List<HeaderParameter> headers, final JsonNode body);
 }

@@ -28,6 +28,7 @@ import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.BodyParameter;
 import io.swagger.models.parameters.HeaderParameter;
 import io.swagger.models.parameters.PathParameter;
+import io.swagger.models.parameters.QueryParameter;
 
 /**
  * This class provides methods for extracting information from Swagger conveniently.
@@ -36,6 +37,7 @@ public class SwaggerUtils {
     private static final String BODY_PARAMETER_STR = "body";
     private static final String PATH_PARAMETER_STR = "path";
     private static final String HEADER_PARAMETER_STR = "header";
+    private static final String QUERY_PARAMETER_STR = "query";
 
     /**
      * Get consume of the corresponding operation from Swagger.
@@ -86,6 +88,28 @@ public class SwaggerUtils {
         return result;
     }
 
+    /**
+     * Get a list of Query Parameters of the corresponding operation from Swagger.
+     * Notes:
+     * Query parameters determines the query parameters in the path.
+     *
+     * @param swagger Swagger Specification
+     * @param apiUrl URL used for this operation
+     * @param method HttpMethod used for this operation
+     * @return a list of query parameters defined in the corresponding operation.
+     */
+    public static List<QueryParameter> getQueryParametersFromSwagger(final Swagger swagger, final String apiUrl, final HttpMethod method) {
+        ArrayList<QueryParameter> result = new ArrayList<QueryParameter>();
+
+        List<Parameter> parameters = getAllParametersFromSwagger(swagger,apiUrl, method);
+        for(Parameter p : parameters) {
+            if(p.getIn().equals(QUERY_PARAMETER_STR)) {
+                QueryParameter hp = (QueryParameter)p;
+                result.add(hp);
+            }
+        }
+        return result;
+    }
 
     /**
      * Get a list of Path Parameters of the corresponding operation from Swagger.

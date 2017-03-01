@@ -29,12 +29,14 @@ import io.swagger.models.Swagger;
 import io.swagger.models.HttpMethod;
 import io.swagger.models.parameters.HeaderParameter;
 import io.swagger.models.parameters.PathParameter;
+import io.swagger.models.parameters.QueryParameter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
 import org.apache.http.HttpResponse;
 import org.openo.sdno.lcm.genericclient.GenericApiClient;
 import org.openo.sdno.lcm.exception.ExternalComponentException;
+import org.openo.sdno.lcm.exception.LcmInternalException;
 
 import org.openo.sdno.lcm.dispatcher.Dispatcher;
 import org.openo.sdno.lcm.dispatcher.RequestBodyMapper;
@@ -89,7 +91,6 @@ public class DispatcherImpl implements Dispatcher {
         return result;
     }
 
-
     /**
      * Execute one work item
      * @param workItem the work item to be executed
@@ -101,26 +102,47 @@ public class DispatcherImpl implements Dispatcher {
         String apiUrl = workItem.getApiUrl();
         HttpMethod method = workItem.getMethod();
 
-        //generate headers to be sent in HttpRequest
+        //prepare headers to be sent in HttpRequest
         String contentTypeValue = SwaggerUtils.getConsumeFromSwagger(swagger, apiUrl, method);
-        List<HeaderParameter> headers = SwaggerUtils.getHeaderParametersFromSwagger(swagger, apiUrl, method);
+        List<HeaderParameter> headerParameters = 
+            SwaggerUtils.getHeaderParametersFromSwagger(swagger, apiUrl, method);
 
-        //generate the final url with path parameters
-        List<PathParameter> pathParameters = SwaggerUtils.getPathParametersFromSwagger(swagger, apiUrl, method);
+        //prepare path and query parameters;
+        List<QueryParameter> queryParameters = 
+            SwaggerUtils.getQueryParametersFromSwagger(swagger, apiUrl, method);
+        List<PathParameter> pathParameters =
+            SwaggerUtils.getPathParametersFromSwagger(swagger, apiUrl, method);
 
         //generate request body if needed
         JsonNode body = requestBodyMapper.map(workItem);
 
-        //invoke API
         try {
-            HttpResponse response = genericApiClient.execute(apiUrl, method, 
-                                                             contentTypeValue, headers, pathParameters, body);
+             //invoke API
+            log.info(String.format("Start to call the following service API: %s; Method: %s",
+                                   apiUrl, method.toString()));
+
+            HttpResponse response = genericApiClient.execute(apiUrl, method, contentTypeValue,
+                                                             workItem.getNode().getProperties(),
+                                                             pathParameters, queryParameters,
+                                                             headerParameters, body);
             //put response message into work item
             workItem.setResponse(response.toString());
+
+            log.info(String.format("Response from the service for API: %s; Method: %s, Response: %s",
+                                   apiUrl, method.toString(), response.toString()));
 
             //judge success or not and return;
             return isSuccessful(response);
         } catch(ExternalComponentException e) {
+            log.severe(
+                String.format("External service failed. Service API: %s; Method: %s, Exception: %s; ",
+                                   apiUrl, method.toString(), e.toString()));
+            workItem.setResponse(e.toString());
+            return false;
+        }  catch(LcmInternalException e) {
+            log.severe(
+                String.format("Dispatcher itself failed. Service API: %s; Method: %s, Exception: %s; ",
+                                   apiUrl, method.toString(), e.toString()));
             workItem.setResponse(e.toString());
             return false;
         }
@@ -135,14 +157,15 @@ public class DispatcherImpl implements Dispatcher {
      * @param response HttpResponse from the called service
      * @return whether this call is successful.
      */
-    private boolean isSuccessful(HttpResponse response) {
+    protected boolean isSuccessful(HttpResponse response) {
         int statusCode = response.getStatusLine().getStatusCode();
-        if((statusCode >=200) && (statusCode<300)) {
+        if((statusCode>=200) && (statusCode<300)) {
             return true;
         } else {
             return false;
         }
     }
+
 
     @Autowired
     public void setRequestBodyMapper(RequestBodyMapper requestBodyMapper) {
