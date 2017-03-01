@@ -24,46 +24,56 @@ metadata:
 # macros
 # ****************************************************************************    
 dsl_definitions:
-
+        
     BaseServiceInfo: &BaseServiceInfo
         adminStatus:
             type: AdministrationStateType
             description: Used to administratively activate or deactivate already deployed service object
-            default: none
+            default: 'none'
         operStatus:
             type: OperationalStateType
             description: Used to indicate if the service entity is operational.
-            default: none
+            default: 'none'
+        syncStatus:
+            type: SyncStateType
+            description: Used to indicate of the service entity is in sync or out of sync with the network
+            default: 'none'
         actionState:
             type: ActionStateType
             description: Stores the result of the last action on the service object.
-            default: none
+            default: 'none'
         statusReason:
             type: string
-            description: In case of ERROR actionState, it will have the reason for the error.
+            description: In case of ERROR actionState, it will have the reason for the error. 
                          Otherwise its empty. It is required to make create process to be asynchronous.
-            default: none
+            default: 'none'
         createTime:
             type: string
             description: create time
-            default: none 
+            default: 'none'
         updateTime:
             type: string
             description: update time
-            default: none 
+            default: 'none' 
         ownerID:
             type: string
             description: ID of the owner of the object, can contain controllerID
-            default: sdno 
+            default: 'sdno' 
         tenantID:
             type: string
             description: ID of the tenant
-            default: none
+            default: 'none'
         location:
             type: string
             description: Location if on single location
-            default: none 
-
+            default: 'none'
+        additionalInfo:
+            type: list
+            #max size = 1000
+            entry_schema:                     
+                type: AdditionalInfoRow
+            required: false
+ 
 # *****************************************************************************
 # data types
 # *****************************************************************************
@@ -76,7 +86,7 @@ data_types:
             these generic ones.
         constraints:
             - valid_values: ['create','deploy','get','update','undeploy','delete']
-
+ 
     ActionStateType:
         derived_from: string
         description: State and/or result of the generic API operations. In the case of the exception, additional information may be present in the statusReason property.
@@ -104,13 +114,38 @@ data_types:
             Operational State that indicates if already deployed and activated connectivity service object or its component is operational or not.
         constraints:
             - valid_values: ['none','up','down', 'partially_down']
+
+ 
+    SyncStateType:
+        derived_from: string
+        description: >-
+            Sync State that indicates if already deployed and activated connectivity service object is in sync or out of sync with the network.
+        constraints:
+            - valid_values: ['none', 'sync', 'out-sync']
  
     DirectionalityType:
         derived_from: string
         description: Directionality of the connectivity service flow in the endpoint or port.
         constraints:
             - valid_values: ['input','output','bidirectional']
-
+ 
+    AdditionalInfoRow:
+        derived_from: tosca.datatypes.Root
+        description: Row in the additional info list
+        properties:
+            id:
+                type: string
+                default: 'none'
+            name:
+                type: string
+                default: 'none'
+            value:
+                type: string
+                default: 'none'
+            firstParentUuid:
+                type: string
+                default: 'none'
+ 
     StateMachineRow:
         derived_from: tosca.datatypes.Root
         description: Row in the state transition table
@@ -133,10 +168,10 @@ data_types:
                 entry_schema:
                     type: StateMachineRow
 
-
 # *****************************************************************************
 # capability types
 # *****************************************************************************                
+                
 capability_types:
     # ConnectionEndPoint can be derived from tosca.capabilities.Endpoint ?
     sdno.capability.ConnectionEndPoint:
@@ -145,7 +180,7 @@ capability_types:
     # ServiceEndPoint can be derived from tosca.capabilities.Endpoint ?
     sdno.capability.ServiceEndPoint:
             derived_from: tosca.capabilities.Root
-
+      
     sdno.capability.Realizes:
          derived_from: tosca.capabilities.Root
 
@@ -154,7 +189,7 @@ capability_types:
 
     sdno.capability.Bindable:
          derived_from: tosca.capabilities.Node
-
+ 
 # *****************************************************************************
 # interface_types
 # *****************************************************************************                
@@ -166,20 +201,20 @@ interface_types:
         update:
             description: Standard lifecycle configure and update operation.
         deploy:
-            description: Standard lifecycle start operation.
+            description: Standard lifecycle deploy operation.
         undeploy:
-            description: Standard lifecycle stop operation.
+            description: Standard lifecycle undeploy operation.
         delete:
             description: Standard lifecycle delete operation.
         get:
-            description: Standard lifecycle delete operation.
+            description: Standard lifecycle get operation.
 
 
 # *****************************************************************************
 # relationship types
 # *****************************************************************************
 relationship_types:
-
+ 
     sdno.relationship.ServiceEndPoint:
         description: >-
             The relationship specifies which ServiceEndPoints are terminating the ConnectivityService.
@@ -198,12 +233,12 @@ relationship_types:
                 type: DirectionalityType
                 required: false
         valid_target_types: [sdno.capability.ServiceEndPoint]
-
+              
     sdno.relationship.ConnectionEndPoint:
         description: >-
             The relationship specifies which ConnectionEndPonts are terminating the Connection.
             The association of the Connection to ConnectionEndPoints is made via the Ports of the Connection,
-            where each Port of the Connection has a role and directionality in the context of the Connection.
+            where each Port of the Connection has a role and directionality in the context of the Connection. 
         derived_from: tosca.relationships.Root
         properties:
             # This is initial simple ConnectionPort model, this may be enhanced later via separate Nodes and/or Types
@@ -217,16 +252,16 @@ relationship_types:
                 type: DirectionalityType
                 required: false
         valid_target_types: [sdno.capability.ConnectionEndPoint]
-
+    
     sdno.relationship.RealizedBy:
         description: >-
             The relationship specifies what Connenctions are Connectivity Services or Connections realized from. 
         derived_from: tosca.relationships.Root
         valid_target_types: [sdno.capability.Realizes]   
-
+ 
     sdno.relationship.HostedOn:
         description: >-
-            The relationship specifies what Node the Endpoint is hosted on.
+            The relationship specifies what Node the Endpoint is hosted on. 
         derived_from: tosca.relationships.Root
         valid_target_types: [sdno.capability.Host]   
 
@@ -235,8 +270,8 @@ relationship_types:
             The relationship  represents a network association relationship between NodeEdgePoint and Network Node types
         derived_from: tosca.relationships.DependsOn
         valid_target_types: [sdno.capability.Bindable]
-
-
+ 
+ 
 # *****************************************************************************
 # artifact types
 # *****************************************************************************
@@ -253,6 +288,7 @@ artifact_types:
         mime_type: application/x-tsmap
         file_ext: [tsmap]
 
+ 
 # *****************************************************************************
 # node types
 # *****************************************************************************
@@ -260,29 +296,51 @@ node_types:
 
     sdno.node.Root:
         derived_from: tosca.nodes.Root
-        description: sdno root type
+        description: The SDNO Node Type all other SDNO base Node Types derive from
         properties:
             id:
                type: string
                required: true
+               default: 'none'
             name:
                type: string
-               required: false
+               required: true
+               default: 'none' 
             description:
                 type: string
-                required: false
+                required: true
+                default: 'none' 
             version:
                 type: string
-                required: false
-
+                required: true
+                default: '1.0'
+ 
     sdno.node.Node:
         derived_from: sdno.node.Root
         description: >-
             It represents a network element which can be managed remotely (through controller or not). Sometimes called managed element.
         properties:
-            mgrIP:
+            ipAddress:
                type: string
                default: 0.0.0.0
+            logicID:
+                type: string
+                default: 'none'
+            phyNeID:
+                type: string
+                default: 'none'
+            nativeID:
+                type: string
+                default: 'none'
+            controllerID:
+                type: string
+                default: 'none'
+            siteID:
+                type: string
+                default: 'none'
+            siteName:
+                type: string
+                default: 'none'
         capabilities:
             host: 
                 type: sdno.capability.Host
@@ -302,7 +360,7 @@ node_types:
                 node: sdno.node.Node
                 capability: sdno.capability.Bindable
                 relationship: sdno.relationship.BindsTo
-
+              
     sdno.node.ServiceEndPoint:
         derived_from: sdno.node.Root
         description: >-
@@ -319,21 +377,21 @@ node_types:
                     capability:  sdno.capability.Host
                     relationship: sdno.relationship.HostedOn
                     occurrences: [0, UNBOUNDED]
-
+                        
     sdno.node.ConnectivityService:
         derived_from: sdno.node.Root
         description: >-
             It represents an “intent-like” request for connectivity between two or more ServiceEndPoints.
-            As such, ConnectivityService is a container for connectivity request details and is distinct
+            As such, ConnectivityService is a container for connectivity request details and is distinct 
             from the Connection that realizes the request
         properties: *BaseServiceInfo
         properties: 
             templateId:
                 type: string
-                default: none
+                default: 'none'
             lifecycleState: 
                 type: LifecycleStateType
-                default: none
+                default: 'none'
             state_machine:
                 type: StateMachineType
                 default:
@@ -367,8 +425,7 @@ node_types:
                          primary: 'DELETE /openoapi/sdnonslcm/v1/ns/{instanceid}'
                 get:
                      implementation: 
-                         primary: 'GET /openoapi/sdnonslcm/v1/ns/{instanceid}'
-                     
+                         primary: 'GET /openoapi/sdnonslcm/v1/ns/{instanceid}'                  
                 deploy:
                      implementation: 
                          primary: 'POST /openoapi/sdnonslcm/v1/ns/{instanceid}/instantiate'
@@ -391,7 +448,7 @@ node_types:
                 relationship: sdno.relationship.RealizedBy
                 occurrences: [1, UNBOUNDED]
 
-
+            
     sdno.node.ConnectionEndPoint:
         derived_from: sdno.node.Root
         properties:
@@ -400,7 +457,7 @@ node_types:
             standard:
                 type: sdno.interfaces.lifecycle.Standard    
         description: >-
-            It represents the ingress/egress port aspects that access the forwarding function provided
+            It represents the ingress/egress port aspects that access the forwarding function provided 
             by the Connection.
         capabilities:
             endPoint:
@@ -411,7 +468,7 @@ node_types:
                     capability:  sdno.capability.Host
                     relationship: sdno.relationship.HostedOn
                     occurrences: [0, UNBOUNDED] 
-
+ 
     sdno.node.Connection:
         derived_from: sdno.node.Root
         properties:

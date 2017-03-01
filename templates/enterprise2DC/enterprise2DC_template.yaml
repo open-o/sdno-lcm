@@ -36,156 +36,210 @@ topology_template:
             vpnName:
                 type: string
                 description: Name of Overlayvpn
+                default: 'none'
             vpnDescription:
                 type: string
                 description: description of Overlayvpn
+                default: 'none'
             siteName:
                 type: string
                 description: Name of Site
+                default: 'none'
             siteCidr:
                 type: string
                 description: enterprise site cidr
-                default: 10.100.100.0/24
+                default: 'none'
             subnetVlan:
                 type: integer
                 description: Vlan value of Subnet
+                default: 0
             siteVni:
                 type: integer
                 description: VxLAN ID connect site to vCPE
-                default: 20001
+                default: 0
             vpcName:
                 type: string
                 description: in format of domain/project, should keep consistent with NFVO
-                default: vdc0/vpc1
+                default: 'none'
             vpcSubnetName:
                 type: string
                 description: name of subnet in VPC, should keep consistent with NFVO
-                default: sn
+                default: 'none'
             vpcSubnetCidr:
                 type: string
                 description: vpc cidr
-                default: 10.21.3.0/24
+                default: 'none'
             vpcVni:
                 type: integer
                 description: vpc subnet vxlanID, should keep consistent with NFVO
-                default: 10001
+                default: 0
             dcGwIp:
                 type: string
                 description: mgrIp of dcGW
+                default: 'none'
             dcFwIp:
                 type: string
                 description: mgrIp of dc Firewall
+                default: 'none'
             dcLbIp:
                 type: string
                 description: mgrIp of dc Load Balancer
+                default: 'none'
+
+# *****************************************************************************
+# node templates
+# *****************************************************************************
 
         node_templates:
 
-                thinCpe:
-                    type: sdno.node.ServiceEndPoint.ThinCpe
-                    properties:
-                        id: thinCpe01
-                        name: thinCpe
-                        version: '1.0'
+        # Nodes
+            thinCpe:
+                type: sdno.node.Node
+                properties:
+                    siteName: {get_input: siteName} 
+                    id: 0
+ 
+            vCpe:
+                type: sdno.node.Node
+                properties:
+                    siteName: {get_input: siteName} 
+                    id: 0
+ 
+            dcFw:                     
+                type: sdno.node.Node
+                properties:                         
+                    ipAddress: {get_input: dcFwIp} 
+                    id: 0
+ 
+            dcLb:                     
+                type: sdno.node.Node                     
+                properties:                         
+                    ipAddress: {get_input: dcLbIp} 
+                    id: 0
+ 
+            dcGw:                     
+                type: sdno.node.Node                     
+                properties:                         
+                    ipAddress: {get_input: dcGwIp} 
+                    id: 0      
+ 
+            # do we need another node for dc endpoint? original template had vpc as node as well        
+ 
+        # Connectivity Service
+ 
+            enterprise2Dc:
+                type: sdno.node.ConnectivityService.Enterprise2Dc
+                requirements:
+                    - endPoint: thinCpeServiceEndpoint
+                    - endPoint: dcServiceEndpoint
+                    - realizes: siteSubnet
+                    - realizes: vpn
+                    - realizes: vpcSubnet
+                    - realizes: sfc
+ 
+            thinCpeServiceEndpoint:
+                type: sdno.node.ServiceEndPoint.ThinCpe
+                requirements:
+                    - node: thinCpe  
+            dcServiceEndpoint:
+                type: sdno.node.ServiceEndPoint.DcEndpoint
+                requirements:                         
+                    #- node: vpc or something else
+                    - node: dcGw
+ 
+        # ***************************************************************************** 
+        #            VPC Node Templates (VpcSubnet and Vpc)
+        # *****************************************************************************
 
-                dcEndpoint:
-                    type: sdno.node.ServiceEndPoint.DcEndpoint
-                    properties:
-                        id: dcEndpoint01
-                        name: dcEndpoint
-                        version: '1.0'
+            vpcSubnet:
+                type: sdno.node.Connection.VpcSubnet
+                properties:
+                    cidr:       {get_input: vpcSubnetCidr}
+                    name:       {get_input: vpcSubnetName}
+                    vni:        {get_input: vpcVni}
+                requirements:
+                    - realizes: vpc
 
-                enterprise2Dc:
-                    type: sdno.node.ConnectivityService.Enterprise2Dc
-                    properties:
-                        id: ent3DC01
-                        name: enterprise2Dc
-                        version: '1.0'
-                    requirements:
-                        - endPoint: thinCpe
-                        - endPoint: dcEndpoint
-                        - realizes: siteSubnet
-                        - realizes: vpn
-                        - realizes: vpcSubnet
-                        - realizes: sfc
+            vpc:
+                type: sdno.node.Connection.Vpc
+                properties:
+                    name:       {get_input: vpcName}
 
-                vpcSubnet:
-                    type: sdno.node.Connection.VpcSubnet
-                    properties:
-                        id: vpcSubnet01
-                        name: vpcSbnet
-                    requirements:
-                        - realizes: vpc
-                vpc:
-                    type: sdno.node.Connection.Vpc
-                    properties:
-                        id: vpc01
-                        name: vpc
+        # ***************************************************************************** 
+        #            Site Node Templates (Subnet, Vlan, Site with thinCPE and cCPE)
+        # *****************************************************************************
 
-                siteSubnet:
-                    type: sdno.node.Connection.SiteSubnet
-                    properties:
-                        id: siteSubnet01
-                        name: siteSubnet
-                    requirements:
-                        - realizes: vlan
-                vlan:
-                    type: sdno.node.Connection.Vlan
-                    properties:
-                        id: vlan01
-                        name: vlan
-                    requirements:
-                        - realizes: site
+            siteSubnet:
+                type: sdno.node.Connection.SiteSubnet
+                properties:
+                    vni:        {get_input: siteVni}
+                    cidrBlock:  {get_input: siteCidr}
+                requirements:
+                    - realizes: vlan
 
-                site:
-                    type: sdno.node.Connection.Site
-                    properties:
-                        id: site01
-                        name: site
+            vlan:
+                type: sdno.node.Connection.Vlan
+                properties:
+                    vlanId:     {get_input: subnetVlan}
+                requirements:
+                    - realizes: site
 
-                thinCpe:
-                    type: sdno.node.ConnectionEndPoint.ThinCpe
-                    properties:
-                        id: thinCpe01
-                        name: thinCpe
+            thinCpeConnectionEndPoint:
+                type: sdno.node.ConnectionEndPoint.ThinCpe
+                requirements:
+                    - realizes: site
+                    - node: thinCpe  
 
-                vCpe:
-                    type: sdno.node.ConnectionEndPoint.VCpe
-                    properties:
-                        id: vCpe01
-                        name: vCpe
+            vCpeConnectionEndPoint:
+                type: sdno.node.ConnectionEndPoint.VCpe
+                requirements:
+                    - realizes: site
+                    - node: vCpe  
 
-                sfc:
-                    type: sdno.node.Connection.Sfc
-                    properties:
-                        id: sfc01
-                        name: sfc
+            site:
+                type: sdno.node.Connection.Site
+                properties:
+                    name:       {get_input: siteName}
+                requirements:
+                    - endPoint: vCpeConnectionEndPoint
+                    - endPoint: thinCpeConnectionEndPoint
 
-                vpn:
-                    type: sdno.node.Connection.Vpn
-                    properties:
-                        id: vpn01
-                        name: vpn
-                    requirements:
-                        - realizes: vpnConnection
 
-                vpnConnection:
-                    type: sdno.node.Connection.VpnConnection
-                    properties:
-                        id: vpnConnection01
-                        name: vpnConnection
-                    requirements:
-                        - endPoint: siteGateway
-                        - endPoint: vpcGateway
+        # ***************************************************************************** 
+        #            VPN Node Templates (Vpn, VpnConnection with siteGW and vpcGW)
+        #            Order of requests: vpn, siteGW, vpcGW, vpnConnection
+        # *****************************************************************************
 
-                siteGateway:
-                    type: sdno.node.ConnectionEndPoint.SiteGateway
-                    properties:
-                        id: siteGw01
-                        name: siteGw
+            vpn:
+                type: sdno.node.Connection.Vpn
+                properties:
+                    name: {get_input: vpnName}
+                    description: {get_input: vpnDescription}
+                requirements:
+                    - realizes: vpnConnection
 
-                vpcGateway:
-                    type: sdno.node.ConnectionEndPoint.VpcGateway
-                    properties:
-                        id: vpcGw01
-                        name: vpcGw
+
+            siteGateway:
+                type: sdno.node.ConnectionEndPoint.SiteGateway
+
+            vpcGateway:
+                type: sdno.node.ConnectionEndPoint.VpcGateway
+
+            vpnConnection:
+                type: sdno.node.Connection.VpnConnection
+                requirements:
+                    - endPoint: siteGateway
+                    - endPoint: vpcGateway
+
+
+        # ***************************************************************************** 
+        #            SFC Node Template 
+        # *****************************************************************************
+
+            sfc:
+                type: sdno.node.Connection.Sfc
+                properties:
+                    servicePathHops: 
+                        - {hopNumber: 1, sfiId: {get_attribute: [dcFw, id] }, sfgId: null}
+                        - {hopNumber: 2, sfiId: {get_attribute: [dcLb, id] }, sfgId: null}
+                    scfNeId: {get_attribute: [dcGw, id]}

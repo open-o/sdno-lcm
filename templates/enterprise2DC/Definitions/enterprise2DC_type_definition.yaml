@@ -154,7 +154,7 @@ dsl_definitions:
         regionId:
             type: string
             required: false
-
+ 
 # *****************************************************************************
 # data types
 # *****************************************************************************
@@ -204,7 +204,7 @@ data_types:
                 type: string 
                 required: false
 
-
+ 
     ReliabilityType:
         derived_from: string
         constraints:
@@ -237,7 +237,7 @@ data_types:
                 type: string
                 description: uuid
                 required: false
-
+ 
     ServicePathHopType:
         derived_from: tosca.datatypes.Root
         properties:
@@ -264,7 +264,7 @@ data_types:
                 type: list
                 entry_schema:
                       type: RuleType
-
+     
     RuleType:
         derived_from: tosca.datatypes.Root
         properties:
@@ -292,7 +292,7 @@ data_types:
             destMask:
                 type: string
                 description: The dest IP mask address
-
+ 
     RouteEntryInfoType:
         derived_from: tosca.datatypes.Root
         properties:
@@ -320,7 +320,7 @@ data_types:
             routeType:
                 type: string
                 description: static-routing for now
-
+ 
     NeMoType:
         derived_from: tosca.datatypes.Root
 #        properties: *BaseServiceInfo
@@ -338,7 +338,7 @@ data_types:
                 type: list
                 entry_schema:
                    type: string  
-                description: management Domain Id.
+                description: management Domain Id .
             controllerId:
                 type: list
                 entry_schema:
@@ -381,12 +381,8 @@ data_types:
                 description: (scope=ipv4,ipv6,ipv4/ipv6)
             neRole:
                 type: string
-                description: ne role
-            additionalInfo:
-                type: list
-                entry_schema:
-                     type: NvStringType
-                description: additional info            
+                description: ne role          
+            
 
 
 
@@ -402,11 +398,11 @@ node_types:
     # *****************************************************************************
     sdno.node.ServiceEndPoint.ThinCpe:
         derived_from: sdno.node.ServiceEndPoint
-
+ 
     # define more specific Dc service endpoint (DC VAS or VNF ?)
     sdno.node.ServiceEndPoint.DcEndpoint:
         derived_from: sdno.node.ServiceEndPoint
-
+ 
     # ***************************************************************************** 
     #            Enterprise2DC
     # *****************************************************************************
@@ -425,7 +421,7 @@ node_types:
                             - sdno.node.Connection.SiteSubnet/deploy
                             - sdno.node.Connection.Vpn/deploy
                             - sdno.node.Connection.Sfc/deploy
-
+ 
 # MUST FIND ANOTHER WAY TO RESTRICT THE SPECIFIC NETWORK HIERARCHY FOR THE SERVICE AT THE SERVICE DEFINITION LAYER
 # CURRENTLY ENFORCED IN THE TEMPLATE
 #
@@ -459,13 +455,13 @@ node_types:
     # ***************************************************************************** 
     #            VPC Node Types (VpcSubnet and Vpc)
     # *****************************************************************************
-
+ 
     sdno.node.Connection.VpcSubnet:
         derived_from: sdno.node.Connection
         properties:
             cidr:
                 type: string
-                description: VPC subnet IP network, should be in format CIDR format.
+                description: VPC subnet IP network, should be in format CIDR format. 
                 required: false
             vni:
                 type: integer
@@ -481,8 +477,8 @@ node_types:
                 description: Gateway Ip addressed used for this subnet. ipv4 supported. VPC service set this property when Subnet is created.
                 required: false
             attributes:
-                type: SubnetAttributes     
-                required: false     
+                type: SubnetAttributes    
+                required: false
         requirements:
             - realizes: 
                 node: sdno.node.Connection.Vpc
@@ -527,14 +523,14 @@ node_types:
                 required: false
             attributes:
                 type: UnderlayResourcesType 
-                required: false
+                required: false      
         artifacts:
             swagger:
                 file: swagger/vpc.jaml
                 type: sdno.artifacts.Implementation.Swagger
             mapper:
                 file: swagger/vpc.tsmap
-                type: sdno.artifacts.Implementation.ToscaSwaggerMapper
+                type: sdno.artifacts.Implementation.ToscaSwaggerMapper 
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
@@ -550,11 +546,11 @@ node_types:
                      implementation: 'DELETE/openoapi/sdnovpc/v1/vpcs/{vpcId}'
                 update: 
                      #implementation: 'PUT /openoapi/sdnovpc/v1/vpsc/{vpcId}'
-
+ 
     # ***************************************************************************** 
     #            Site Node Types (Subnet, Vlan, Site with thinCPE and cCPE)
     # *****************************************************************************
-
+ 
     sdno.node.Connection.SiteSubnet:
         derived_from: sdno.node.Connection
         properties: *SiteSubnet
@@ -589,7 +585,7 @@ node_types:
                     implementation: 'DELETE /openoapi/sdnolocalsite/v1/subnets/{uuid}'
                 update: 
                     implementation: 'PUT /openoapi/sdnolocalsite/v1/subnets/{uuid}'
-
+  
     sdno.node.Connection.Vlan:
         derived_from: sdno.node.Connection
         properties: *Vlan 
@@ -624,7 +620,7 @@ node_types:
                     implementation: 'DELETE /openoapi/sdnolocalsite/v1/vlans/{uuid}'
                 update: 
                     implementation: 'PUT /openoapi/sdnolocalsite/v1/vlans/{uuid}'
-
+ 
     sdno.node.ConnectionEndPoint.ThinCpe:
         derived_from: sdno.node.ConnectionEndPoint
         properties:
@@ -671,7 +667,7 @@ node_types:
                     implementation: 'DELETE /openoapi/sdnolocalsite/v1/local-cpes/{uuid}'
                 update: 
                     #implementation: 'PUT /openoapi/sdnolocalsite/v1/local-cpes/{uuid}'
-
+ 
     sdno.node.ConnectionEndPoint.VCpe:
         derived_from: sdno.node.ConnectionEndPoint
         properties:
@@ -682,10 +678,6 @@ node_types:
             popId:
                 type: string
                 description: pop id
-                required: false
-            vCpeId:
-                type: string
-                description: vCpe id
                 required: false
             esn:
                 type: string
@@ -727,10 +719,6 @@ node_types:
                 type: string
                 description: vnfd id
                 required: false
-            vnfId:
-                type: string
-                description: vnfd id
-                required: false
             callbackUrl:
                 type: string
                 description: callback Url
@@ -755,13 +743,7 @@ node_types:
             template:
                 type: string
                 description: template
-                required: false
-            additionalInfo:
-                type: list
-                entry_schema:
-                    type: NvStringType
-                description: additional info
-                required: false  
+                required: false 
         requirements:
             - realizes:
                 node: sdno.node.Connection.Site    
@@ -837,27 +819,27 @@ node_types:
                 type: string
                 description: total Upstream Bandwidth
                 required: false
-            localCpes:
-                type: list
-                entry_schema:
-                    type: NeMoType
-                required: false
-            cloudCpes:
-                type: list
-                entry_schema:
-                    type: NeMoType
-                required: false
-            subnets:
-                type: list
-                entry_schema:
-                    type: SiteSubnetType 
-                required: false
-                #revisit the type
-            vlans:
-                type: list
-                entry_schema:
-                     type: VlanType 
-                required: false
+            # localCpes:
+            #     type: list
+            #     entry_schema:
+            #         type: NeMoType
+            #     required: false
+            # cloudCpes:
+            #     type: list
+            #     entry_schema:
+            #         type: NeMoType
+            #     required: false
+            # subnets:
+            #     type: list
+            #     entry_schema:
+            #         type: SiteSubnetType 
+            #     required: false
+            #     #revisit the type
+            # vlans:
+            #     type: list
+            #     entry_schema:
+            #          type: VlanType 
+            #     required: false
                 #revisit the type
             routes:
                 type: list
@@ -872,13 +854,13 @@ node_types:
 # MUST FIND ANOTHER WAY TO RESTRICT THE SPECIFIC NETWORK HIERARCHY FOR THE SERVICE AT THE SERVICE DEFINITION LAYER
 # CURRENTLY ENFORCED IN THE TEMPLATE
 #  
-#        requirements:
-#            - endPoint:
-#                node: sdno.node.ConnectionEndPoint.ThinCpe
-#                capability: sdno.capability.ConnectionEndPoint
-#            - endPoint:
-#                node: sdno.node.ConnectionEndPoint.VCpe
-#                capability: sdno.capability.ConnectionEndPoint
+        # requirements:
+        #    - endPoint:
+        #        node: sdno.node.ConnectionEndPoint.ThinCpe
+        #        capability: sdno.capability.ConnectionEndPoint
+        #    - endPoint:
+        #        node: sdno.node.ConnectionEndPoint.VCpe
+        #        capability: sdno.capability.ConnectionEndPoint
         artifacts:
             swagger:
                 file: swagger/site.jaml
@@ -899,14 +881,14 @@ node_types:
                     implementation:
                         primary: 'POST /openoapi/sdnolocalsite/v1/sites'
                         dependencies:
-                            - sdno.node.Connection.ThinCpe/deploy
-                            - sdno.node.Connection.vCpe/deploy
+                            - sdno.node.ConnectionEndPoint.ThinCpe/deploy
+                            - sdno.node.ConnectionEndPoint.VCpe/deploy
                             - sdno.node.Connection.Site/deploy
                 undeploy:
                     implementation: 'DELETE /openoapi/sdnolocalsite/v1/sites/{uuid}'
                 update: 
                     implementation: 'PUT /openoapi/sdnolocalsite/v1/sites/{uuid}'
-
+ 
     # ***************************************************************************** 
     #            VPN Node Types (Vpn, VpnConnection with siteGW and vpcGW)
     #            Order of requests: vpn, siteGW, vpcGW, vpnConnection
@@ -944,13 +926,13 @@ node_types:
                     implementation: 
                         primary: 'POST /openoapi/sdnooverlay/v1/vpns/action/deploy'
                         dependencies:
-                            - sdno.node.Connection.VpnConnection/deploy
                             - sdno.node.Connection.Vpn/deploy
+                            - sdno.node.Connection.VpnConnection/deploy
                 undeploy:
                     implementation: 'DELETE /openoapi/sdnooverlay/v1/vpns/action/undeploy'
                 update: 
                     implementation: 'PUT /openoapi/sdnooverlay/v1/vpns/{uuid}'
-
+ 
     sdno.node.ConnectionEndPoint.SiteGateway:
         derived_from: sdno.node.ConnectionEndPoint
         properties: *Gateway
@@ -976,7 +958,7 @@ node_types:
                     implementation: 'DELETE /openoapi/sdnooverlay/v1/vpn-gateways/{uuid}'
                 update: 
                     implementation: 'PUT/openoapi/sdnooverlay/v1/vpn-gateways/{uuid}'
-
+ 
     sdno.node.ConnectionEndPoint.VpcGateway:
         derived_from: sdno.node.ConnectionEndPoint
         properties: *Gateway
@@ -1002,7 +984,7 @@ node_types:
                     implementation: 'DELETE /openoapi/sdnooverlay/v1/vpn-gateways/{uuid}'
                 update: 
                     implementation: 'PUT /openoapi/sdnooverlay/v1/vpn-gateways/{uuid}'
-
+ 
     sdno.node.Connection.VpnConnection:
         derived_from: sdno.node.Connection
         properties:
@@ -1055,7 +1037,7 @@ node_types:
                     implementation: 'POST /openoapi/sdnooverlay/v1/vpn-connections/action/undeploy'
                 update: 
                     implementation: 'PUT /openoapi/sdnooverlay/v1/vpn-connections/{uuid}'
-
+ 
     # ***************************************************************************** 
     #            SFC Node Types 
     # *****************************************************************************
@@ -1076,7 +1058,7 @@ node_types:
                 description: The id of pop
                 required: false
             scfNeId:
-                type: string
+                type: string 
                 description: The id of scf NE
                 required: false
             symmetric:
