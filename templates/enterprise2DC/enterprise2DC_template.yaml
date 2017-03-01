@@ -97,31 +97,31 @@ topology_template:
                 type: sdno.node.Node
                 properties:
                     siteName: {get_input: siteName} 
-                    id: 0
+                    id: '0'
  
             vCpe:
                 type: sdno.node.Node
                 properties:
                     siteName: {get_input: siteName} 
-                    id: 0
+                    id: '0'
  
             dcFw:                     
                 type: sdno.node.Node
                 properties:                         
                     ipAddress: {get_input: dcFwIp} 
-                    id: 0
+                    id: '0'
  
             dcLb:                     
                 type: sdno.node.Node                     
                 properties:                         
                     ipAddress: {get_input: dcLbIp} 
-                    id: 0
+                    id: '0'
  
             dcGw:                     
                 type: sdno.node.Node                     
                 properties:                         
                     ipAddress: {get_input: dcGwIp} 
-                    id: 0      
+                    id: '0'     
  
             # do we need another node for dc endpoint? original template had vpc as node as well        
  

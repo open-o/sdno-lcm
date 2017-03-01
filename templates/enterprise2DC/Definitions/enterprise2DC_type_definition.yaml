@@ -779,7 +779,7 @@ node_types:
             deployCloudCpeByDeafult:
                 type: string
                 description:
-                default: true
+                default: 'true'
                 required: false
             popId:
                 type: string
