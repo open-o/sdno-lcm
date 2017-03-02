@@ -8,12 +8,12 @@ Method | HTTP request | Description
 [**deleteConnectivityService**](DefaultApi.md#deleteConnectivityService) | **DELETE** /buckets/connectivityservicedb/resources/connectivityservice/objects/{id} | 
 [**getConnectivityService**](DefaultApi.md#getConnectivityService) | **GET** /buckets/connectivityservicedb/resources/connectivityservice/objects | 
 [**readConnectivityService**](DefaultApi.md#readConnectivityService) | **GET** /buckets/connectivityservicedb/resources/connectivityservice/objects/{id} | 
-[**updateConnectivityService**](DefaultApi.md#updateConnectivityService) | **PUT** /buckets/connectivityservicedb/resources/connectivityservice/objects/{id} | 
+[**updateConnectivityServiceRequest**](DefaultApi.md#updateConnectivityServiceRequest) | **PUT** /buckets/connectivityservicedb/resources/connectivityservice/objects/{id} | 
 
 
 <a name="createConnectivityService"></a>
 # **createConnectivityService**
-> ResponseConnectivityService createConnectivityService(body)
+> CreateConnectivityServiceResponse createConnectivityService(body)
 
 
 
@@ -27,9 +27,9 @@ Add a new connectivity services
 
 
 DefaultApi apiInstance = new DefaultApi();
-ConnectivityService body = new ConnectivityService(); // ConnectivityService | the createConnectivityService to be created
+CreateConnectivityServiceRequest body = new CreateConnectivityServiceRequest(); // CreateConnectivityServiceRequest | the createConnectivityService to be created
 try {
-    ResponseConnectivityService result = apiInstance.createConnectivityService(body);
+    CreateConnectivityServiceResponse result = apiInstance.createConnectivityService(body);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling DefaultApi#createConnectivityService");
@@ -41,11 +41,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**ConnectivityService**](ConnectivityService.md)| the createConnectivityService to be created |
+ **body** | [**CreateConnectivityServiceRequest**](CreateConnectivityServiceRequest.md)| the createConnectivityService to be created |
 
 ### Return type
 
-[**ResponseConnectivityService**](ResponseConnectivityService.md)
+[**CreateConnectivityServiceResponse**](CreateConnectivityServiceResponse.md)
 
 ### Authorization
 
@@ -53,8 +53,8 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+ - **Content-Type**: application/json;charset=UTF-8
+ - **Accept**: application/json;charset=UTF-8
 
 <a name="deleteConnectivityService"></a>
 # **deleteConnectivityService**
@@ -62,7 +62,7 @@ No authorization required
 
 
 
-Delete the connectivity services
+Delete the connectivity service specified in request
 
 ### Example
 ```java
@@ -97,16 +97,16 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+ - **Content-Type**: application/json;charset=UTF-8
+ - **Accept**: application/json;charset=UTF-8
 
 <a name="getConnectivityService"></a>
 # **getConnectivityService**
-> ResponseConnectivityService getConnectivityService()
+> GetAllConnectivityServiceResponse getConnectivityService()
 
 
 
-Add a new connectivity services
+get connectivity services
 
 ### Example
 ```java
@@ -117,7 +117,7 @@ Add a new connectivity services
 
 DefaultApi apiInstance = new DefaultApi();
 try {
-    ResponseConnectivityService result = apiInstance.getConnectivityService();
+    GetAllConnectivityServiceResponse result = apiInstance.getConnectivityService();
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling DefaultApi#getConnectivityService");
@@ -130,7 +130,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**ResponseConnectivityService**](ResponseConnectivityService.md)
+[**GetAllConnectivityServiceResponse**](GetAllConnectivityServiceResponse.md)
 
 ### Authorization
 
@@ -138,16 +138,16 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+ - **Content-Type**: application/json;charset=UTF-8
+ - **Accept**: application/json;charset=UTF-8
 
 <a name="readConnectivityService"></a>
 # **readConnectivityService**
-> ResponseConnectivityService readConnectivityService(id)
+> GetConnectivityServiceResponse readConnectivityService(id)
 
 
 
-Read the connectivity services
+Get the connectivity service specified in request
 
 ### Example
 ```java
@@ -157,9 +157,9 @@ Read the connectivity services
 
 
 DefaultApi apiInstance = new DefaultApi();
-String id = "id_example"; // String | ID of the connectivity service to be deleted
+String id = "id_example"; // String | ID of the connectivity service to be queried
 try {
-    ResponseConnectivityService result = apiInstance.readConnectivityService(id);
+    GetConnectivityServiceResponse result = apiInstance.readConnectivityService(id);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling DefaultApi#readConnectivityService");
@@ -171,11 +171,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String**| ID of the connectivity service to be deleted |
+ **id** | **String**| ID of the connectivity service to be queried |
 
 ### Return type
 
-[**ResponseConnectivityService**](ResponseConnectivityService.md)
+[**GetConnectivityServiceResponse**](GetConnectivityServiceResponse.md)
 
 ### Authorization
 
@@ -183,16 +183,16 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+ - **Content-Type**: application/json;charset=UTF-8
+ - **Accept**: application/json;charset=UTF-8
 
-<a name="updateConnectivityService"></a>
-# **updateConnectivityService**
-> UpdateResponseConnectivityService updateConnectivityService(id, body)
+<a name="updateConnectivityServiceRequest"></a>
+# **updateConnectivityServiceRequest**
+> UpdateResponse updateConnectivityServiceRequest(id, body)
 
 
 
-modify the value.
+modify the connectivity service specified in request
 
 ### Example
 ```java
@@ -202,13 +202,13 @@ modify the value.
 
 
 DefaultApi apiInstance = new DefaultApi();
-String id = "id_example"; // String | ID of the connectivity service to be deleted
-UpdateConnectivityService body = new UpdateConnectivityService(); // UpdateConnectivityService | the partial connectivity service for the update operation
+String id = "id_example"; // String | ID of the connectivity service to be updated
+UpdateConnectivityServiceRequest body = new UpdateConnectivityServiceRequest(); // UpdateConnectivityServiceRequest | the partial connectivity service for the update operation
 try {
-    UpdateResponseConnectivityService result = apiInstance.updateConnectivityService(id, body);
+    UpdateResponse result = apiInstance.updateConnectivityServiceRequest(id, body);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling DefaultApi#updateConnectivityService");
+    System.err.println("Exception when calling DefaultApi#updateConnectivityServiceRequest");
     e.printStackTrace();
 }
 ```
@@ -217,12 +217,12 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String**| ID of the connectivity service to be deleted |
- **body** | [**UpdateConnectivityService**](UpdateConnectivityService.md)| the partial connectivity service for the update operation |
+ **id** | **String**| ID of the connectivity service to be updated |
+ **body** | [**UpdateConnectivityServiceRequest**](UpdateConnectivityServiceRequest.md)| the partial connectivity service for the update operation |
 
 ### Return type
 
-[**UpdateResponseConnectivityService**](UpdateResponseConnectivityService.md)
+[**UpdateResponse**](UpdateResponse.md)
 
 ### Authorization
 
@@ -230,6 +230,6 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+ - **Content-Type**: application/json;charset=UTF-8
+ - **Accept**: application/json;charset=UTF-8
 

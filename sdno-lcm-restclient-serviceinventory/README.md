@@ -71,9 +71,9 @@ public class DefaultApiExample {
     public static void main(String[] args) {
         
         DefaultApi apiInstance = new DefaultApi();
-        ConnectivityService body = new ConnectivityService(); // ConnectivityService | the createConnectivityService to be created
+        CreateConnectivityServiceRequest body = new CreateConnectivityServiceRequest(); // CreateConnectivityServiceRequest | the createConnectivityService to be created
         try {
-            ResponseConnectivityService result = apiInstance.createConnectivityService(body);
+            CreateConnectivityServiceResponse result = apiInstance.createConnectivityService(body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling DefaultApi#createConnectivityService");
@@ -94,15 +94,21 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**deleteConnectivityService**](docs/DefaultApi.md#deleteConnectivityService) | **DELETE** /buckets/connectivityservicedb/resources/connectivityservice/objects/{id} | 
 *DefaultApi* | [**getConnectivityService**](docs/DefaultApi.md#getConnectivityService) | **GET** /buckets/connectivityservicedb/resources/connectivityservice/objects | 
 *DefaultApi* | [**readConnectivityService**](docs/DefaultApi.md#readConnectivityService) | **GET** /buckets/connectivityservicedb/resources/connectivityservice/objects/{id} | 
-*DefaultApi* | [**updateConnectivityService**](docs/DefaultApi.md#updateConnectivityService) | **PUT** /buckets/connectivityservicedb/resources/connectivityservice/objects/{id} | 
+*DefaultApi* | [**updateConnectivityServiceRequest**](docs/DefaultApi.md#updateConnectivityServiceRequest) | **PUT** /buckets/connectivityservicedb/resources/connectivityservice/objects/{id} | 
 
 
 ## Documentation for Models
 
  - [ConnectivityService](docs/ConnectivityService.md)
- - [ResponseConnectivityService](docs/ResponseConnectivityService.md)
- - [UpdateConnectivityService](docs/UpdateConnectivityService.md)
- - [UpdateResponseConnectivityService](docs/UpdateResponseConnectivityService.md)
+ - [CreateConnectivityServiceRequest](docs/CreateConnectivityServiceRequest.md)
+ - [CreateConnectivityServiceResponse](docs/CreateConnectivityServiceResponse.md)
+ - [CreateConnectivityServiceResponseSample](docs/CreateConnectivityServiceResponseSample.md)
+ - [GetAllConnectivityServiceResponse](docs/GetAllConnectivityServiceResponse.md)
+ - [GetConnectivityServiceResponse](docs/GetConnectivityServiceResponse.md)
+ - [GetConnectivityServiceResponseSample](docs/GetConnectivityServiceResponseSample.md)
+ - [UpdateConnectivityServiceRequest](docs/UpdateConnectivityServiceRequest.md)
+ - [UpdateConnectivityServiceResponse](docs/UpdateConnectivityServiceResponse.md)
+ - [UpdateResponse](docs/UpdateResponse.md)
 
 
 ## Documentation for Authorization

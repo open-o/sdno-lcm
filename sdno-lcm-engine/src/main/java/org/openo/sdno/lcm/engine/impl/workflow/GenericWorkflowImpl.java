@@ -20,9 +20,12 @@ import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.engine.RegisterWorkflow;
 import org.openo.sdno.lcm.engine.Workflow;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponseSample;
 import org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient;
 import org.openo.sdno.lcm.statetablehandler.StateTableHandler;
 import org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser;
+import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -51,6 +54,12 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
     public Workflow getWorkflowToRegister() {
 
         return this;
+    }
+    
+    protected GetConnectivityServiceResponseSample readConnectivityServiceFromMss(String serviceId) {
+        GetConnectivityServiceResponse readConnectivityService =
+                defaultMssApiClient.readConnectivityService(serviceId);
+        return readConnectivityService.getObject();
     }
 
     @Autowired

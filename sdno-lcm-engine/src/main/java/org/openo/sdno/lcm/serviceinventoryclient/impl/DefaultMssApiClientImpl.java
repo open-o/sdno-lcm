@@ -16,17 +16,19 @@
 
 package org.openo.sdno.lcm.serviceinventoryclient.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
-import java.util.List; 
 
 import org.openo.sdno.lcm.exception.ExternalComponentException;
 import org.openo.sdno.lcm.restclient.serviceinventory.api.DefaultApi;
-//import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceReq;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceResp;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ResponseConnectivityService;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityService;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateResponseConnectivityService;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.CreateConnectivityServiceRequest;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.CreateConnectivityServiceResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.GetAllConnectivityServiceResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityServiceRequest;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateResponse;
 import org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient;
 import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,12 +64,22 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
         return defaultApi;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient#createConnectivityService(org.
+     * openo.sdno.lcm.restclient.serviceinventory.model.CreateConnectivityServiceRequest)
+     */
     @Override
-    public ConnectivityServiceResp createConnectivityService(ConnectivityServiceReq body) {
+    public CreateConnectivityServiceResponse createConnectivityService(ConnectivityService connectivityService) {
 
-        // TODO change parareter type to generic?
+        // TODO change parameter type to generic?
         DefaultApi defaultApi = this.getDefaultApi();
         try {
+            CreateConnectivityServiceRequest body = new CreateConnectivityServiceRequest();
+            List<ConnectivityService> objects = new ArrayList<ConnectivityService>();
+            objects.add(connectivityService);
+            body.setObjects(objects);
             return defaultApi.createConnectivityService(body);
         } catch(Exception e) {
             log.severe(FAILED_TO_CREATE_CONNECTIVITY_SERVICE);
@@ -78,7 +90,7 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
     /*
      * (non-Javadoc)
      * @see
-     * org.openo.sdno.lcm.serviceinventoryclient.DefaultApiClient#deleteConnectivityService(java.
+     * org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient#deleteConnectivityService(java.
      * lang.String)
      */
     @Override
@@ -93,9 +105,12 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
         }
     }
 
-
+    /*
+     * (non-Javadoc)
+     * @see org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient#getConnectivityService()
+     */
     @Override
-    public List<ResponseConnectivityService> getConnectivityService() {
+    public GetAllConnectivityServiceResponse getConnectivityService() {
 
         DefaultApi defaultApi = this.getDefaultApi();
         try {
@@ -109,12 +124,12 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
     /*
      * (non-Javadoc)
      * @see
-     * org.openo.sdno.lcm.serviceinventoryclient.DefaultApiClient#readConnectivityService(java.lang.
-     * String)
+     * org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient#readConnectivityService(java.
+     * lang.String)
      */
     @Override
-    public ResponseConnectivityService readConnectivityService(String id) {
-        
+    public GetConnectivityServiceResponse readConnectivityService(String id) {
+
         DefaultApi defaultApi = this.getDefaultApi();
         try {
             return defaultApi.readConnectivityService(id);
@@ -126,16 +141,15 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
 
     /*
      * (non-Javadoc)
-     * @see
-     * org.openo.sdno.lcm.serviceinventoryclient.DefaultApiClient#updateConnectivityService(java.
-     * lang.String, org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityService)
+     * @see org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient#
+     * updateConnectivityServiceRequest(java.lang.String,
+     * org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityServiceRequest)
      */
     @Override
-    public UpdateResponseConnectivityService updateConnectivityService(String id, UpdateConnectivityService body) {
-        
+    public UpdateResponse updateConnectivityServiceRequest(String id, UpdateConnectivityServiceRequest body) {
         DefaultApi defaultApi = this.getDefaultApi();
         try {
-            return defaultApi.updateConnectivityService(id, body);
+            return defaultApi.updateConnectivityServiceRequest(id, body);
         } catch(Exception e) {
             log.severe(FAILED_TO_UPDATE_CONNECTIVITY_SERVICES);
             throw new ExternalComponentException(FAILED_TO_UPDATE_CONNECTIVITY_SERVICES, e);
@@ -145,4 +159,5 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
     public void setEnv(Environment env) {
         this.env = env;
     }
+
 }

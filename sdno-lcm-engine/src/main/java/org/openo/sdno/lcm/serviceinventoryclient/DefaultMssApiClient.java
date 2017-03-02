@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-
 package org.openo.sdno.lcm.serviceinventoryclient;
 
-import java.util.List;
-
+import org.openo.sdno.lcm.restclient.serviceinventory.ApiException;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceReq;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceResp;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ResponseConnectivityService;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityService;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateResponseConnectivityService;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.CreateConnectivityServiceResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.GetAllConnectivityServiceResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityServiceRequest;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateResponse;
 
 /**
  * @author mark
@@ -35,13 +33,13 @@ public interface DefaultMssApiClient {
      * Add a new connectivity services
      * 
      * @param body the createConnectivityService to be created (required)
-     * @return ResponseConnectivityService
+     * @return CreateConnectivityServiceResponse
      * @throws ApiException if fails to make API call
      */
-    ConnectivityServiceResp createConnectivityService(ConnectivityServiceReq body);
+    public CreateConnectivityServiceResponse createConnectivityService(ConnectivityService connectivityService);
 
     /**
-     * Delete the connectivity services
+     * Delete the connectivity service specified in request
      * 
      * @param id ID of the connectivity service to be deleted (required)
      * @throws ApiException if fails to make API call
@@ -49,29 +47,29 @@ public interface DefaultMssApiClient {
     void deleteConnectivityService(String id);
 
     /**
-     * Add a new connectivity services
+     * get connectivity services
      * 
-     * @return ResponseConnectivityService
+     * @return GetAllConnectivityServiceResponse
      * @throws ApiException if fails to make API call
      */
-    List<ResponseConnectivityService> getConnectivityService();
+    public GetAllConnectivityServiceResponse getConnectivityService();
 
     /**
-     * Read the connectivity services
+     * Get the connectivity service specified in request
      * 
-     * @param id ID of the connectivity service to be deleted (required)
-     * @return ResponseConnectivityService
+     * @param id ID of the connectivity service to be queried (required)
+     * @return GetConnectivityServiceResponse
      * @throws ApiException if fails to make API call
      */
-    ResponseConnectivityService readConnectivityService(String id);
+    public GetConnectivityServiceResponse readConnectivityService(String id);
 
     /**
-     * modify the value.
+     * modify the connectivity service specified in request
      * 
-     * @param id ID of the connectivity service to be deleted (required)
+     * @param id ID of the connectivity service to be updated (required)
      * @param body the partial connectivity service for the update operation (required)
-     * @return UpdateResponseConnectivityService
+     * @return UpdateResponse
      * @throws ApiException if fails to make API call
      */
-    UpdateResponseConnectivityService updateConnectivityService(String id, UpdateConnectivityService body);
+    public UpdateResponse updateConnectivityServiceRequest(String id, UpdateConnectivityServiceRequest body);
 }

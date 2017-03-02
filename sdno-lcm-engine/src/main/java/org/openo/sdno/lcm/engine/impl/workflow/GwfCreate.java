@@ -23,7 +23,9 @@ import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.csarhandler.CsarHandler;
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
+import org.openo.sdno.lcm.templatemodel.service.Node;
 import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,20 +43,39 @@ public class GwfCreate extends GenericWorkflowImpl {
      */
     @Override
     public Map<String, Object> execute(Map<String, Object> params) {
-        
+
         log.fine("Execute GwfCreate workflow");
-        
+
         String csarName = (String)params.get(Constants.LCM_NBI_CSAR_NAME);
         if(csarName == null || csarName.isEmpty()) {
-            
+
             throw new InvalidParameterException("csarName may not be empty or null");
         }
-        String csarId = csarHandler.getCsar(csarName).getCsarId();
-        
+        String csarId = csarHandler.getCsarByName(csarName).getCsarId();
+
         // get raw template instance from catalog
         String serviceTemplate = modelResourceApiClient.getServiceTemplateRawData(csarId);
         Instance templateInstance = templateInstanceParser.parse(serviceTemplate);
-        
+        Node connectivityServiceNode = templateInstance.getRootNode();
+
+        // create the Connectivity Service in DB
+        ConnectivityService connectivityService = new ConnectivityService();
+        connectivityService.setId(connectivityServiceNode.getPropertyValue("id"));
+        connectivityService.setName(connectivityServiceNode.getPropertyValue("name"));
+        connectivityService.setActionState(connectivityServiceNode.getPropertyValue("actionState"));
+        connectivityService.setAdminStatus(connectivityServiceNode.getPropertyValue("adminStatus"));
+        connectivityService.setDescription(connectivityServiceNode.getPropertyValue("description"));
+        connectivityService.setLocation(connectivityServiceNode.getPropertyValue("location"));
+        connectivityService.setOperStatus(connectivityServiceNode.getPropertyValue("operStatus"));
+        connectivityService.setOwnerID(connectivityServiceNode.getPropertyValue("ownerID"));
+        connectivityService.setStatusReason(connectivityServiceNode.getPropertyValue("statusReason"));
+        connectivityService.setTemplateId(connectivityServiceNode.getTemplateName()); // TODO is
+                                                                                      // this right?
+        connectivityService.setTenantID(connectivityServiceNode.getPropertyValue("tenantID"));
+        connectivityService.setVersion(connectivityServiceNode.getPropertyValue("version"));
+        connectivityService.setLifecycleState("created");
+        defaultMssApiClient.createConnectivityService(connectivityService);
+
         return new HashMap<String, Object>();
     }
 

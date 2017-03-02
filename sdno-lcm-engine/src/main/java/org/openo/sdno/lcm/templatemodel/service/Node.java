@@ -181,6 +181,20 @@ public class Node {
         JsonNode propertyNode = propertiesNode.get(propertyName);
         return propertyNode.get("value").asText();
     }
+    
+    /**
+     * Get the JsonNode for a property within the Properties JsonNode
+     * 
+     * @param propertyName the name of the property to get
+     * @return the whole JsonNode for the property, not just the value
+     */
+    public JsonNode getPropertyJsonNode(String propertyName) {
+        
+        // TODO check error handling logic
+        JsonNode propertiesNode = this.getProperties();
+        JsonNode propertyNode = propertiesNode.get(propertyName);
+        return propertyNode;
+    }
 
     public void setProperty(String propertyName, String value, String typeName) {
 

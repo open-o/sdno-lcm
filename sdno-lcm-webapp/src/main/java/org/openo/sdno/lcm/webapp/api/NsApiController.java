@@ -51,7 +51,8 @@ public class NsApiController implements NsApi {
             @ApiParam(value = "the request used to create a SDN-O service instance", required = true) @RequestBody NsCreationRequest nsRequest) {
 
         log.fine("~~~~~ NsApiController - nsCreationPost ~~~~~");
-        Map<String, Object> responseMap = nsApiControllerFacade.nsCreationPost(mapper.beanToMap(nsRequest));
+        Map<String, Object> params = mapper.beanToMap(nsRequest);
+        Map<String, Object> responseMap = nsApiControllerFacade.nsCreationPost(params);
         NsCreationResponse nsCreationResponse = mapper.mapToBean(new NsCreationResponse(), responseMap);
         ResponseEntity<NsCreationResponse> response = new ResponseEntity<NsCreationResponse>(nsCreationResponse, HttpStatus.CREATED);
         return response;
@@ -66,8 +67,16 @@ public class NsApiController implements NsApi {
     public ResponseEntity<LongOperationResponse> nsInstantiationPost(
             @ApiParam(value = "ID of the SDN-O service instance to be instantiated", required = true) @PathVariable("instanceid") String instanceid,
             @ApiParam(value = "the request used to instantiate a SDN-O service instance", required = true) @RequestBody NsInstantiationRequest nsInstantiationRequest) {
-        // do some magic!
-        return new ResponseEntity<LongOperationResponse>(HttpStatus.OK);
+
+        log.fine("~~~~~ NsApiController - nsInstantiationPost ~~~~~");
+        Map<String, Object> params = mapper.beanToMap(nsInstantiationRequest);
+        Map<String, Object> responseMap = nsApiControllerFacade.nsInstantiationPost(params);
+        
+        LongOperationResponse responseEntity = new LongOperationResponse();
+        // return the service ID for the moment as it's not really an asynchronous operation
+        responseEntity.setJobId((String)responseMap.get("nsInstanceId"));
+        ResponseEntity<LongOperationResponse> response = new ResponseEntity<LongOperationResponse>(responseEntity, HttpStatus.OK);
+        return response;
     }
 
     public ResponseEntity<NsInstanceQueryResponse> nsQueryGet(

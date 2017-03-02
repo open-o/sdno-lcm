@@ -128,4 +128,9 @@ public class Instance {
         throw new LcmInternalException(UNABLE_TO_FIND_NODE_ERR + nodeId);
     }
 
+    public JsonNode getStateTableDefinition() {
+        Node connectivityServiceNode = this.getRootNode();
+        return connectivityServiceNode.getPropertyJsonNode("state_machine");
+    }
+
 }

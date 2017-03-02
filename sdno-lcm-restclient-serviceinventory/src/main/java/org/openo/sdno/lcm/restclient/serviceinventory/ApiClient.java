@@ -64,10 +64,10 @@ import org.openo.sdno.lcm.restclient.serviceinventory.auth.HttpBasicAuth;
 import org.openo.sdno.lcm.restclient.serviceinventory.auth.ApiKeyAuth;
 import org.openo.sdno.lcm.restclient.serviceinventory.auth.OAuth;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-02-15T16:47:04.731Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-02-28T17:11:52.313Z")
 public class ApiClient {
   private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
-  private String basePath = "http://127.0.0.1:80/openoapi/sdnomss/v1";
+  private String basePath = "http://localhost/openoapi/sdnomss/v1";
   private boolean debugging = false;
   private int connectionTimeout = 0;
 

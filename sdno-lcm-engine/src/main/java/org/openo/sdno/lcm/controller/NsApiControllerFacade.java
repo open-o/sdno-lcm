@@ -20,8 +20,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.LcmStateEngine;
-import org.openo.sdno.lcm.exception.InvalidInputException;
-import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,18 +35,17 @@ public class NsApiControllerFacade {
         log.info("begin nsCreationPost");
         log.fine("params: " + params.toString());
 
-        // check if the csar id is included in params
-        if(params.containsKey(Constants.LCM_NBI_CSAR_NAME)
-                && !((String)params.get(Constants.LCM_NBI_CSAR_NAME)).isEmpty()) {
+        params.put("apiOperation", "create");
+        return lcmStateEngine.execute(params);
+    }
 
-            // need to fill default values for input params because this create doesn't correspond
-            // exactly to our semantic of create in our state machine
-            return lcmStateEngine.execute(params);
-        } else {
+    public Map<String, Object> nsInstantiationPost(Map<String, Object> params) {
 
-            throw new InvalidInputException(
-                    "Input params must contain non-empty value for " + Constants.LCM_NBI_CSAR_NAME);
-        }
+        log.info("begin nsInstantiationPost");
+        log.fine("params: " + params.toString());
+
+        params.put("apiOperation", "deployCreated");
+        return lcmStateEngine.execute(params);
     }
 
     @Autowired

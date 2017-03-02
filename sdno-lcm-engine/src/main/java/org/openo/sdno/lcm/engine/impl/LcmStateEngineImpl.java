@@ -22,12 +22,15 @@ import java.util.logging.Logger;
 import org.openo.sdno.lcm.ariaclient.ParserApiClient;
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
-import org.openo.sdno.lcm.engine.GenericWorkflowId;
+import org.openo.sdno.lcm.csarhandler.CsarHandler;
 import org.openo.sdno.lcm.engine.LcmStateEngine;
 import org.openo.sdno.lcm.exception.LcmInternalException;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponseSample;
 import org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient;
 import org.openo.sdno.lcm.statetablehandler.StateTableHandler;
+import org.openo.sdno.lcm.statetablehandler.model.StateTable;
 import org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser;
+import org.openo.sdno.lcm.templatemodel.service.Instance;
 import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,6 +54,8 @@ public class LcmStateEngineImpl implements LcmStateEngine {
 
     private WorkflowRegistry workflowRegistry;
 
+    private CsarHandler csarHandler;
+
     /*
      * (non-Javadoc)
      * @see org.openo.sdno.lcm.engine.impl.LcmStateEngine#execute(java.util.Map)
@@ -59,39 +64,69 @@ public class LcmStateEngineImpl implements LcmStateEngine {
     public Map<String, Object> execute(Map<String, Object> params) {
 
         if(params == null) {
-
             throw new IllegalArgumentException("input params may not be null");
         }
-        log.fine("params:" + params.toString());
+        log.fine("execute params: " + params.toString());
 
-        // check if the nsid is included in params
+        // if the API operation is not set, exit
+        if((!params.containsKey(Constants.LCM_NBI_API_OPERATION))
+                || ((String)params.get(Constants.LCM_NBI_API_OPERATION)).isEmpty()) {
+
+            log.severe(Constants.LCM_NBI_API_OPERATION + " is not found in params");
+            throw new LcmInternalException("API operation parameter not present - cannot proceed");
+        }
+        String apiOperation = (String)params.get(Constants.LCM_NBI_API_OPERATION);
+        log.info(Constants.LCM_NBI_API_OPERATION + " is " + apiOperation);
+        String currentState = null;
+        String csarName = null;
+
+        // check if the nsid is included in params - this means we have such a service in inventory
+        // get the CSAR name from the service instance.
         if(params.containsKey(Constants.LCM_NBI_SERVICE_ID)
                 && !((String)params.get(Constants.LCM_NBI_SERVICE_ID)).isEmpty()) {
 
             String nsid = (String)params.get(Constants.LCM_NBI_SERVICE_ID);
-            log.info(Constants.LCM_NBI_SERVICE_ID + " is " + nsid);
+            log.info(Constants.LCM_NBI_SERVICE_ID + " (Connectivity Service ID) is " + nsid);
 
-            // TODO execute the appropriate workflow...
-            // TODO get the service from the inventory
-            // stateTableHandler.validateServiceTransition(null, null, null);
-            // TODO get state from instance - except in create case we know already
-            String dummyWflId = "deploy";
-            return workflowRegistry.executeWorkflow(dummyWflId, params);
+            // get the service from the inventory
+            GetConnectivityServiceResponseSample connectivityService =
+                    defaultMssApiClient.readConnectivityService(nsid).getObject();
+            log.fine("Connectivity service: " + connectivityService.toString());
+
+            // get state from service instance
+            currentState = connectivityService.getLifecycleState();
+            // get the csar ID from service instance
+            // *** ASSUME CSAR_ID == TEMPLATE_ID ***
+            csarName = connectivityService.getTemplateId();
+            log.info(String.format("Adding CSAR name to params as %s=%s", Constants.LCM_NBI_CSAR_NAME, csarName));
+            params.put(Constants.LCM_NBI_CSAR_NAME, csarName);
+
+        } else if((!(params.containsKey(Constants.LCM_NBI_CSAR_NAME))
+                || ((String)params.get(Constants.LCM_NBI_CSAR_NAME)).isEmpty())) {
+
+            csarName = (String)params.get(Constants.LCM_NBI_CSAR_NAME);
+            currentState = Constants.SDNO_LCM_NULL_STATE;
 
         } else {
-            log.info(Constants.LCM_NBI_SERVICE_ID + " is not found in params, beginning service creation");
-            // no connectivity service ID, so this must be a create
-            if(params.containsKey(Constants.LCM_NBI_CSAR_NAME)
-                    && !((String)params.get(Constants.LCM_NBI_CSAR_NAME)).isEmpty()) {
-
-                String csarName = (String)params.get(Constants.LCM_NBI_CSAR_NAME);
-                log.info(Constants.LCM_NBI_CSAR_NAME + " is " + csarName);
-                return workflowRegistry.executeWorkflow(GenericWorkflowId.CREATE.toString(), params);
-            } else {
-                log.info(Constants.LCM_NBI_CSAR_NAME + " is not found in params");
-                throw new LcmInternalException("No workflows possible with the parameters given");
-            }
+            log.severe(String.format("Neither %s nor %s foudn in params - cannot continue", Constants.LCM_NBI_CSAR_NAME,
+                    Constants.LCM_NBI_SERVICE_ID));
+            throw new LcmInternalException("No workflows possible with the parameters given");
         }
+        log.info("Connectivity service current state: " + currentState);
+        log.info(Constants.LCM_NBI_CSAR_NAME + " is " + csarName);
+        
+        // get the service template from catalog
+        String serviceTemplate = modelResourceApiClient.getServiceTemplateRawData(csarName);
+        
+        // add the instance to the params
+        Instance templateInstance = templateInstanceParser.parse(serviceTemplate);
+        params.put(Constants.SDNO_LCM_TEMPLATE_INSTANCE, templateInstance);
+        
+        // check the transition and get the workflow ID
+        StateTable stateTable = stateTableHandler.marshallStateTable(templateInstance.getStateTableDefinition());
+        String transitionWorkflow = stateTableHandler.validateServiceTransition(currentState, apiOperation, stateTable);     
+        // execute the workflow
+        return workflowRegistry.executeWorkflow(transitionWorkflow, params);
     }
 
     @Autowired
@@ -127,6 +162,11 @@ public class LcmStateEngineImpl implements LcmStateEngine {
     @Autowired
     public void setWorkflowRegistry(WorkflowRegistry workflowRegistry) {
         this.workflowRegistry = workflowRegistry;
+    }
+
+    @Autowired
+    public void setCsarHandler(CsarHandler csarHandler) {
+        this.csarHandler = csarHandler;
     }
 
 }

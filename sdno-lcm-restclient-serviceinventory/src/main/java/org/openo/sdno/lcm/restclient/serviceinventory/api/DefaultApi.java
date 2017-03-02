@@ -23,18 +23,19 @@ import org.openo.sdno.lcm.restclient.serviceinventory.Pair;
 
 import javax.ws.rs.core.GenericType;
 
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceResp;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityServiceReq;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.ResponseConnectivityService;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateResponseConnectivityService;
-import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityService;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.CreateConnectivityServiceRequest;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.CreateConnectivityServiceResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.GetAllConnectivityServiceResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityServiceRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-02-15T16:47:04.731Z")
+@javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaClientCodegen", date = "2017-02-28T17:11:52.313Z")
 public class DefaultApi {
   private ApiClient apiClient;
 
@@ -58,10 +59,10 @@ public class DefaultApi {
    * 
    * Add a new connectivity services
    * @param body the createConnectivityService to be created (required)
-   * @return ConnectivityServiceResp
+   * @return CreateConnectivityServiceResponse
    * @throws ApiException if fails to make API call
    */
-  public ConnectivityServiceResp createConnectivityService(ConnectivityServiceReq body) throws ApiException {
+  public CreateConnectivityServiceResponse createConnectivityService(CreateConnectivityServiceRequest body) throws ApiException {
     Object localVarPostBody = body;
     
     // verify the required parameter 'body' is set
@@ -81,18 +82,18 @@ public class DefaultApi {
     
     
     final String[] localVarAccepts = {
-      "application/json"
+      "application/json;charset=UTF-8"
     };
     final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
 
     final String[] localVarContentTypes = {
-      "application/json"
+      "application/json;charset=UTF-8"
     };
     final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
     String[] localVarAuthNames = new String[] {  };
 
-    GenericType<ConnectivityServiceResp> localVarReturnType = new GenericType<ConnectivityServiceResp>() {};
+    GenericType<CreateConnectivityServiceResponse> localVarReturnType = new GenericType<CreateConnectivityServiceResponse>() {};
     return apiClient.invokeAPI(localVarPath, "POST", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
       }
   /**
@@ -122,12 +123,12 @@ public class DefaultApi {
     
     
     final String[] localVarAccepts = {
-      "application/json"
+      "application/json;charset=UTF-8"
     };
     final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
 
     final String[] localVarContentTypes = {
-      "application/json"
+      "application/json;charset=UTF-8"
     };
     final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
@@ -139,10 +140,10 @@ public class DefaultApi {
   /**
    * 
    * get connectivity services
-   * @return List<ResponseConnectivityService>
+   * @return GetAllConnectivityServiceResponse
    * @throws ApiException if fails to make API call
    */
-  public List<ResponseConnectivityService> getConnectivityService() throws ApiException {
+  public GetAllConnectivityServiceResponse getConnectivityService() throws ApiException {
     Object localVarPostBody = null;
     
     // create path and map variables
@@ -157,28 +158,28 @@ public class DefaultApi {
     
     
     final String[] localVarAccepts = {
-      "application/json"
+      "application/json;charset=UTF-8"
     };
     final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
 
     final String[] localVarContentTypes = {
-      "application/json"
+      "application/json;charset=UTF-8"
     };
     final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
     String[] localVarAuthNames = new String[] {  };
 
-    GenericType<List<ResponseConnectivityService>> localVarReturnType = new GenericType<List<ResponseConnectivityService>>() {};
+    GenericType<GetAllConnectivityServiceResponse> localVarReturnType = new GenericType<GetAllConnectivityServiceResponse>() {};
     return apiClient.invokeAPI(localVarPath, "GET", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
       }
   /**
    * 
    * Get the connectivity service specified in request
    * @param id ID of the connectivity service to be queried (required)
-   * @return ResponseConnectivityService
+   * @return GetConnectivityServiceResponse
    * @throws ApiException if fails to make API call
    */
-  public ResponseConnectivityService readConnectivityService(String id) throws ApiException {
+  public GetConnectivityServiceResponse readConnectivityService(String id) throws ApiException {
     Object localVarPostBody = null;
     
     // verify the required parameter 'id' is set
@@ -199,18 +200,18 @@ public class DefaultApi {
     
     
     final String[] localVarAccepts = {
-      "application/json"
+      "application/json;charset=UTF-8"
     };
     final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
 
     final String[] localVarContentTypes = {
-      "application/json"
+      "application/json;charset=UTF-8"
     };
     final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
     String[] localVarAuthNames = new String[] {  };
 
-    GenericType<ResponseConnectivityService> localVarReturnType = new GenericType<ResponseConnectivityService>() {};
+    GenericType<GetConnectivityServiceResponse> localVarReturnType = new GenericType<GetConnectivityServiceResponse>() {};
     return apiClient.invokeAPI(localVarPath, "GET", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
       }
   /**
@@ -218,20 +219,20 @@ public class DefaultApi {
    * modify the connectivity service specified in request
    * @param id ID of the connectivity service to be updated (required)
    * @param body the partial connectivity service for the update operation (required)
-   * @return UpdateResponseConnectivityService
+   * @return UpdateResponse
    * @throws ApiException if fails to make API call
    */
-  public UpdateResponseConnectivityService updateConnectivityService(String id, UpdateConnectivityService body) throws ApiException {
+  public UpdateResponse updateConnectivityServiceRequest(String id, UpdateConnectivityServiceRequest body) throws ApiException {
     Object localVarPostBody = body;
     
     // verify the required parameter 'id' is set
     if (id == null) {
-      throw new ApiException(400, "Missing the required parameter 'id' when calling updateConnectivityService");
+      throw new ApiException(400, "Missing the required parameter 'id' when calling updateConnectivityServiceRequest");
     }
     
     // verify the required parameter 'body' is set
     if (body == null) {
-      throw new ApiException(400, "Missing the required parameter 'body' when calling updateConnectivityService");
+      throw new ApiException(400, "Missing the required parameter 'body' when calling updateConnectivityServiceRequest");
     }
     
     // create path and map variables
@@ -247,18 +248,18 @@ public class DefaultApi {
     
     
     final String[] localVarAccepts = {
-      "application/json"
+      "application/json;charset=UTF-8"
     };
     final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
 
     final String[] localVarContentTypes = {
-      "application/json"
+      "application/json;charset=UTF-8"
     };
     final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
     String[] localVarAuthNames = new String[] {  };
 
-    GenericType<UpdateResponseConnectivityService> localVarReturnType = new GenericType<UpdateResponseConnectivityService>() {};
+    GenericType<UpdateResponse> localVarReturnType = new GenericType<UpdateResponse>() {};
     return apiClient.invokeAPI(localVarPath, "PUT", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
       }
 }

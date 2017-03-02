@@ -50,7 +50,7 @@ public class CsarHandlerImpl implements CsarHandler {
         // TODO try this with resources!
         File tmpCsarFile = null;
         try {
-            Csar csar = this.getCsar(csarName);
+            Csar csar = this.getCsarByName(csarName);
             String downloadUri = csar.getDownloadUri();
 
             tmpCsarFile = File.createTempFile(csarName, ".csar");
@@ -64,7 +64,7 @@ public class CsarHandlerImpl implements CsarHandler {
     }
 
     @Override
-    public Csar getCsar(String csarName) {
+    public Csar getCsarByName(String csarName) {
 
         // TODO no caching yet
         if(csarName == null || csarName.isEmpty()) {

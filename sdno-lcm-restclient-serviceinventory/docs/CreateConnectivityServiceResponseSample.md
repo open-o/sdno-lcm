@@ -1,5 +1,5 @@
 
-# ResponseConnectivityService
+# CreateConnectivityServiceResponseSample
 
 ## Properties
 Name | Type | Description | Notes
