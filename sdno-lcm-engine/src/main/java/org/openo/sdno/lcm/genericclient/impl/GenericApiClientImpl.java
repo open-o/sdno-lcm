@@ -27,10 +27,6 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.entity.StringEntity;
 
-import org.openo.sdno.lcm.model.workplan.WorkItem;
-import org.openo.sdno.lcm.model.workplan.WorkPlan;
-import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionResult;
-import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionStrategy;
 
 import io.swagger.models.HttpMethod;
 import io.swagger.models.parameters.HeaderParameter;
@@ -78,17 +74,42 @@ public class GenericApiClientImpl implements GenericApiClient {
      * @param body the request body (in JSON format)
      * @return HttpResponse from the service to be called.
      *         Note that ExternalComponentException will be thrown if exceptions happen during service call;
+     *         LcmInternalException could also be thrown;
      */
     @Override
     public HttpResponse execute(final String apiUrl, final HttpMethod method,
                                 final String contentTypeValue, final JsonNode properties,
                                 final List<PathParameter> pathParameters, List<QueryParameter> queryParameters,
                                 final List<HeaderParameter> headers, final JsonNode body) {
+        HttpClient client = createHttpClient();
+
+        HttpUriRequest request = prepareHttpRequest(apiUrl, method, contentTypeValue, properties,
+                                pathParameters, queryParameters, headers, body);
+        log.info(String.format("http request is ready now. request: %s", request.toString()));
+
+        return executeRequest(client, request);
+    }
+
+
+    /**
+     * prepare http request to be executed
+     *
+     * @param apiUrl the original api url
+     * @param method HTTP method to be used
+     * @param contentTypeValue the value of ContentType header
+     * @param properties node properties
+     * @param pathParameters Path Parameters
+     * @param queryParameters Query Parameters
+     * @param headers header parameters in swagger
+     * @param body the request body (in JSON format)
+     * @return HttpUriRequest to be executed.
+     */
+    protected HttpUriRequest prepareHttpRequest(final String apiUrl, final HttpMethod method,
+                                final String contentTypeValue, final JsonNode properties,
+                                final List<PathParameter> pathParameters, List<QueryParameter> queryParameters,
+                                final List<HeaderParameter> headers, final JsonNode body) {
         HttpUriRequest request = null;
         StringEntity bodyEntity = null;
-
-        //create http client
-        HttpClient client = HttpClientBuilder.create().build();
 
         /**
          * Generate the final url with path parameters and query parameters
@@ -96,6 +117,7 @@ public class GenericApiClientImpl implements GenericApiClient {
          * In the future, we need pass inputs (query parameters) from customers to Dispatcher.
          */
         String finalApiUrl = generateFinalApiUrl(apiUrl, properties, pathParameters, queryParameters);
+        log.info(String.format("Final URL is generated. URL: %s", finalApiUrl));
 
         //create body entity if body exist
         if(null!=body) {
@@ -112,20 +134,20 @@ public class GenericApiClientImpl implements GenericApiClient {
         //create HttpRequest and set body if needed.
         switch(method) {
             case GET:
-                request = new HttpGet(apiUrl);
+                request = new HttpGet(finalApiUrl);
                 break;
             case POST:
-                HttpPost postRequest = new HttpPost(apiUrl);
+                HttpPost postRequest = new HttpPost(finalApiUrl);
                 if(null!=bodyEntity) postRequest.setEntity(bodyEntity);
                 request = postRequest;
                 break;
             case PUT:
-                HttpPut putRequest = new HttpPut(apiUrl);
+                HttpPut putRequest = new HttpPut(finalApiUrl);
                 if(null!=bodyEntity) putRequest.setEntity(bodyEntity);
                 request = putRequest;
                 break;
             case DELETE:
-                request = new HttpDelete(apiUrl);
+                request = new HttpDelete(finalApiUrl);
                 break;
             default:
                 log.severe(
@@ -137,7 +159,17 @@ public class GenericApiClientImpl implements GenericApiClient {
         //add http headers
         addHeaders(request, contentTypeValue, headers);
 
-        //make the call
+        return request;
+    }
+
+    /**
+     * execute request with specified http client
+     * 
+     * @client http client used to send http request
+     * @request http request to be executed
+     * @return http response from the service. Note that ExternalComponentException will be thrown if failed.
+     */
+    protected HttpResponse executeRequest(HttpClient client, HttpUriRequest request) {
         try {
             HttpResponse response = client.execute(request);
             return response;
@@ -170,7 +202,7 @@ public class GenericApiClientImpl implements GenericApiClient {
             throw new LcmInternalException("GenericApiClient currently doesn't support query parameters.");
         }
 
-        if(null==pathParameters || pathParameters.size()==0) return apiUrl;
+        if(null==pathParameters || pathParameters.size()==0) return getMsbBaseUrl() + apiUrl;
         if(pathParameters.size()>1) {
             log.severe(
                     String.format("GenericApiClient cannot support multiple path parameters. parameters: %s",
@@ -199,6 +231,8 @@ public class GenericApiClientImpl implements GenericApiClient {
     private void addHeaders(HttpUriRequest request, final String contentTypeValue,
                                 final List<HeaderParameter> headers) {
         request.addHeader(HttpHeaders.CONTENT_TYPE, contentTypeValue);
+        if(null==headers) return;
+
         for(int i=0; i<headers.size(); i++) {
             HeaderParameter p = headers.get(i);
             String name = p.getName();
@@ -212,6 +246,11 @@ public class GenericApiClientImpl implements GenericApiClient {
             }
             request.addHeader(name, defaultValue.toString());
         }
+    }
+
+    //create http client
+    private HttpClient createHttpClient() {
+        return HttpClientBuilder.create().build();
     }
 
     /**

@@ -96,7 +96,7 @@ public class DispatcherImpl implements Dispatcher {
      * @param workItem the work item to be executed
      * @return whether this work item has been executed successfully. true: success; false: failure
      */
-    private boolean executeWorkItem(WorkItem workItem) {
+    protected boolean executeWorkItem(WorkItem workItem) {
         //get contents from work item
         Swagger swagger = workItem.getSwaggerSpec();
         String apiUrl = workItem.getApiUrl();
@@ -104,11 +104,11 @@ public class DispatcherImpl implements Dispatcher {
 
         //prepare headers to be sent in HttpRequest
         String contentTypeValue = SwaggerUtils.getConsumeFromSwagger(swagger, apiUrl, method);
-        List<HeaderParameter> headerParameters = 
+        List<HeaderParameter> headerParameters =
             SwaggerUtils.getHeaderParametersFromSwagger(swagger, apiUrl, method);
 
         //prepare path and query parameters;
-        List<QueryParameter> queryParameters = 
+        List<QueryParameter> queryParameters =
             SwaggerUtils.getQueryParametersFromSwagger(swagger, apiUrl, method);
         List<PathParameter> pathParameters =
             SwaggerUtils.getPathParametersFromSwagger(swagger, apiUrl, method);
@@ -153,7 +153,7 @@ public class DispatcherImpl implements Dispatcher {
      * Note:
      * To be generic, we use only HTTP status code to make the decision.
      * In the future, we may should analyze the response body if APIs are normalized.
-     * 
+     *
      * @param response HttpResponse from the called service
      * @return whether this call is successful.
      */

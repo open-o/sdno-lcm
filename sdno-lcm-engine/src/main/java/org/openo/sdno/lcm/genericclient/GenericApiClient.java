@@ -41,6 +41,7 @@ public interface GenericApiClient {
      * @param body the request body (in JSON format)
      * @return HttpResponse from the service to be called.
      *         Note that ExternalComponentException will be thrown if exceptions happen during service call;
+     *         LcmInternalException could also be thrown;
      */
     HttpResponse execute(final String apiUrl, final HttpMethod method,
                                 final String contentTypeValue, final JsonNode properties,

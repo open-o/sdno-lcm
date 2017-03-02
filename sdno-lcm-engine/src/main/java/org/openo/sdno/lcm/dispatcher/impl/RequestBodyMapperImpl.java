@@ -69,6 +69,7 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
         JsonNode mapperSpec = workItem.getMapperSpec();
         String modelName = SwaggerUtils.getBodyModelNameFromSwagger(workItem.getSwaggerSpec(),
                                                                     workItem.getApiUrl(), workItem.getMethod());
+        if(null==modelName) return null;
 
         JsonNode nodeProperties = workItem.getNode().getProperties();
 
