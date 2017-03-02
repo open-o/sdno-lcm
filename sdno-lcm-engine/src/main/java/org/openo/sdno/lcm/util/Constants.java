@@ -32,7 +32,7 @@ public class Constants {
     public static final String SDNO_LCM_DEFAULT_IP = "sdno-lcm.default-ip";
 
     // NBI input constants
-    public static final String LCM_NBI_CSAR_NAME = "nsdId";
+    public static final String LCM_NBI_TEMPLATE_ID = "nsdId";
 
     public static final String LCM_NBI_SERVICE_NAME = "nsName";
 
@@ -45,4 +45,6 @@ public class Constants {
     public static final String LCM_NBI_ADDITIONAL_PARAMS = "additionalParamForNS";
 
     public static final String SDNO_LCM_TEMPLATE_INSTANCE = "sdnoLcmTemplateInstance";
+
+    public static final String LCM_NBI_CSAR_ID = "realNsdId";
 }

@@ -16,12 +16,13 @@
 
 package org.openo.sdno.lcm.templatemodel.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-// @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"template_name", "template_author", "version", "vendor", "id", "csarProvider"})
 public class Metadata {
 

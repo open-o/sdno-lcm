@@ -18,6 +18,7 @@ package org.openo.sdno.lcm.engine.impl.workflow;
 
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
+import org.openo.sdno.lcm.decomposer.Decomposer;
 import org.openo.sdno.lcm.engine.RegisterWorkflow;
 import org.openo.sdno.lcm.engine.Workflow;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponse;
@@ -42,6 +43,8 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
     protected DefaultMssApiClient defaultMssApiClient;
 
     protected TemplateInstanceParser templateInstanceParser;
+    
+    protected Decomposer decomposer;
 
     public GenericWorkflowImpl() {
         super();
@@ -85,6 +88,11 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
     @Autowired
     public void setTemplateInstanceParser(TemplateInstanceParser templateInstanceParser) {
         this.templateInstanceParser = templateInstanceParser;
+    }
+
+    @Autowired 
+    public void setDecomposer(Decomposer decomposer) {
+        this.decomposer = decomposer;
     }
 
 }

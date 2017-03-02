@@ -83,7 +83,7 @@ public class LcmStateEngineTest extends AbstractTestNGSpringContextTests {
         replay(mockPackageResourceApiClient);
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put(Constants.LCM_NBI_CSAR_NAME, "myLittleCsar");
+        params.put(Constants.LCM_NBI_TEMPLATE_ID, "myLittleCsar");
         lcmStateEngine.execute(params);
     }
 

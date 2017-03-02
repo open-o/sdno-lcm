@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.csarhandler.CsarHandler;
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
+import org.openo.sdno.lcm.model.workplan.WorkPlan;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
 import org.openo.sdno.lcm.templatemodel.service.Node;
@@ -46,15 +47,17 @@ public class GwfCreate extends GenericWorkflowImpl {
 
         log.fine("Execute GwfCreate workflow");
 
-        String csarName = (String)params.get(Constants.LCM_NBI_CSAR_NAME);
+        String csarName = (String)params.get(Constants.LCM_NBI_TEMPLATE_ID);
         if(csarName == null || csarName.isEmpty()) {
 
             throw new InvalidParameterException("csarName may not be empty or null");
         }
         String csarId = csarHandler.getCsarByName(csarName).getCsarId();
+        String apiOperation = (String)params.get(Constants.LCM_NBI_API_OPERATION);
 
         // get raw template instance from catalog
         String serviceTemplate = modelResourceApiClient.getServiceTemplateRawData(csarId);
+        // TODO take this from the params rather than parsing again
         Instance templateInstance = templateInstanceParser.parse(serviceTemplate);
         Node connectivityServiceNode = templateInstance.getRootNode();
 
@@ -75,7 +78,9 @@ public class GwfCreate extends GenericWorkflowImpl {
         connectivityService.setVersion(connectivityServiceNode.getPropertyValue("version"));
         connectivityService.setLifecycleState("created");
         defaultMssApiClient.createConnectivityService(connectivityService);
-
+        
+        WorkPlan workPlan = super.decomposer.decompose(templateInstance, apiOperation, csarId);
+        // TODO call the dispatcher
         return new HashMap<String, Object>();
     }
 

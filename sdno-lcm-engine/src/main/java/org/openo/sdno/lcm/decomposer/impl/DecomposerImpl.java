@@ -50,7 +50,7 @@ public class DecomposerImpl implements Decomposer {
      * Instance, java.lang.String, org.openo.sdno.lcm.templatemodel.csar.Csar)
      */
     @Override
-    public WorkPlan decompose(final Instance serviceTemplateInstance, final String operation, final Csar csar) {
+    public WorkPlan decompose(final Instance serviceTemplateInstance, final String operation, final String csarId) {
 
         // PSEUDO:
         // TODO

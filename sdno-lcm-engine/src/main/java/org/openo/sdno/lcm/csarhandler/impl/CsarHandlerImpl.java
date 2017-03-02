@@ -63,6 +63,9 @@ public class CsarHandlerImpl implements CsarHandler {
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.openo.sdno.lcm.csarhandler.CsarHandler#getCsarByName(java.lang.String)
+     */
     @Override
     public Csar getCsarByName(String csarName) {
 
@@ -91,5 +94,14 @@ public class CsarHandlerImpl implements CsarHandler {
     @Autowired
     public void setPackageResourceApiClient(PackageResourceApiClient packageResourceApiClient) {
         this.packageResourceApiClient = packageResourceApiClient;
+    }
+
+    /* (non-Javadoc)
+     * @see org.openo.sdno.lcm.csarhandler.CsarHandler#getCsarId(java.lang.String)
+     */
+    @Override
+    public String getCsarId(String csarName) {
+
+        return this.getCsarByName(csarName).getCsarId();
     }
 }

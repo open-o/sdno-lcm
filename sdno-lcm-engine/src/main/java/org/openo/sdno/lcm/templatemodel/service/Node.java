@@ -176,10 +176,12 @@ public class Node {
      */
     public String getPropertyValue(String propertyName) {
         
-        // TODO check error handling logic
-        JsonNode propertiesNode = this.getProperties();
-        JsonNode propertyNode = propertiesNode.get(propertyName);
-        return propertyNode.get("value").asText();
+        JsonNode jsonNode = getPropertyJsonNode(propertyName);
+        if(null != jsonNode) {
+            return jsonNode.asText();
+        } else {
+            return null;
+        }
     }
     
     /**

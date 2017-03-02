@@ -24,6 +24,19 @@ import org.openo.sdno.lcm.templatemodel.csar.Csar;
  */
 public interface CsarHandler {
 
+    /**
+     * Get the metadata of a CSAR file based on the CSAR name
+     * 
+     * @param csarName the CSAR name
+     * @return the metadata object Csar
+     */
     Csar getCsarByName(String csarName);
+
+    /**
+     * Get the csarId based on it its name
+     * @param csarName the name of the CSAR
+     * @return the ID the CSAR
+     */
+    String getCsarId(String csarName);
 
 }

@@ -34,10 +34,10 @@ public interface Decomposer {
      * 
      * @param serviceTemplateInstance
      * @param operation
-     * @param csar the Csar model containing the required artifacts (swagger for Node SBIs)
+     * @param csarId the ID for CSAR  containing the required artifacts (swagger for Node SBIs)
      * @return the Workplan with list of WorkplanItem (Node + artifacts) in the order that they need
      *         to be visited to perform the given operation
      */
-    WorkPlan decompose(Instance serviceTemplateInstance, String operation, Csar csar);
+    WorkPlan decompose(Instance serviceTemplateInstance, String operation, String csarId);
 
 }
