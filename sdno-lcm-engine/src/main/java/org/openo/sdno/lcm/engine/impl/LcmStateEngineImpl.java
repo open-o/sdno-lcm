@@ -25,6 +25,7 @@ import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.csarhandler.CsarHandler;
 import org.openo.sdno.lcm.engine.LcmStateEngine;
 import org.openo.sdno.lcm.exception.LcmInternalException;
+import org.openo.sdno.lcm.restclient.catalog.model.ServiceTemplate;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponseSample;
 import org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient;
 import org.openo.sdno.lcm.statetablehandler.StateTableHandler;
@@ -78,7 +79,7 @@ public class LcmStateEngineImpl implements LcmStateEngine {
         String apiOperation = (String)params.get(Constants.LCM_NBI_API_OPERATION);
         log.info(Constants.LCM_NBI_API_OPERATION + " is " + apiOperation);
         String currentState = null;
-        String csarName = null;
+        String templateId = null;
 
         // check if the nsid is included in params - this means we have such a service in inventory
         // get the CSAR name from the service instance.
@@ -97,14 +98,14 @@ public class LcmStateEngineImpl implements LcmStateEngine {
             currentState = connectivityService.getLifecycleState();
             // get the csar ID from service instance
             // *** ASSUME CSAR_ID == TEMPLATE_ID ***
-            csarName = connectivityService.getTemplateId();
-            log.info(String.format("Adding CSAR name to params as %s=%s", Constants.LCM_NBI_TEMPLATE_ID, csarName));
-            params.put(Constants.LCM_NBI_TEMPLATE_ID, csarName);
+            templateId = connectivityService.getTemplateId();
+            log.info(String.format("Adding template ID to params as %s=%s", Constants.LCM_NBI_TEMPLATE_ID, templateId));
+            params.put(Constants.LCM_NBI_TEMPLATE_ID, templateId);
 
         } else if((params.containsKey(Constants.LCM_NBI_TEMPLATE_ID)
                 && !((String)params.get(Constants.LCM_NBI_TEMPLATE_ID)).isEmpty())) {
 
-            csarName = (String)params.get(Constants.LCM_NBI_TEMPLATE_ID);
+            templateId = (String)params.get(Constants.LCM_NBI_TEMPLATE_ID);
             currentState = Constants.SDNO_LCM_NULL_STATE;
 
         } else {
@@ -113,16 +114,17 @@ public class LcmStateEngineImpl implements LcmStateEngine {
             throw new LcmInternalException("No workflows possible with the parameters given");
         }
         log.info("Connectivity service current state: " + currentState);
-        log.info(Constants.LCM_NBI_TEMPLATE_ID + " is " + csarName);
+        log.info(Constants.LCM_NBI_TEMPLATE_ID + " is " + templateId);
 
-        String csarId = csarHandler.getCsarId(csarName);
+        ServiceTemplate serviceTemplate = modelResourceApiClient.getServiceTemplateById(templateId);
+        String csarId = serviceTemplate.getCsarId();
         log.info(String.format("CSAR ID is: %s", csarId));
         params.put(Constants.LCM_NBI_CSAR_ID, csarId);
         // get the service template from catalog
-        String serviceTemplate = modelResourceApiClient.getServiceTemplateRawData(csarId);
+        String serviceInstanceJson = modelResourceApiClient.getServiceTemplateRawData(csarId);
 
         // add the instance to the params
-        Instance templateInstance = templateInstanceParser.parse(serviceTemplate);
+        Instance templateInstance = templateInstanceParser.parse(serviceInstanceJson);
         params.put(Constants.SDNO_LCM_TEMPLATE_INSTANCE, templateInstance);
 
         // check the transition and get the workflow ID

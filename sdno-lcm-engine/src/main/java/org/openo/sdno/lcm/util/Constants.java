@@ -46,5 +46,5 @@ public class Constants {
 
     public static final String SDNO_LCM_TEMPLATE_INSTANCE = "sdnoLcmTemplateInstance";
 
-    public static final String LCM_NBI_CSAR_ID = "realNsdId";
+    public static final String LCM_NBI_CSAR_ID = "csarId";
 }

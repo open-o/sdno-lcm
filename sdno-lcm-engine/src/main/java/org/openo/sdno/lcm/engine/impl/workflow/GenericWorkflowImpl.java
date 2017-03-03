@@ -16,21 +16,25 @@
 
 package org.openo.sdno.lcm.engine.impl.workflow;
 
+import java.util.Map;
+import java.util.logging.Logger;
+
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.decomposer.Decomposer;
 import org.openo.sdno.lcm.engine.RegisterWorkflow;
 import org.openo.sdno.lcm.engine.Workflow;
+import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponse;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponseSample;
 import org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient;
 import org.openo.sdno.lcm.statetablehandler.StateTableHandler;
 import org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser;
-import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Abstract superclass of generic workflows, providing properties and showing implemented interfaces.
+ * Abstract superclass of generic workflows, providing properties and showing implemented
+ * interfaces.
  */
 public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow {
 
@@ -43,11 +47,28 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
     protected DefaultMssApiClient defaultMssApiClient;
 
     protected TemplateInstanceParser templateInstanceParser;
-    
+
     protected Decomposer decomposer;
+    
+    private static final Logger log = Logger.getLogger("GenericWorkflowImpl");
 
     public GenericWorkflowImpl() {
         super();
+    }
+
+    protected Object getParam(String key, Map<String, Object> params) {
+        
+        Object param = params.get(key);
+        if(param == null){
+            
+            throw new LcmInternalException(key+" may not be null");
+        }
+        if(param instanceof String && ((String)param).isEmpty()) {
+            
+            throw new LcmInternalException(key+"string may not be empty");
+        }
+        log.fine(String.format("Value of param %s is %s", key, param.toString()));
+        return param;
     }
 
     /*
@@ -58,10 +79,9 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
 
         return this;
     }
-    
+
     protected GetConnectivityServiceResponseSample readConnectivityServiceFromMss(String serviceId) {
-        GetConnectivityServiceResponse readConnectivityService =
-                defaultMssApiClient.readConnectivityService(serviceId);
+        GetConnectivityServiceResponse readConnectivityService = defaultMssApiClient.readConnectivityService(serviceId);
         return readConnectivityService.getObject();
     }
 
@@ -90,7 +110,7 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
         this.templateInstanceParser = templateInstanceParser;
     }
 
-    @Autowired 
+    @Autowired
     public void setDecomposer(Decomposer decomposer) {
         this.decomposer = decomposer;
     }

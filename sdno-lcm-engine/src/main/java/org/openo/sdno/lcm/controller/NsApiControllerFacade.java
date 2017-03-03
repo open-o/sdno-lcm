@@ -44,7 +44,7 @@ public class NsApiControllerFacade {
         log.info("begin nsInstantiationPost");
         log.fine("params: " + params.toString());
 
-        params.put("apiOperation", "deployCreated");
+        params.put("apiOperation", "deploy");
         return lcmStateEngine.execute(params);
     }
 

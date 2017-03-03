@@ -16,27 +16,24 @@
 
 package org.openo.sdno.lcm.engine.impl.workflow;
 
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.openo.sdno.lcm.csarhandler.CsarHandler;
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
 import org.openo.sdno.lcm.model.workplan.WorkPlan;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.CreateConnectivityServiceResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.CreateConnectivityServiceResponseSample;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
 import org.openo.sdno.lcm.templatemodel.service.Node;
 import org.openo.sdno.lcm.util.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GwfCreate extends GenericWorkflowImpl {
 
     private static final Logger log = Logger.getLogger("GenericWorkflowCreate");
-
-    private CsarHandler csarHandler;
 
     /*
      * (non-Javadoc)
@@ -47,22 +44,17 @@ public class GwfCreate extends GenericWorkflowImpl {
 
         log.fine("Execute GwfCreate workflow");
 
-        String csarName = (String)params.get(Constants.LCM_NBI_TEMPLATE_ID);
-        if(csarName == null || csarName.isEmpty()) {
+        String csarId = (String)super.getParam(Constants.LCM_NBI_CSAR_ID, params);
+        String apiOperation = (String)super.getParam(Constants.LCM_NBI_API_OPERATION, params);
+        String serviceTemplateId = (String)super.getParam(Constants.LCM_NBI_TEMPLATE_ID, params);
+        Instance templateInstance = (Instance)super.getParam(Constants.SDNO_LCM_TEMPLATE_INSTANCE, params);
 
-            throw new InvalidParameterException("csarName may not be empty or null");
-        }
-        String csarId = csarHandler.getCsarByName(csarName).getCsarId();
-        String apiOperation = (String)params.get(Constants.LCM_NBI_API_OPERATION);
-
-        // get raw template instance from catalog
-        String serviceTemplate = modelResourceApiClient.getServiceTemplateRawData(csarId);
-        // TODO take this from the params rather than parsing again
-        Instance templateInstance = templateInstanceParser.parse(serviceTemplate);
         Node connectivityServiceNode = templateInstance.getRootNode();
 
         // create the Connectivity Service in DB
         ConnectivityService connectivityService = new ConnectivityService();
+        connectivityService.setLifecycleState("created");
+        connectivityService.setTemplateId(serviceTemplateId);
         connectivityService.setId(connectivityServiceNode.getPropertyValue("id"));
         connectivityService.setName(connectivityServiceNode.getPropertyValue("name"));
         connectivityService.setActionState(connectivityServiceNode.getPropertyValue("actionState"));
@@ -72,16 +64,20 @@ public class GwfCreate extends GenericWorkflowImpl {
         connectivityService.setOperStatus(connectivityServiceNode.getPropertyValue("operStatus"));
         connectivityService.setOwnerID(connectivityServiceNode.getPropertyValue("ownerID"));
         connectivityService.setStatusReason(connectivityServiceNode.getPropertyValue("statusReason"));
-        connectivityService.setTemplateId(connectivityServiceNode.getTemplateName()); // TODO is
-                                                                                      // this right?
         connectivityService.setTenantID(connectivityServiceNode.getPropertyValue("tenantID"));
         connectivityService.setVersion(connectivityServiceNode.getPropertyValue("version"));
-        connectivityService.setLifecycleState("created");
-        defaultMssApiClient.createConnectivityService(connectivityService);
-        
+        CreateConnectivityServiceResponse createConnectivityService =
+                defaultMssApiClient.createConnectivityService(connectivityService);
+        CreateConnectivityServiceResponseSample createConnectivityServiceResponseSample =
+                createConnectivityService.getObjects().get(0);
+        String createdNsId = createConnectivityServiceResponseSample.getId();
+        log.info("Created Connectivity Service ID is " + createdNsId);
+
         WorkPlan workPlan = super.decomposer.decompose(templateInstance, apiOperation, csarId);
         // TODO call the dispatcher
-        return new HashMap<String, Object>();
+        HashMap<String, Object> responseMap = new HashMap<String, Object>();
+        responseMap.put("nsInstanceId", createdNsId);
+        return responseMap;
     }
 
     /*
@@ -91,11 +87,6 @@ public class GwfCreate extends GenericWorkflowImpl {
     @Override
     public String getWorkflowId() {
         return GenericWorkflowId.CREATE.toString();
-    }
-
-    @Autowired
-    public void setCsarHandler(CsarHandler csarHandler) {
-        this.csarHandler = csarHandler;
     }
 
 }

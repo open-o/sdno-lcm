@@ -50,8 +50,7 @@ public class StateTableHandlerImpl implements StateTableHandler{
 
         //validate the apiOperation
         if (!validateApiOperation(apiOperation, stateTable)){
-            throw new InvalidInputException(
-                    "Input params must contain valid transaction id ");
+            throw new InvalidInputException(String.format("Input params must contain valid apiOperation;  apiOperation: %s", apiOperation));
         }
 
         Optional<Row> serviceTransition = rowList.stream().filter(row ->

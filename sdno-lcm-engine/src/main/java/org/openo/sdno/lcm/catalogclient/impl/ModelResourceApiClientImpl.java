@@ -16,6 +16,7 @@
 
 package org.openo.sdno.lcm.catalogclient.impl;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
@@ -30,6 +31,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author mark
@@ -111,7 +117,7 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
             ServiceTemplateRawData serviceTemplateRawData = modelResourceApi.getServiceTemplateRawData(body);
 
             String rawData = serviceTemplateRawData.getRawData();
-            log.info("raw data: " + rawData);
+            log.fine("raw data: " + this.unprettyPrint(rawData));
             return rawData;
 
         } catch(Exception e) {
@@ -120,7 +126,13 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
         }
     }
 
-    
+    private String unprettyPrint(String prettyJson) throws JsonParseException, JsonMappingException, IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readValue(prettyJson, JsonNode.class);
+        return jsonNode.toString();
+    }
+
     public void setEnv(Environment env) {
         this.env = env;
     }
