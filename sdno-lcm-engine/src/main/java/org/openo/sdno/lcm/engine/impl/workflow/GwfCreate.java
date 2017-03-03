@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
-import org.openo.sdno.lcm.model.workplan.WorkPlan;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.CreateConnectivityServiceResponse;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.CreateConnectivityServiceResponseSample;
@@ -42,13 +41,12 @@ public class GwfCreate extends GenericWorkflowImpl {
     @Override
     public Map<String, Object> execute(Map<String, Object> params) {
 
-        log.fine("Execute GwfCreate workflow");
+        log.info("Execute GwfCreate workflow");
 
         String csarId = (String)super.getParam(Constants.LCM_NBI_CSAR_ID, params);
         String apiOperation = (String)super.getParam(Constants.LCM_NBI_API_OPERATION, params);
         String serviceTemplateId = (String)super.getParam(Constants.LCM_NBI_TEMPLATE_ID, params);
-        Instance templateInstance = (Instance)super.getParam(Constants.SDNO_LCM_TEMPLATE_INSTANCE, params);
-
+        Instance templateInstance = (Instance)super.getParam(Constants.LCM_TEMPLATE_INSTANCE, params);
         Node connectivityServiceNode = templateInstance.getRootNode();
 
         // create the Connectivity Service in DB
@@ -66,17 +64,21 @@ public class GwfCreate extends GenericWorkflowImpl {
         connectivityService.setStatusReason(connectivityServiceNode.getPropertyValue("statusReason"));
         connectivityService.setTenantID(connectivityServiceNode.getPropertyValue("tenantID"));
         connectivityService.setVersion(connectivityServiceNode.getPropertyValue("version"));
+
         CreateConnectivityServiceResponse createConnectivityService =
                 defaultMssApiClient.createConnectivityService(connectivityService);
         CreateConnectivityServiceResponseSample createConnectivityServiceResponseSample =
                 createConnectivityService.getObjects().get(0);
         String createdNsId = createConnectivityServiceResponseSample.getId();
         log.info("Created Connectivity Service ID is " + createdNsId);
+        // put the id into the params in case we are passing on to another wfl eg deployCreated as
+        // part of deploy
+        params.put(Constants.LCM_NBI_SERVICE_ID, createdNsId);
 
-        WorkPlan workPlan = super.decomposer.decompose(templateInstance, apiOperation, csarId);
-        // TODO call the dispatcher
+//        executeWorkplan(csarId, apiOperation, templateInstance);
+        
         HashMap<String, Object> responseMap = new HashMap<String, Object>();
-        responseMap.put("nsInstanceId", createdNsId);
+        responseMap.put(Constants.LCM_NBI_SERVICE_ID, createdNsId);
         return responseMap;
     }
 

@@ -40,11 +40,19 @@ public class Constants {
 
     public static final String LCM_NBI_API_OPERATION = "apiOperation";
 
-    public static final String SDNO_LCM_NULL_STATE = "none";
-
     public static final String LCM_NBI_ADDITIONAL_PARAMS = "additionalParamForNS";
 
-    public static final String SDNO_LCM_TEMPLATE_INSTANCE = "sdnoLcmTemplateInstance";
+    public static final String LCM_TEMPLATE_INSTANCE = "sdnoLcmTemplateInstance";
 
     public static final String LCM_NBI_CSAR_ID = "csarId";
+
+    public static final String LCM_NBI_JOB_ID = "jobId";
+
+    // state machine constants
+    public static final String LCM_STATE_NONE = "none";
+
+    public static final String LCM_STATE_DEPLOYED = "deployed";
+
+    public static final String LCM_STATE_CREATED = "created";
+
 }

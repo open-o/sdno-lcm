@@ -19,10 +19,7 @@ package org.openo.sdno.lcm.engine.impl;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.openo.sdno.lcm.ariaclient.ParserApiClient;
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
-import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
-import org.openo.sdno.lcm.csarhandler.CsarHandler;
 import org.openo.sdno.lcm.engine.LcmStateEngine;
 import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.restclient.catalog.model.ServiceTemplate;
@@ -45,17 +42,11 @@ public class LcmStateEngineImpl implements LcmStateEngine {
 
     private ModelResourceApiClient modelResourceApiClient;
 
-    private PackageResourceApiClient packageResourceApiClient;
-
-    private ParserApiClient parserApiClient;
-
     private DefaultMssApiClient defaultMssApiClient;
 
     private TemplateInstanceParser templateInstanceParser;
 
     private WorkflowRegistry workflowRegistry;
-
-    private CsarHandler csarHandler;
 
     /*
      * (non-Javadoc)
@@ -106,11 +97,11 @@ public class LcmStateEngineImpl implements LcmStateEngine {
                 && !((String)params.get(Constants.LCM_NBI_TEMPLATE_ID)).isEmpty())) {
 
             templateId = (String)params.get(Constants.LCM_NBI_TEMPLATE_ID);
-            currentState = Constants.SDNO_LCM_NULL_STATE;
+            currentState = Constants.LCM_STATE_NONE;
 
         } else {
-            log.severe(String.format("Neither %s nor %s foudn in params - cannot continue", Constants.LCM_NBI_TEMPLATE_ID,
-                    Constants.LCM_NBI_SERVICE_ID));
+            log.severe(String.format("Neither %s nor %s foudn in params - cannot continue",
+                    Constants.LCM_NBI_TEMPLATE_ID, Constants.LCM_NBI_SERVICE_ID));
             throw new LcmInternalException("No workflows possible with the parameters given");
         }
         log.info("Connectivity service current state: " + currentState);
@@ -125,7 +116,7 @@ public class LcmStateEngineImpl implements LcmStateEngine {
 
         // add the instance to the params
         Instance templateInstance = templateInstanceParser.parse(serviceInstanceJson);
-        params.put(Constants.SDNO_LCM_TEMPLATE_INSTANCE, templateInstance);
+        params.put(Constants.LCM_TEMPLATE_INSTANCE, templateInstance);
 
         // check the transition and get the workflow ID
         StateTable stateTable = stateTableHandler.marshallStateTable(templateInstance.getStateTableDefinition());
@@ -145,16 +136,6 @@ public class LcmStateEngineImpl implements LcmStateEngine {
     }
 
     @Autowired
-    public void setPackageResourceApiClient(PackageResourceApiClient packageResourceApiClient) {
-        this.packageResourceApiClient = packageResourceApiClient;
-    }
-
-    @Autowired
-    public void setParserApiClient(ParserApiClient parserApiClient) {
-        this.parserApiClient = parserApiClient;
-    }
-
-    @Autowired
     public void setDefaultMssApiClient(DefaultMssApiClient defaultMssApiClient) {
         this.defaultMssApiClient = defaultMssApiClient;
     }
@@ -167,11 +148,6 @@ public class LcmStateEngineImpl implements LcmStateEngine {
     @Autowired
     public void setWorkflowRegistry(WorkflowRegistry workflowRegistry) {
         this.workflowRegistry = workflowRegistry;
-    }
-
-    @Autowired
-    public void setCsarHandler(CsarHandler csarHandler) {
-        this.csarHandler = csarHandler;
     }
 
 }

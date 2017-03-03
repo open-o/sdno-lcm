@@ -22,14 +22,20 @@ import java.util.logging.Logger;
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.decomposer.Decomposer;
+import org.openo.sdno.lcm.dispatcher.Dispatcher;
 import org.openo.sdno.lcm.engine.RegisterWorkflow;
 import org.openo.sdno.lcm.engine.Workflow;
 import org.openo.sdno.lcm.exception.LcmInternalException;
+import org.openo.sdno.lcm.exception.SouthboundExecutionException;
+import org.openo.sdno.lcm.model.workplan.WorkPlan;
+import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionResult;
+import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionStrategy;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponse;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponseSample;
 import org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient;
 import org.openo.sdno.lcm.statetablehandler.StateTableHandler;
 import org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser;
+import org.openo.sdno.lcm.templatemodel.service.Instance;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -49,6 +55,8 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
     protected TemplateInstanceParser templateInstanceParser;
 
     protected Decomposer decomposer;
+    
+    protected Dispatcher dispatcher;
     
     private static final Logger log = Logger.getLogger("GenericWorkflowImpl");
 
@@ -113,6 +121,27 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
     @Autowired
     public void setDecomposer(Decomposer decomposer) {
         this.decomposer = decomposer;
+    }
+
+    @Autowired    
+    public void setDispatcher(Dispatcher dispatcher) {
+        this.dispatcher = dispatcher;
+    }
+
+    /**
+     * Generate the Workplan via decomposer and execute it via dispatcher
+     * 
+     * @param csarId
+     * @param apiOperation
+     * @param templateInstance
+     * @throws SouthboundExecutionException
+     */
+    protected void executeWorkplan(String csarId, String apiOperation, Instance templateInstance) throws SouthboundExecutionException {
+        WorkPlan workPlan = this.decomposer.decompose(templateInstance, apiOperation, csarId);
+        WorkPlanExecutionResult dispatchResult = dispatcher.dispatch(workPlan, WorkPlanExecutionStrategy.FAIL_FAST);
+        if(!dispatchResult.getOverallResult()) {
+            throw new SouthboundExecutionException("Execution failed in the SBI:\n"+ dispatchResult.toString());
+        }
     }
 
 }

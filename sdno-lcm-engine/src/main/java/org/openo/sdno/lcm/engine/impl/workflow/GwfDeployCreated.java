@@ -16,13 +16,21 @@
 
 package org.openo.sdno.lcm.engine.impl.workflow;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityServiceRequest;
+import org.openo.sdno.lcm.templatemodel.service.Instance;
+import org.openo.sdno.lcm.templatemodel.service.Node;
+import org.openo.sdno.lcm.util.Constants;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GwfDeployCreated extends GenericWorkflowImpl {
+
+    private static final Logger log = Logger.getLogger("GwfDeployCreated");
 
     /*
      * (non-Javadoc)
@@ -30,8 +38,31 @@ public class GwfDeployCreated extends GenericWorkflowImpl {
      */
     @Override
     public Map<String, Object> execute(Map<String, Object> params) {
-        // TODO Auto-generated method stub
-        return null;
+
+        log.fine("Execute GwfDeployCreated workflow");
+
+        String csarId = (String)super.getParam(Constants.LCM_NBI_CSAR_ID, params);
+        String apiOperation = (String)super.getParam(Constants.LCM_NBI_API_OPERATION, params);
+        String serviceTemplateId = (String)super.getParam(Constants.LCM_NBI_TEMPLATE_ID, params);
+        String serviceId = (String)super.getParam(Constants.LCM_NBI_SERVICE_ID, params);
+        Instance templateInstance = (Instance)super.getParam(Constants.LCM_TEMPLATE_INSTANCE, params);
+        Node connectivityServiceNode = templateInstance.getRootNode();
+
+        // get the service from the inventory
+        // GetConnectivityServiceResponseSample connectivityService =
+        // defaultMssApiClient.readConnectivityService(serviceId).getObject();
+        // log.fine("Connectivity service: " + connectivityService.toString());
+
+        // executeWorkplan(csarId, apiOperation, templateInstance);
+
+        UpdateConnectivityServiceRequest body = new UpdateConnectivityServiceRequest();
+        body.setLifecycleState(Constants.LCM_STATE_DEPLOYED);
+        defaultMssApiClient.updateConnectivityServiceRequest(serviceId, body);
+
+        HashMap<String, Object> responseMap = new HashMap<String, Object>();
+        // we can put the service ID here instead of job ID as the task is synchronous for now
+        responseMap.put(Constants.LCM_NBI_JOB_ID, serviceId);
+        return responseMap;
     }
 
     /*
