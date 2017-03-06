@@ -121,7 +121,6 @@
             <version>1.5.12</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.openo.sdno.lcm</groupId>
             <artifactId>sdno-lcm-restclient-catalog</artifactId>

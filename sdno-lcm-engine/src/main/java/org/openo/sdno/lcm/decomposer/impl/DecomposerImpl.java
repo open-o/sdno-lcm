@@ -21,13 +21,15 @@ import java.util.Stack;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import org.openo.sdno.lcm.csarhandler.CsarHandler;
 import org.openo.sdno.lcm.decomposer.Decomposer;
 import org.openo.sdno.lcm.model.workplan.WorkItem;
 import org.openo.sdno.lcm.model.workplan.WorkPlan;
-import org.openo.sdno.lcm.templatemodel.csar.Csar;
+import org.openo.sdno.lcm.templatemodel.service.Artifact;
 import org.openo.sdno.lcm.templatemodel.service.Dependency;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
 import org.openo.sdno.lcm.templatemodel.service.Node;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,7 +43,13 @@ import io.swagger.models.Swagger;
 @Component
 public class DecomposerImpl implements Decomposer {
 
+    private static final String MAPPER = "mapper";
+
+    private static final String SWAGGER = "swagger";
+
     private final Logger log = Logger.getLogger("DecomposerImpl");
+
+    private CsarHandler csarHandler;
 
     /*
      * (non-Javadoc)
@@ -77,11 +85,11 @@ public class DecomposerImpl implements Decomposer {
                 // if there are no dependencies, add the Node to the WorkItem list as it is a leaf
                 // Node
                 node.setExamined();
-                this.addWorkItem(workplan, node);
+                this.addWorkItem(workplan, node, csarId);
             } else if(node.isExamined()) {
                 // or if there are dependencies but we have added them to the Node stack already add
                 // the Node to the WorkItem list
-                this.addWorkItem(workplan, node);
+                this.addWorkItem(workplan, node, csarId);
             } else {
                 // else mark the Node as examined and add its related nodes (maybe including
                 // itself) to the stack
@@ -118,24 +126,31 @@ public class DecomposerImpl implements Decomposer {
             node.setProperty("id", uuid, "string");
             log.info(String.format("Generated random ID property %s for Node %s", uuid, node.getId()));
         }
-        // attach artifacts to WorkItems
-        //// swagger spec
-        //// TODO
-        //// mapper spec
-        //// TODO
     }
 
-    private void addWorkItem(WorkPlan workplan, final Node node) {
+    private void addWorkItem(WorkPlan workplan, final Node node, final String csarId) {
 
         // add required extras to the node itself eg ID property
         this.decorateNode(node);
         // clean examined flag from all Nodes that are added to WorkPlan
         node.clearExamined();
-        Swagger swaggerSpec = new Swagger();
+        
+        List<Artifact> artifacts = node.getArtifacts();
+        
+        Artifact swaggerArtifact = node.getArtifact(SWAGGER);
+        String swaggerPath = swaggerArtifact.getSourcePath();
+        Swagger swaggerSpec = csarHandler.getSwaggerSpec(csarId, swaggerPath);
+
+        Artifact mapperArtifact = node.getArtifact(MAPPER);
         JsonNode mapperSpec = node.getProperties();
         String apiUrl = "/blah/v1";
         HttpMethod method = HttpMethod.GET;
         workplan.insert(new WorkItem(node, swaggerSpec, mapperSpec, apiUrl, method));
         log.info(node.getTypeName() + " " + node.getId());
+    }
+
+    @Autowired
+    public void setCsarHandler(CsarHandler csarHandler) {
+        this.csarHandler = csarHandler;
     }
 }

@@ -52,6 +52,9 @@ public class Node {
 
     @JsonProperty("template_name")
     private String templateName;
+    
+    @JsonProperty("artifacts")
+    private List<Artifact> artifacts = new ArrayList<Artifact>();
 
     @JsonProperty("interfaces")
     private List<Interface> interfaces = new ArrayList<Interface>();
@@ -112,7 +115,7 @@ public class Node {
      * Get the Operation identified by the provided name.
      * 
      * @param operationName
-     * @return the Operation
+     * @return the Operation ot null if not found
      */
     public Operation getOperation(final String operationName) {
 
@@ -125,6 +128,27 @@ public class Node {
         }
         log.warning("Failed to get operation with name " + operationName);
         return null;
+    }
+    
+
+    /**
+     * Get an artifact element of the given name
+     * @param artifactName the name 
+     * @return the artifact
+     * @throws LcmInternalException if artifact not found
+     */
+    public Artifact getArtifact(final String artifactName) {
+
+        List<Artifact> artifacts = this.getArtifacts();
+        for(Artifact artifact : artifacts) {
+
+            if(artifact.getName().equals(artifactName)) {
+                return artifact;
+            }
+        }
+        String errStr = "Failed to get artifact with name " + artifactName; 
+        log.severe(errStr);
+        throw new LcmInternalException(errStr);
     }
 
     /**
@@ -288,6 +312,16 @@ public class Node {
 
     public void setProperties(JsonNode propertiesJson) {
         this.propertiesJson = propertiesJson;
+    }
+
+    @JsonProperty("artifacts")
+    public List<Artifact> getArtifacts() {
+        return artifacts;
+    }
+
+    
+    public void setArtifacts(List<Artifact> artifacts) {
+        this.artifacts = artifacts;
     }
 
 }

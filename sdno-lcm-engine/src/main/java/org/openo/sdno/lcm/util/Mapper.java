@@ -23,6 +23,7 @@ import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -64,4 +65,16 @@ public class Mapper {
         return null;
     }
 
+    public JsonNode stringToNode(String string) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode;
+        try {
+            jsonNode = objectMapper.readValue(string, JsonNode.class);
+        } catch(Exception e) {
+            log.severe(String.format("JSON cannot be parsed: \n%s", string));
+            throw new LcmInternalException("Failed to parse JSON string, ", e);
+        }
+        return jsonNode;
+    }
 }

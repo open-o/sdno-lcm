@@ -16,31 +16,59 @@
 
 package org.openo.sdno.lcm.decomposer.impl;
 
+import static org.easymock.EasyMock.anyString;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.mock;
+import static org.easymock.EasyMock.replay;
+
+import java.io.File;
 import java.nio.charset.Charset;
 
 import org.apache.commons.io.FileUtils;
-import org.openo.sdno.lcm.decomposer.Decomposer;
+import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
+import org.openo.sdno.lcm.csarhandler.impl.CsarHandlerImpl;
+import org.openo.sdno.lcm.csarhandler.impl.FileHandler;
 import org.openo.sdno.lcm.model.workplan.WorkItem;
 import org.openo.sdno.lcm.model.workplan.WorkPlan;
+import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
 import org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser;
 import org.openo.sdno.lcm.templateinstanceparser.impl.TemplateInstanceParserImpl;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
+import org.openo.sdno.lcm.util.Mapper;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 @Test(groups = {"sdno-lcm-unit"})
 public class DecomposerImplTest {
 
-    Decomposer decomposer;
+    DecomposerImpl decomposer;
 
     Instance instance;
 
-    @BeforeClass
+    @BeforeMethod
     public void before() throws Exception {
+
+        FileHandler mockFileHandler = mock(FileHandler.class);
+        File csarFile = FileUtils.getFile("src", "test", "resources", "enterprise2Dc.csar");
+        expect(mockFileHandler.getFile(anyString(), anyString(), anyString())).andReturn(csarFile).times(12);
+        replay(mockFileHandler);
+
+        PackageResourceApiClient mockPackageResourceApiClient = mock(PackageResourceApiClient.class);
+        PackageMeta packageMeta = new PackageMeta();
+        packageMeta.setCsarId("myCsarId");
+        packageMeta.setName("myCsarName");
+        expect(mockPackageResourceApiClient.queryPackageById(anyString())).andReturn(packageMeta).times(12);
+        replay(mockPackageResourceApiClient);
 
         TemplateInstanceParser templateInstanceParser = new TemplateInstanceParserImpl();
         decomposer = new DecomposerImpl();
+        CsarHandlerImpl csarHandler = new CsarHandlerImpl();
+        csarHandler.setMapper(new Mapper());
+        csarHandler.setFileHandler(mockFileHandler);
+        csarHandler.setPackageResourceApiClient(mockPackageResourceApiClient);
+
+        decomposer.setCsarHandler(csarHandler);
         String instanceJson = FileUtils.readFileToString(FileUtils.getFile("src", "test", "resources", "instance.json"),
                 Charset.defaultCharset());
         instance = templateInstanceParser.parse(instanceJson);
@@ -48,7 +76,7 @@ public class DecomposerImplTest {
 
     @Test
     public void decomposeDeployTest() {
-        WorkPlan workplan = decomposer.decompose(instance, "deploy", null);
+        WorkPlan workplan = decomposer.decompose(instance, "deploy", "anyCsarId");
         this.checkWorkItem(0, workplan.getWorkItem(0), "vpc_");
         this.checkWorkItem(1, workplan.getWorkItem(1), "vpcSubnet_");
         this.checkWorkItem(2, workplan.getWorkItem(2), "thinCpeConnectionEndPoint_");

@@ -16,40 +16,41 @@
 
 package org.openo.sdno.lcm.dispatcher.impl;
 
-import java.util.List;
-import java.nio.charset.Charset;
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.mock;
+import static org.easymock.EasyMock.replay;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+
 import java.io.IOException;
+import java.nio.charset.Charset;
+
 import org.apache.commons.io.FileUtils;
-
 import org.apache.http.HttpResponse;
-import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.ProtocolVersion;
-
-import io.swagger.util.Yaml;
-import io.swagger.models.Swagger;
-import io.swagger.models.HttpMethod;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import org.apache.http.message.BasicHttpResponse;
+import org.openo.sdno.lcm.exception.ExternalComponentException;
+import org.openo.sdno.lcm.exception.LcmInternalException;
+import org.openo.sdno.lcm.genericclient.GenericApiClient;
 import org.openo.sdno.lcm.model.workplan.WorkItem;
 import org.openo.sdno.lcm.model.workplan.WorkPlan;
 import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionResult;
 import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionStrategy;
 import org.openo.sdno.lcm.templatemodel.service.Node;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-
-import org.testng.annotations.Test;
 import org.testng.annotations.BeforeClass;
-import static org.testng.Assert.*;
-import static org.easymock.EasyMock.*;
+import org.testng.annotations.Test;
 
-import org.openo.sdno.lcm.genericclient.GenericApiClient;
-import org.openo.sdno.lcm.exception.LcmInternalException;
-import org.openo.sdno.lcm.exception.ExternalComponentException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.swagger.models.HttpMethod;
+import io.swagger.models.Swagger;
+import io.swagger.util.Yaml;
 
 @Test(groups = {"sdno-lcm-unit"})
 @ContextConfiguration(locations = {"classpath:spring-test-config.xml"})
