@@ -5,7 +5,7 @@
     "description": "description",
     "tenantId": "tenantID",
     "deployStatus": "TBD",
-    
+
     "vpnDescriptor": "vpnDescriptor"
   },
   "NbiVpnConnection": {
@@ -14,7 +14,7 @@
     "description": "description",
     "tenantId": "tenantID",
     "deployStatus": "TBD",
-    
+
     "vpnId": "vpnId",
     "aEndVpnGatewayId": "aEndVpnGatewayId",
     "zEndVpnGatewayId": "zEndVpnGatewayId",
@@ -25,7 +25,7 @@
     "name": "name",
     "description": "description",
     "tenantId": "tenantID",
-    
+
     "vpnId": "vpnId",
     "siteId": "siteId",
     "vpcId": "vpcId",

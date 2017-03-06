@@ -8,7 +8,7 @@
     "actionState": "actionState",
     "createtime": "createTime",
     "updatetime": "updateTime",
-    
+
     "deployCloudCpeByDefault": "deployCloudCpeByDefault",
     "popId": "popId",
     "localCpeType": "localCpeType",
@@ -32,15 +32,15 @@
     "description": "description",
     "*tenantId": "tenantID",
     "additionalInfo[]#NvString#": "N/A",
-    
+
     "*adminStatus": "adminStatus",
     "operStatus": "operStatus",
     "actionState": "actionState",
     "createTime": "createTime",
-    
+
     "createtime": "createTime",
     "updatetime": "updateTime",
-    
+
     "siteId": "siteId",
     "vlanId": "vlanId",
     "ports[]": "ports[]",
@@ -52,13 +52,13 @@
     "description": "description",
     "*tenantId": "tenantID",
     "additionalInfo[]#NvString#": "N/A",
-    
+
     "*adminStatus": "adminStatus",
     "operStatus": "operStatus",
     "actionState": "actionState",
     "createTime": "createTime",
     "updateTime": "updateTime",
-    
+
     "siteId": "siteId",
     "cidrBlock": "cidrBlock",
     "cidrBlockSize": "cidrBlockSize",
@@ -79,7 +79,7 @@
     "name": "name",
     "description": "description",
     "*tenantId": "tenantID",
-    
+
     "*siteId": "siteId",
     "esn": "esn",
     "oldEsn": "oldEsn",
@@ -93,7 +93,7 @@
     "adminState": "adminState",
     "actionState": "actionState",
     "*tenantId": "tenantID",
-    
+
     "*siteId": "siteId",
     "popId": "popId",
     "vCpeId": "vCpeId",
@@ -128,10 +128,10 @@
     "operStatus": "N/A",
     "actionStatus": "N/A",
     "createTime": "N/A",
-    
+
     "createtime": "N/A",
     "updatetime": "N/A",
-    
+
     "vpnId": "vpnId",
     "*siteId": "siteId",
     "upstreamBandwidth": "upstreamBandwidth",
@@ -146,11 +146,11 @@
     "id": "N/A",
     "name": "N/A",
     "description": "N/A",
-    
+
     "adminState": "N/A",
     "operState": "N/A",
     "location": "N/A",
-    
+
     "version": "version",
     "logicId": "logicId",
     "phyNeId": "phyNeId",
@@ -180,7 +180,7 @@
     "operStatus": "N/A",
     "actionState": "N/A",
     "createTime": "N/A",
-    
+
     "*siteId": "siteId",
     "subnetId": "subnetId",
     "cidr": "cidr",
@@ -194,6 +194,6 @@
     "*name": "name",
     "id": "id",
     "value": "value",
-    "firstParentUuid": "firstParentUuid",
+    "firstParentUuid": "firstParentUuid"
   }
 }
