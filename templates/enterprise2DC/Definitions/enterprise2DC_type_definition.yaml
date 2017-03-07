@@ -507,7 +507,7 @@ node_types:
                             - sdno.node.Connection.Vpc/deploy
                             - sdno.node.Connection.VpcSubnet/deploy
                 undeploy:
-                    implementation: 'DELETE/openoapi/sdnovpc/v1/subnets/{subnetId}'
+                    implementation: 'DELETE /openoapi/sdnovpc/v1/subnets/{subnetId}'
                 update: 
                     #implementation: 'PUT  /openoapi/sdnovpc/v1/subnet/{subnetId}'
 
@@ -543,7 +543,7 @@ node_types:
                 deploy:
                     implementation: 'POST /openoapi/sdnovpc/v1/vpcs'
                 undeploy:
-                     implementation: 'DELETE/openoapi/sdnovpc/v1/vpcs/{vpcId}'
+                     implementation: 'DELETE /openoapi/sdnovpc/v1/vpcs/{vpcId}'
                 update: 
                      #implementation: 'PUT /openoapi/sdnovpc/v1/vpsc/{vpcId}'
  
@@ -957,7 +957,7 @@ node_types:
                 undeploy:
                     implementation: 'DELETE /openoapi/sdnooverlay/v1/vpn-gateways/{uuid}'
                 update: 
-                    implementation: 'PUT/openoapi/sdnooverlay/v1/vpn-gateways/{uuid}'
+                    implementation: 'PUT /openoapi/sdnooverlay/v1/vpn-gateways/{uuid}'
  
     sdno.node.ConnectionEndPoint.VpcGateway:
         derived_from: sdno.node.ConnectionEndPoint
