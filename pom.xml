@@ -47,6 +47,12 @@
     <log4j.version>2.7</log4j.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <package.name>sdno-lcm-webapp</package.name>
+    <jackson.version>2.7.5</jackson.version>
+    <swagger.version>1.5.9</swagger.version>
+    <sdno-lcm.version>1.1.0-SNAPSHOT</sdno-lcm.version>
+    <springfox-version>2.5.0</springfox-version>
+    <nexusproxy>https://nexus.open-o.org/content</nexusproxy>
+    <springboot.version>1.5.2.RELEASE</springboot.version>
   </properties>
   
 </project>

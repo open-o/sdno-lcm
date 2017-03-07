@@ -1,0 +1,159 @@
+{
+    "id": "vpc_uo79o6jw6nra9kqyqeqx8lhx7",
+    "type_name": "sdno.node.Connection.Vpc",
+    "template_name": "vpc",
+    "properties": {
+        "name": {
+            "type_name": "string",
+            "value": "none"
+        },
+        "description": {
+            "type_name": "string",
+            "value": "none"
+        },
+        "version": {
+            "type_name": "string",
+            "value": "1.0"
+        },
+        "id": {
+            "type_name": "string",
+            "value": "none"
+        },
+        "adminStatus": {
+            "type_name": "AdministrationStateType",
+            "value": "none",
+            "description": "Used to administratively activate or deactivate already deployed service object"
+        },
+        "updateTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "update time"
+        },
+        "operStatus": {
+            "type_name": "OperationalStateType",
+            "value": "none",
+            "description": "Used to indicate if the service entity is operational."
+        },
+        "statusReason": {
+            "type_name": "string",
+            "value": "none",
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous."
+        },
+        "tenantID": {
+            "type_name": "string",
+            "value": "none",
+            "description": "ID of the tenant"
+        },
+        "syncStatus": {
+            "type_name": "SyncStateType",
+            "value": "none",
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network"
+        },
+        "ownerID": {
+            "type_name": "string",
+            "value": "sdno",
+            "description": "ID of the owner of the object, can contain controllerID"
+        },
+        "createTime": {
+            "type_name": "string",
+            "value": "none",
+            "description": "create time"
+        },
+        "actionState": {
+            "type_name": "ActionStateType",
+            "value": "none",
+            "description": "Stores the result of the last action on the service object."
+        },
+        "location": {
+            "type_name": "string",
+            "value": "none",
+            "description": "Location if on single location"
+        }
+    },
+    "interfaces": [
+        {
+            "name": "Standard",
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "type_name": "tosca.interfaces.node.lifecycle.Standard",
+            "operations": [
+                {
+                    "name": "create",
+                    "description": "Standard lifecycle create operation."
+                },
+                {
+                    "name": "stop",
+                    "description": "Standard lifecycle stop operation."
+                },
+                {
+                    "name": "start",
+                    "description": "Standard lifecycle start operation."
+                },
+                {
+                    "name": "delete",
+                    "description": "Standard lifecycle delete operation."
+                },
+                {
+                    "name": "configure",
+                    "description": "Standard lifecycle configure operation."
+                }
+            ]
+        },
+        {
+            "name": "standard",
+            "type_name": "sdno.interfaces.lifecycle.Standard",
+            "operations": [
+                {
+                    "name": "undeploy",
+                    "description": "Standard lifecycle undeploy operation.",
+                    "implementation": "DELETE /openoapi/sdnovpc/v1/vpcs/{vpcId}"
+                },
+                {
+                    "name": "get",
+                    "description": "Standard lifecycle get operation.",
+                    "implementation": "GET/openoapi/sdnovpc/v1/vpcs/{vpcId}"
+                },
+                {
+                    "name": "create",
+                    "description": "Standard lifecycle create operation."
+                },
+                {
+                    "name": "deploy",
+                    "description": "Standard lifecycle deploy operation.",
+                    "implementation": "/openoapi/sdnovpc/v1/vpcs"
+                },
+                {
+                    "name": "update",
+                    "description": "Standard lifecycle configure and update operation.",
+                    "implementation": "GET"
+                },
+                {
+                    "name": "delete",
+                    "description": "Standard lifecycle delete operation.",
+                    "implementation": "/openoapi/sdnovpc/v1/vpcs POST"
+                }
+            ]
+        }
+    ],
+    "artifacts": [
+        {
+            "name": "mapper",
+            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
+            "source_path": "swagger/vpc.tsmap"
+        },
+        {
+            "name": "swagger",
+            "type_name": "sdno.artifacts.Implementation.Swagger",
+            "source_path": "swagger/vpc.jaml"
+        }
+    ],
+    "capabilities": [
+        {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+        },
+        {
+            "name": "realizes",
+            "type_name": "sdno.capability.Realizes"
+        }
+    ]
+}

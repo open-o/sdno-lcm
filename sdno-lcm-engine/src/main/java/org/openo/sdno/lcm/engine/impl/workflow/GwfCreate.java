@@ -75,7 +75,7 @@ public class GwfCreate extends GenericWorkflowImpl {
         // part of deploy
         params.put(Constants.LCM_NBI_SERVICE_ID, createdNsId);
 
-//        executeWorkplan(csarId, apiOperation, templateInstance);
+        executeWorkplan(csarId, apiOperation, templateInstance);
         
         HashMap<String, Object> responseMap = new HashMap<String, Object>();
         responseMap.put(Constants.LCM_NBI_SERVICE_ID, createdNsId);

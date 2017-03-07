@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityServiceRequest;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
-import org.openo.sdno.lcm.templatemodel.service.Node;
 import org.openo.sdno.lcm.util.Constants;
 import org.springframework.stereotype.Component;
 
@@ -43,17 +42,10 @@ public class GwfDeployCreated extends GenericWorkflowImpl {
 
         String csarId = (String)super.getParam(Constants.LCM_NBI_CSAR_ID, params);
         String apiOperation = (String)super.getParam(Constants.LCM_NBI_API_OPERATION, params);
-        String serviceTemplateId = (String)super.getParam(Constants.LCM_NBI_TEMPLATE_ID, params);
         String serviceId = (String)super.getParam(Constants.LCM_NBI_SERVICE_ID, params);
         Instance templateInstance = (Instance)super.getParam(Constants.LCM_TEMPLATE_INSTANCE, params);
-        Node connectivityServiceNode = templateInstance.getRootNode();
 
-        // get the service from the inventory
-        // GetConnectivityServiceResponseSample connectivityService =
-        // defaultMssApiClient.readConnectivityService(serviceId).getObject();
-        // log.fine("Connectivity service: " + connectivityService.toString());
-
-        // executeWorkplan(csarId, apiOperation, templateInstance);
+        executeWorkplan(csarId, apiOperation, templateInstance);
 
         UpdateConnectivityServiceRequest body = new UpdateConnectivityServiceRequest();
         body.setLifecycleState(Constants.LCM_STATE_DEPLOYED);

@@ -158,7 +158,7 @@
           {
             "name": "mapper",
             "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/site.tsmap"
+            "source_path": "mapper/site.tsmap"
           },
           {
             "name": "swagger",
@@ -427,7 +427,7 @@
           {
             "name": "mapper",
             "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/site.tsmap"
+            "source_path": "mapper/site.tsmap"
           },
           {
             "name": "swagger",
@@ -669,7 +669,7 @@
               {
                 "name": "update",
                 "description": "Standard lifecycle configure and update operation.",
-                "implementation": "PUT/openoapi/sdnooverlay/v1/vpn-gateways/{uuid}"
+                "implementation": "PUT /openoapi/sdnooverlay/v1/vpn-gateways/{uuid}"
               },
               {
                 "name": "delete",
@@ -682,7 +682,7 @@
           {
             "name": "mapper",
             "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/overlay.tsmap"
+            "source_path": "mapper/overlay.tsmap"
           },
           {
             "name": "swagger",
@@ -840,7 +840,7 @@
           {
             "name": "mapper",
             "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/overlay.tsmap"
+            "source_path": "mapper/overlay.tsmap"
           },
           {
             "name": "swagger",
@@ -1032,7 +1032,7 @@
           {
             "name": "mapper",
             "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/sfc.tsmap"
+            "source_path": "mapper/sfc.tsmap"
           },
           {
             "name": "swagger",
@@ -1168,7 +1168,7 @@
               {
                 "name": "undeploy",
                 "description": "Standard lifecycle undeploy operation.",
-                "implementation": "DELETE/openoapi/sdnovpc/v1/subnets/{subnetId}"
+                "implementation": "DELETE /openoapi/sdnovpc/v1/subnets/{subnetId}"
               },
               {
                 "name": "get",
@@ -1203,7 +1203,7 @@
           {
             "name": "mapper",
             "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/vpc.tsmap"
+            "source_path": "mapper/vpc.tsmap"
           },
           {
             "name": "swagger",
@@ -1382,7 +1382,7 @@
           {
             "name": "mapper",
             "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/site.tsmap"
+            "source_path": "mapper/site.tsmap"
           },
           {
             "name": "swagger",
@@ -1892,7 +1892,7 @@
           {
             "name": "mapper",
             "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/site.tsmap"
+            "source_path": "mapper/site.tsmap"
           },
           {
             "name": "swagger",
@@ -2120,7 +2120,7 @@
               {
                 "name": "undeploy",
                 "description": "Standard lifecycle undeploy operation.",
-                "implementation": "DELETE/openoapi/sdnovpc/v1/vpcs/{vpcId}"
+                "implementation": "DELETE /openoapi/sdnovpc/v1/vpcs/{vpcId}"
               },
               {
                 "name": "get",
@@ -2151,7 +2151,7 @@
           {
             "name": "mapper",
             "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/vpc.tsmap"
+            "source_path": "mapper/vpc.tsmap"
           },
           {
             "name": "swagger",
@@ -2309,7 +2309,7 @@
           {
             "name": "mapper",
             "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/site.tsmap"
+            "source_path": "mapper/site.tsmap"
           },
           {
             "name": "swagger",
@@ -2575,7 +2575,7 @@
           {
             "name": "mapper",
             "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/overlay.tsmap"
+            "source_path": "mapper/overlay.tsmap"
           },
           {
             "name": "swagger",
@@ -2866,7 +2866,7 @@
           {
             "name": "mapper",
             "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
-            "source_path": "swagger/overlay.tsmap"
+            "source_path": "mapper/overlay.tsmap"
           },
           {
             "name": "swagger",

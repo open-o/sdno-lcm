@@ -16,6 +16,8 @@
 
 package org.openo.sdno.lcm.templatemodel.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 
 import org.apache.commons.io.FileUtils;
@@ -24,14 +26,20 @@ import org.openo.sdno.lcm.templateinstanceparser.impl.TemplateInstanceParserImpl
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.swagger.models.HttpMethod;
 
 @Test(groups = {"sdno-lcm-unit"})
 public class NodeTest {
 
     Node node;
+
+    Node nodeForOperationTests;
 
     Instance instance;
 
@@ -47,6 +55,10 @@ public class NodeTest {
         TemplateInstanceParserImpl templateInstanceParserImpl = new TemplateInstanceParserImpl();
         instance = templateInstanceParserImpl.parse(FileUtils.readFileToString(
                 FileUtils.getFile("src", "test", "resources", "instance.json"), Charset.defaultCharset()));
+
+        File nodeFile = FileUtils.getFile("src", "test", "resources", "nodetest", "node1.json");
+        ObjectMapper objectMapper = new ObjectMapper();
+        nodeForOperationTests = objectMapper.readValue(nodeFile, Node.class);
     }
 
     @Test(expectedExceptions = LcmInternalException.class)
@@ -133,6 +145,28 @@ public class NodeTest {
         Assert.assertNotNull(idNode, "The property id was not found!");
         Assert.assertEquals(idNode.findValue("type_name").asText(), typeName);
         Assert.assertEquals(idNode.findValue("value").asText(), value);
+    }
+
+    @DataProvider
+    public Object[][] badImplementationHttpMethodProvider() {
+        return new Object[][] {{"deploy"}, {"create"}, {"delete"}, {"get"}};
+    }
+
+    @Test(dataProvider = "badImplementationHttpMethodProvider", expectedExceptions = LcmInternalException.class)
+    public void getOperationHttpMethodTestError(String operationName) throws IOException {
+
+        nodeForOperationTests.getOperationHttpMethod(operationName);
+    }
+
+    @DataProvider
+    public Object[][] successHttpMethodProvider() {
+        return new Object[][] {{"update", HttpMethod.GET}, {"undeploy", HttpMethod.DELETE}};
+    }
+
+    @Test(dataProvider = "successHttpMethodProvider")
+    public void getOperationHttpMethodTestSuccess(String operationName, HttpMethod expectedHttpMethod) {
+
+        Assert.assertEquals(nodeForOperationTests.getOperationHttpMethod(operationName), expectedHttpMethod);
     }
 
 }

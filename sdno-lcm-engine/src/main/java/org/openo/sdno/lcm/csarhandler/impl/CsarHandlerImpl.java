@@ -55,8 +55,10 @@ public class CsarHandlerImpl implements CsarHandler {
     private Mapper mapper;
 
     /**
-     * @param csarId
-     * @return
+     * Get the ZipFile handle to the actual CSAR correspoding to the CSAR meta data
+     * 
+     * @param csar the CSAR meta data
+     * @return the ZipFile CSAR
      */
     private ZipFile getCsarZipFile(Csar csar) {
 
@@ -75,6 +77,8 @@ public class CsarHandlerImpl implements CsarHandler {
     }
 
     /**
+     * Get the CSAR meta from the catalog based on csar ID.
+     * 
      * @param csarId
      * @return
      */
@@ -120,17 +124,6 @@ public class CsarHandlerImpl implements CsarHandler {
             PackageMeta packageMeta = packageMetaList.get(0);
             return new Csar(packageMeta.getCsarId(), packageMeta.getName(), packageMeta.getDownloadUri());
         }
-    }
-
-    // /**
-    // * Get the csarId based on it its name
-    // *
-    // * @param csarName the name of the CSAR
-    // * @return the ID the CSAR
-    // */
-    public String getCsarId(String csarName) {
-
-        return this.getCsarByName(csarName).getCsarId();
     }
 
     @Override

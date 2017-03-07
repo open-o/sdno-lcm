@@ -101,7 +101,7 @@ public class Instance {
 
         for(Node n : this.getNodes()) {
 
-            if(n.getTypeName().startsWith("sdno.node.ConnectivityService")) {
+            if(n.isRootNode()) {
                 return n;
             }
         }

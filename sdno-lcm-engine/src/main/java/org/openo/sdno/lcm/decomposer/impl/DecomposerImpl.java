@@ -85,11 +85,11 @@ public class DecomposerImpl implements Decomposer {
                 // if there are no dependencies, add the Node to the WorkItem list as it is a leaf
                 // Node
                 node.setExamined();
-                this.addWorkItem(workplan, node, csarId);
+                this.addWorkItem(workplan, node, csarId, operation);
             } else if(node.isExamined()) {
                 // or if there are dependencies but we have added them to the Node stack already add
                 // the Node to the WorkItem list
-                this.addWorkItem(workplan, node, csarId);
+                this.addWorkItem(workplan, node, csarId, operation);
             } else {
                 // else mark the Node as examined and add its related nodes (maybe including
                 // itself) to the stack
@@ -128,25 +128,39 @@ public class DecomposerImpl implements Decomposer {
         }
     }
 
-    private void addWorkItem(WorkPlan workplan, final Node node, final String csarId) {
+    private void addWorkItem(WorkPlan workplan, final Node node, final String csarId, final String operation) {
 
-        // add required extras to the node itself eg ID property
-        this.decorateNode(node);
-        // clean examined flag from all Nodes that are added to WorkPlan
         node.clearExamined();
-        
-        List<Artifact> artifacts = node.getArtifacts();
-        
-        Artifact swaggerArtifact = node.getArtifact(SWAGGER);
-        String swaggerPath = swaggerArtifact.getSourcePath();
-        Swagger swaggerSpec = csarHandler.getSwaggerSpec(csarId, swaggerPath);
 
-        Artifact mapperArtifact = node.getArtifact(MAPPER);
-        JsonNode mapperSpec = node.getProperties();
-        String apiUrl = "/blah/v1";
-        HttpMethod method = HttpMethod.GET;
-        workplan.insert(new WorkItem(node, swaggerSpec, mapperSpec, apiUrl, method));
-        log.info(node.getTypeName() + " " + node.getId());
+        if(node.isRootNode()) {
+
+            log.warning(String.format("No workitem added to workplan for the root node:%s\n csarId:%s\n operation:%s\n ",
+                    node.getId(), csarId, operation));
+            
+        } else if(node.hasOperationImplementation(operation)) {
+            
+            // add required extras to the node itself eg ID property
+            this.decorateNode(node);
+            // clean examined flag from all Nodes that are added to WorkPlan
+
+            Artifact swaggerArtifact = node.getArtifact(SWAGGER);
+            String swaggerPath = swaggerArtifact.getSourcePath();
+            Swagger swaggerSpec = csarHandler.getSwaggerSpec(csarId, swaggerPath);
+
+            Artifact mapperArtifact = node.getArtifact(MAPPER);
+            String mapperPath = mapperArtifact.getSourcePath();
+            JsonNode mapperSpec = csarHandler.getMapperSpec(csarId, mapperPath);
+
+            String apiUrl = node.getOperationPath(operation);
+            HttpMethod httpMethod = node.getOperationHttpMethod(operation);
+            workplan.insert(new WorkItem(node, swaggerSpec, mapperSpec, apiUrl, httpMethod));
+            log.info("Added workitem: " + node.getTypeName() + " " + node.getId());
+            
+        } else {
+
+            log.warning(String.format("No workitem added to workplan for node:%s\n csarId:%s\n operation:%s\n ",
+                    node.getId(), csarId, operation));
+        }
     }
 
     @Autowired

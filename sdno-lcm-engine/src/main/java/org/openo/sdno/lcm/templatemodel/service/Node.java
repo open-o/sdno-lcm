@@ -31,6 +31,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import io.swagger.models.HttpMethod;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"id", "type_name", "template_name", "properties", "interfaces", "capabilities", "relationships"})
@@ -52,7 +54,7 @@ public class Node {
 
     @JsonProperty("template_name")
     private String templateName;
-    
+
     @JsonProperty("artifacts")
     private List<Artifact> artifacts = new ArrayList<Artifact>();
 
@@ -129,11 +131,30 @@ public class Node {
         log.warning("Failed to get operation with name " + operationName);
         return null;
     }
-    
+
+    /**
+     * Check if this Node defines an implementation for the operation
+     * 
+     * @param operationName the name of the operation
+     * @return true it the implementation is present for the operation; false if operation doesn't
+     *         exist or there is no implementation in it
+     */
+    public boolean hasOperationImplementation(final String operationName) {
+
+        Operation operation = this.getOperation(operationName);
+        if(null == operation) {
+
+            return false;
+        } else {
+
+            return null != operation.getImplementation();
+        }
+    }
 
     /**
      * Get an artifact element of the given name
-     * @param artifactName the name 
+     * 
+     * @param artifactName the name
      * @return the artifact
      * @throws LcmInternalException if artifact not found
      */
@@ -146,7 +167,7 @@ public class Node {
                 return artifact;
             }
         }
-        String errStr = "Failed to get artifact with name " + artifactName; 
+        String errStr = String.format("Failed to get artifact with name %s in node %s", artifactName, this.getId());
         log.severe(errStr);
         throw new LcmInternalException(errStr);
     }
@@ -191,7 +212,7 @@ public class Node {
         }
         return typeName.startsWith(SDNO_NODE_CONNECTION) || typeName.startsWith(SDNO_NODE_CONNECTION_ENDPOINT);
     }
-    
+
     /**
      * Get the value for a property within the Properties JsonNode
      * 
@@ -199,7 +220,7 @@ public class Node {
      * @return the value of the property as a String
      */
     public String getPropertyValue(String propertyName) {
-        
+
         JsonNode jsonNode = getPropertyJsonNode(propertyName);
         if(null != jsonNode) {
             return jsonNode.asText();
@@ -207,7 +228,7 @@ public class Node {
             return null;
         }
     }
-    
+
     /**
      * Get the JsonNode for a property within the Properties JsonNode
      * 
@@ -215,7 +236,7 @@ public class Node {
      * @return the whole JsonNode for the property, not just the value
      */
     public JsonNode getPropertyJsonNode(String propertyName) {
-        
+
         // TODO check error handling logic
         JsonNode propertiesNode = this.getProperties();
         JsonNode propertyNode = propertiesNode.get(propertyName);
@@ -226,21 +247,20 @@ public class Node {
 
         try {
             if(propertyName.isEmpty() || value.isEmpty() || typeName.isEmpty()) {
-                
+
                 throw new InvalidParameterException();
             }
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode propertiesNode = this.getProperties();
 
-            String newProperty =
-                    String.format("{\"type_name\": \"%s\", \"value\": \"%s\"}", typeName, value);
+            String newProperty = String.format("{\"type_name\": \"%s\", \"value\": \"%s\"}", typeName, value);
             JsonNode newPropertyNode = objectMapper.readTree(newProperty);
 
             ((ObjectNode)propertiesNode).put(propertyName, newPropertyNode);
 
         } catch(Exception e) {
-            throw new LcmInternalException(
-                    String.format("Failed to set property: %s, %s, %s due to %s", propertyName, typeName, value, e.getMessage()), e);
+            throw new LcmInternalException(String.format("Failed to set property: %s, %s, %s due to %s", propertyName,
+                    typeName, value, e.getMessage()), e);
         }
     }
 
@@ -319,9 +339,44 @@ public class Node {
         return artifacts;
     }
 
-    
     public void setArtifacts(List<Artifact> artifacts) {
         this.artifacts = artifacts;
+    }
+
+    public HttpMethod getOperationHttpMethod(String operationStr) {
+        Operation operation = this.getOperation(operationStr);
+        String implStr = "";
+        try {
+            implStr = operation.getImplementation();
+            String[] split = implStr.split(" ");
+            return HttpMethod.valueOf(split[0]);
+
+        } catch(Exception ex) {
+            String errStr = "Failed to get operation HTTP method from operation " + implStr;
+            log.severe(errStr + "\n correct format is <HTTP VERB><space><PATH> eg \""
+                    + "POST /openoapi/sdnolocalsite/v1/cloud-cpes\"");
+            throw new LcmInternalException(errStr, ex);
+        }
+    }
+
+    public String getOperationPath(String operationStr) {
+        Operation operation = this.getOperation(operationStr);
+        String implStr = "";
+        try {
+            implStr = operation.getImplementation();
+            String[] split = implStr.split(" ");
+            return split[1];
+
+        } catch(Exception ex) {
+            String errStr = "Failed to get operation path from operation " + implStr;
+            log.severe(errStr + "\n correct format is <HTTP VERB><space><PATH> eg \""
+                    + "POST /openoapi/sdnolocalsite/v1/cloud-cpes\"");
+            throw new LcmInternalException(errStr, ex);
+        }
+    }
+
+    public boolean isRootNode() {
+        return getTypeName().startsWith("sdno.node.ConnectivityService");
     }
 
 }

@@ -51,14 +51,14 @@ public class DecomposerImplTest {
 
         FileHandler mockFileHandler = mock(FileHandler.class);
         File csarFile = FileUtils.getFile("src", "test", "resources", "enterprise2Dc.csar");
-        expect(mockFileHandler.getFile(anyString(), anyString(), anyString())).andReturn(csarFile).times(12);
+        expect(mockFileHandler.getFile(anyString(), anyString(), anyString())).andReturn(csarFile).anyTimes();
         replay(mockFileHandler);
 
         PackageResourceApiClient mockPackageResourceApiClient = mock(PackageResourceApiClient.class);
         PackageMeta packageMeta = new PackageMeta();
         packageMeta.setCsarId("myCsarId");
         packageMeta.setName("myCsarName");
-        expect(mockPackageResourceApiClient.queryPackageById(anyString())).andReturn(packageMeta).times(12);
+        expect(mockPackageResourceApiClient.queryPackageById(anyString())).andReturn(packageMeta).anyTimes();
         replay(mockPackageResourceApiClient);
 
         TemplateInstanceParser templateInstanceParser = new TemplateInstanceParserImpl();
