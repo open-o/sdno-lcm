@@ -16,16 +16,12 @@
 
 package org.openo.sdno.lcm.decomposer;
 
-import java.util.List;
-
-import org.openo.sdno.lcm.templatemodel.csar.Csar;
-import org.openo.sdno.lcm.templatemodel.service.Instance;
-import org.openo.sdno.lcm.model.workplan.WorkPlan;
-
 import java.util.Map;
-import org.openo.sdno.lcm.util.NetworkElementMO;
+import net.sf.json.JSONObject;
 
-public interface BRSMapping {
+public interface BrsMapping {
 
-	NetworkElementMO retrieveResourceFromBRS (String nodeName, Map <String, String> condition);
+    JSONObject retrieveResourceFromBrs(String nodeName, Map<String, String> condition);
+
+    JSONObject retrieveSiteNode(Map<String, String> condition);
 }

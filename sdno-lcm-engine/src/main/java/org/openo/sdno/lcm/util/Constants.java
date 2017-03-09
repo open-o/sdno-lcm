@@ -55,4 +55,52 @@ public class Constants {
 
     public static final String LCM_STATE_CREATED = "created";
 
+    // temporary
+    public static final String SDNO_BRS_ADDR = "http://192.168.99.100:80";
+
+
+    /**
+     * Server Failed Code.
+     */
+    public static final int ERR_FAILED = 500;
+
+    /**
+     * OK Code.
+     */
+    public static final int RESPOND_OK = 200;
+
+    /**
+     * CREATED OK Code.
+     */
+    public static final int CREATE_OK = 201;
+
+    /**
+     * Not Found Code.
+     */
+    public static final int NOT_FOUND = 404;
+
+    /**
+     * BAD REQUEST CODE.
+     */
+    public static final int BAD_REQUEST = 400;
+
+    /**
+     * EXCEED REQUEST CODE.
+    */
+    public static final int EXCEED_REQUEST = 413;
+
+    public static final String DB_FILLTER_NOT_SUPPORT = "overlayvpn.db.fillter.error";
+
+    public static boolean isSucess(int httpCode) {
+        return httpCode / 100 == 2;
+    }
+
+
+    public static final String DB_RETURN_ERROR = "overlayvpn.db.return.error";
+    
+    public static final String THIN_CPE = "thinCPE";
+    
+    public static final String vCPE = "vCPE";
+    
+
 }
