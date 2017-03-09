@@ -16,9 +16,11 @@
 
 package org.openo.sdno.lcm.engine.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openo.sdno.lcm.ariaclient.ParserApiClient;
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.engine.LcmStateEngine;
 import org.openo.sdno.lcm.exception.LcmInternalException;
@@ -47,6 +49,8 @@ public class LcmStateEngineImpl implements LcmStateEngine {
     private TemplateInstanceParser templateInstanceParser;
 
     private WorkflowRegistry workflowRegistry;
+
+    private ParserApiClient parserApiClient;
 
     /*
      * (non-Javadoc)
@@ -111,11 +115,28 @@ public class LcmStateEngineImpl implements LcmStateEngine {
         String csarId = serviceTemplate.getCsarId();
         log.info(String.format("CSAR ID is: %s", csarId));
         params.put(Constants.LCM_NBI_CSAR_ID, csarId);
+
+        String templateDownloadUri = serviceTemplate.getDownloadUri();
+        if(null == templateDownloadUri || templateDownloadUri.isEmpty()) {
+
+            throw new LcmInternalException("templateDownloadUri cannot be null or empty");
+        }
+        log.info(String.format("Service template URI is: %s", templateDownloadUri));
+
+        Map<String, String> inputParams = (Map<String, String>)params.get(Constants.LCM_NBI_ADDITIONAL_PARAMS);
+        if(null == inputParams) {
+            log.warning("Input parameters are null - this is ok for create but indicates an error for instantiate");
+            inputParams = new HashMap<>();
+        }
         // get the service template from catalog
-        String serviceInstanceJson = modelResourceApiClient.getServiceTemplateRawData(csarId);
+        // String serviceInstanceJson = modelResourceApiClient.getServiceTemplateRawData(csarId,
+        // inputParams);
+        Map<String, Object> serviceInstanceMap =
+                parserApiClient.parseControllerInstanceIndirect(templateDownloadUri, inputParams);
+        // String serviceInstanceJson
 
         // add the instance to the params
-        Instance templateInstance = templateInstanceParser.parse(serviceInstanceJson);
+        Instance templateInstance = templateInstanceParser.parse(serviceInstanceMap);
         params.put(Constants.LCM_TEMPLATE_INSTANCE, templateInstance);
 
         // check the transition and get the workflow ID
@@ -148,6 +169,11 @@ public class LcmStateEngineImpl implements LcmStateEngine {
     @Autowired
     public void setWorkflowRegistry(WorkflowRegistry workflowRegistry) {
         this.workflowRegistry = workflowRegistry;
+    }
+
+    @Autowired
+    public void setParserApiClient(ParserApiClient parserApiClient) {
+        this.parserApiClient = parserApiClient;
     }
 
 }

@@ -50,14 +50,7 @@ public class ParserApiClientImplTest {
      */
     @Test(expectedExceptions = ExternalComponentException.class)
     public void parseControllerInstanceFile() {
-        parserApiClientImpl.parseControllerInstanceFile(DUMMY_PATH, "{}");
+        parserApiClientImpl.parseControllerInstanceIndirect(DUMMY_PATH, null);
     }
 
-    /**
-     * Test expected exception is throw when there is no parser at the URI
-     */
-    @Test(expectedExceptions = ExternalComponentException.class)
-    public void parseControllerInstanceUpload() {
-        parserApiClientImpl.parseControllerInstanceUpload("{}", "{}");
-    }
 }

@@ -17,11 +17,16 @@
 package org.openo.sdno.lcm.catalogclient.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.exception.ExternalComponentException;
 import org.openo.sdno.lcm.restclient.catalog.api.ModelResourceApi;
+import org.openo.sdno.lcm.restclient.catalog.model.KeyValuePair;
 import org.openo.sdno.lcm.restclient.catalog.model.Parameters;
 import org.openo.sdno.lcm.restclient.catalog.model.QueryRawDataCondition;
 import org.openo.sdno.lcm.restclient.catalog.model.ServiceTemplate;
@@ -107,17 +112,25 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
      * QueryRawDataCondition)
      */
     @Override
-    public String getServiceTemplateRawData(String csarId) {
+    public String getServiceTemplateRawData(String csarId, Map<String, String> inputParameters) {
 
         QueryRawDataCondition body = new QueryRawDataCondition();
         body.setCsarId(csarId);
+
+        List<KeyValuePair> kvpList = new ArrayList<KeyValuePair>();
+        for(Entry<String, String> entry : inputParameters.entrySet()) {
+
+            KeyValuePair kvp = new KeyValuePair().key(entry.getKey()).value(entry.getValue());
+            kvpList.add(kvp);
+        }
+        body.setInputParameters(kvpList);
 
         ModelResourceApi modelResourceApi = getModelResourceApi();
         try {
             ServiceTemplateRawData serviceTemplateRawData = modelResourceApi.getServiceTemplateRawData(body);
 
             String rawData = serviceTemplateRawData.getRawData();
-            log.fine("raw data: " + this.unprettyPrint(rawData));
+            log.info("raw template instance: " + this.unprettyPrint(rawData));
             return rawData;
 
         } catch(Exception e) {

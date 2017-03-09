@@ -16,28 +16,19 @@
 
 package org.openo.sdno.lcm.ariaclient;
 
+import java.util.Map;
+
 import org.openo.sdno.lcm.restclient.aria.ApiException;
 
 public interface ParserApiClient {
 
     /**
-     * Create instance from file using given path
+     * Create instance from blueprint specyfied by URI
      * 
-     * @param path Path to blueprint file (required)
-     * @param inputs Inputs for instance creation from blueprint (optional)
+     * @param indirectData Blueprint specification (required)
      * @return Object
      * @throws ApiException if fails to make API call
      */
-    public Object parseControllerInstanceFile(String path, String inputs);
-
-    /**
-     * Create instance from uploaded blueprint file
-     * 
-     * @param uploadContent (required)
-     * @param inputs Inputs for instance creation from blueprint (optional)
-     * @return Object
-     * @throws ApiException if fails to make API call
-     */
-    public Object parseControllerInstanceUpload(Object uploadContent, String inputs);
+    public Map<String, Object> parseControllerInstanceIndirect(String uri, Map<String, String> inputs);
 
 }

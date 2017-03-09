@@ -40,7 +40,7 @@ public class Constants {
 
     public static final String LCM_NBI_API_OPERATION = "apiOperation";
 
-    public static final String LCM_NBI_ADDITIONAL_PARAMS = "additionalParamForNS";
+    public static final String LCM_NBI_ADDITIONAL_PARAMS = "additionalParamForNs";
 
     public static final String LCM_TEMPLATE_INSTANCE = "sdnoLcmTemplateInstance";
 

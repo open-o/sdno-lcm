@@ -25,7 +25,6 @@ import org.openo.sdno.lcm.webapp.model.LongOperationResponse;
 import org.openo.sdno.lcm.webapp.model.NsCreationRequest;
 import org.openo.sdno.lcm.webapp.model.NsCreationResponse;
 import org.openo.sdno.lcm.webapp.model.NsInstanceQueryResponse;
-import org.openo.sdno.lcm.webapp.model.NsInstantiationRequest;
 import org.openo.sdno.lcm.webapp.model.NsTerminationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,7 +52,7 @@ public class NsApiController implements NsApi {
         log.fine("~~~~~ NsApiController - nsCreationPost ~~~~~");
         Map<String, Object> params = mapper.beanToMap(nsRequest);
         Map<String, Object> responseMap = nsApiControllerFacade.nsCreationPost(params);
-        NsCreationResponse nsCreationResponse = mapper.mapToBean(new NsCreationResponse(), responseMap);
+        NsCreationResponse nsCreationResponse = mapper.mapToBean(NsCreationResponse.class, responseMap);
         ResponseEntity<NsCreationResponse> response = new ResponseEntity<NsCreationResponse>(nsCreationResponse, HttpStatus.CREATED);
         return response;
     }
@@ -66,7 +65,7 @@ public class NsApiController implements NsApi {
 
     public ResponseEntity<LongOperationResponse> nsInstantiationPost(
             @ApiParam(value = "ID of the SDN-O service instance to be instantiated", required = true) @PathVariable("instanceid") String instanceid,
-            @ApiParam(value = "the request used to instantiate a SDN-O service instance", required = true) @RequestBody NsInstantiationRequest nsInstantiationRequest) {
+            @ApiParam(value = "the request used to instantiate a SDN-O service instance", required = true) @RequestBody Map<String, Object> nsInstantiationRequest) {
 
         log.fine("~~~~~ NsApiController - nsInstantiationPost ~~~~~");
         Map<String, Object> params = mapper.beanToMap(nsInstantiationRequest);

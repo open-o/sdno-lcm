@@ -33,6 +33,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Mapper {
 
     private static final Logger log = Logger.getLogger("Mapper");
+    
+    ObjectMapper oMapper = new ObjectMapper();
 
     /**
      * Fills a Map with the values of the bean-style object's properties.
@@ -45,7 +47,6 @@ public class Mapper {
      */
     public Map<String, Object> beanToMap(Object bean) {
 
-        ObjectMapper oMapper = new ObjectMapper();
         // do not add properties to the map that have null value
         oMapper.setSerializationInclusion(Include.NON_NULL);
         Map<String, Object> map;
@@ -60,9 +61,10 @@ public class Mapper {
         return map;
     }
 
-    public <T> T mapToBean(T beanInstance, Map<String, Object> properties) {
-        // TODO
-        return null;
+    public <T> T mapToBean(Class<T> claz, Map<String, Object> map) {
+        // do not add properties to the map that have null value
+        oMapper.setSerializationInclusion(Include.NON_NULL);
+        return (T)oMapper.convertValue(map, claz);
     }
 
     public JsonNode stringToNode(String string) {

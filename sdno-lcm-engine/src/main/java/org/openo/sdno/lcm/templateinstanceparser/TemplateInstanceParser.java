@@ -16,10 +16,13 @@
 
 package org.openo.sdno.lcm.templateinstanceparser;
 
+import java.util.Map;
+
 import org.openo.sdno.lcm.templatemodel.service.Instance;
 
 public interface TemplateInstanceParser {
 
     Instance parse(String serviceInstanceJson);
 
+    Instance parse(Map<String, Object> serviceInstanceMap);
 }

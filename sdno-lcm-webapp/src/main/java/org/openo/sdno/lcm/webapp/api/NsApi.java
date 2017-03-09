@@ -15,11 +15,12 @@
  */
 package org.openo.sdno.lcm.webapp.api;
 
+import java.util.Map;
+
 import org.openo.sdno.lcm.webapp.model.LongOperationResponse;
 import org.openo.sdno.lcm.webapp.model.NsCreationRequest;
 import org.openo.sdno.lcm.webapp.model.NsCreationResponse;
 import org.openo.sdno.lcm.webapp.model.NsInstanceQueryResponse;
-import org.openo.sdno.lcm.webapp.model.NsInstantiationRequest;
 import org.openo.sdno.lcm.webapp.model.NsTerminationRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,7 +78,7 @@ public interface NsApi {
         produces = { "application/json;charset=UTF-8" }, 
         consumes = { "application/json;charset=UTF-8" },
         method = RequestMethod.POST)
-    ResponseEntity<LongOperationResponse> nsInstantiationPost(@ApiParam(value = "ID of the SDN-O service instance to be instantiated",required=true ) @PathVariable("instanceid") String instanceid,@ApiParam(value = "the request used to instantiate a SDN-O service instance" ,required=true ) @RequestBody NsInstantiationRequest nsInstantiationRequest);
+    ResponseEntity<LongOperationResponse> nsInstantiationPost(@ApiParam(value = "ID of the SDN-O service instance to be instantiated",required=true ) @PathVariable("instanceid") String instanceid,@ApiParam(value = "the request used to instantiate a SDN-O service instance" ,required=true ) @RequestBody Map<String, Object> nsInstantiationRequest);
 
 
     @ApiOperation(value = "query one SDN-O service instance", notes = "it will return the details of a specific SDN-O service instance", response = NsInstanceQueryResponse.class, tags={  })

@@ -16,11 +16,13 @@
 
 package org.openo.sdno.lcm.ariaclient.impl;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.ariaclient.ParserApiClient;
 import org.openo.sdno.lcm.exception.ExternalComponentException;
 import org.openo.sdno.lcm.restclient.aria.api.ParserApi;
+import org.openo.sdno.lcm.restclient.aria.model.IndirectData;
 import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -32,10 +34,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ParserApiClientImpl implements ParserApiClient {
 
-    private static final String FAILED_TO_PARSE_CONTROLLER_INSTANCE_FILE = "Failed to parse controller instance file";
-
-    private static final String FAILED_TO_PARSE_CONTROLLER_INSTANCE_UPLOAD =
-            "Failed to parse controller instance upload";
+    private static final String FAILED_TO_PARSE_INSTANCE_INDIRECT = "Failed to parse instance (indirect)";
 
     private final Logger log = Logger.getLogger("ParserApiClientImpl");
 
@@ -52,40 +51,24 @@ public class ParserApiClientImpl implements ParserApiClient {
 
     /*
      * (non-Javadoc)
-     * @see
-     * org.openo.sdno.lcm.ariaclient.ParserApiClient#parseControllerInstanceFile
-     * (java.lang.String, java.lang.String)
-     */
-    @Override
-    public Object parseControllerInstanceFile(String path, String inputs) {
-
-        ParserApi parserApi = this.getParserApi();
-        try {
-            return parserApi.parseControllerInstanceFile(path, inputs);
-        } catch(Exception e) {
-            log.severe(FAILED_TO_PARSE_CONTROLLER_INSTANCE_FILE);
-            throw new ExternalComponentException(FAILED_TO_PARSE_CONTROLLER_INSTANCE_FILE, e);
-        }
-    }
-
-    /*
-     * (non-Javadoc)
      * @see org.openo.sdno.lcm.ariaclient.ParserApiClient#
      * parseControllerInstanceUpload(java.lang.Object, java.lang.String)
      */
     @Override
-    public Object parseControllerInstanceUpload(Object uploadContent, String inputs) {
+    public Map<String, Object> parseControllerInstanceIndirect(String uri, Map<String, String> inputs) {
 
+        IndirectData indirectData = new IndirectData();
+        indirectData.setUri(uri);
+        indirectData.setInputs(inputs);
         ParserApi parserApi = this.getParserApi();
         try {
-            return parserApi.parseControllerInstanceUpload(uploadContent, inputs);
+            return (Map<String, Object>)parserApi.parseControllerInstanceIndirect(indirectData);
         } catch(Exception e) {
-            log.severe(FAILED_TO_PARSE_CONTROLLER_INSTANCE_UPLOAD);
-            throw new ExternalComponentException(FAILED_TO_PARSE_CONTROLLER_INSTANCE_UPLOAD, e);
+            log.severe(FAILED_TO_PARSE_INSTANCE_INDIRECT);
+            throw new ExternalComponentException(FAILED_TO_PARSE_INSTANCE_INDIRECT, e);
         }
     }
 
-    
     public void setEnv(Environment env) {
         this.env = env;
     }

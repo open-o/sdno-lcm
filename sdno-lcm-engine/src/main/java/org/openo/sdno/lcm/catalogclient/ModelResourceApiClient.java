@@ -16,11 +16,12 @@
 
 package org.openo.sdno.lcm.catalogclient;
 
+import java.util.Map;
+
 import org.openo.sdno.lcm.restclient.catalog.model.Parameters;
 import org.openo.sdno.lcm.restclient.catalog.model.ServiceTemplate;
 
 public interface ModelResourceApiClient {
-
 
     /**
      * Query service template by service template id
@@ -45,8 +46,9 @@ public interface ModelResourceApiClient {
      * 
      * @param csarId
      *            Query Service Template Raw Data Condition (required)
+     * @param inputParameters the map of name:value input to workflow
      * @return ServiceTemplate ServiceTemplateRawData
      */
-    String getServiceTemplateRawData(String csarId);
+    String getServiceTemplateRawData(String csarId, Map<String, String> inputParameters);
 
 }

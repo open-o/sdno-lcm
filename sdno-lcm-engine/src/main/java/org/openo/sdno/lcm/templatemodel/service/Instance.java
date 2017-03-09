@@ -133,4 +133,10 @@ public class Instance {
         return connectivityServiceNode.getPropertyJsonNode("state_machine");
     }
 
+    @Override
+    public String toString() {
+        return String.format("Instance [log=%s, inputsJson=%s, description=%s, metadata=%s, nodes=%s]", log, inputsJson,
+                description, metadata, nodes);
+    }
+
 }

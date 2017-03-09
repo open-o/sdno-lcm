@@ -20,6 +20,8 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.replay;
 
+import java.util.HashMap;
+
 import org.openo.sdno.lcm.exception.ExternalComponentException;
 import org.openo.sdno.lcm.util.Constants;
 import org.springframework.core.env.Environment;
@@ -28,29 +30,31 @@ import org.testng.annotations.Test;
 
 @Test(groups = {"sdno-lcm-unit"})
 public class ModelResourceApiClientImplTest {
-    
+
     private static final String DUMMY_PATH = "http://127.0.0.1:9999/openbanana/catamaran/v987654321";
+
     private static final String FAKE_TEMPLATE_ID = "myTemplateId";
 
     ModelResourceApiClientImpl modelResourceApiClientImpl;
+
     Environment mockEnvironment;
-    
+
     @BeforeMethod
     public void before() {
         modelResourceApiClientImpl = new ModelResourceApiClientImpl();
         mockEnvironment = mock(Environment.class);
         modelResourceApiClientImpl.setEnv(mockEnvironment);
-        
+
         expect(mockEnvironment.getRequiredProperty(Constants.COMMON_TOSCA_CATALOG_BASE_PATH)).andReturn(DUMMY_PATH);
         replay(mockEnvironment);
     }
-    
+
     /**
      * Test expected exception is throw when there is no catalog at the URI
      */
     @Test(expectedExceptions = ExternalComponentException.class)
     public void getServiceTemplateById() {
-        
+
         modelResourceApiClientImpl.getServiceTemplateById(FAKE_TEMPLATE_ID);
     }
 
@@ -69,6 +73,6 @@ public class ModelResourceApiClientImplTest {
     @Test(expectedExceptions = ExternalComponentException.class)
     public void getServiceTemplateRawData() {
 
-        modelResourceApiClientImpl.getServiceTemplateRawData(FAKE_TEMPLATE_ID);
+        modelResourceApiClientImpl.getServiceTemplateRawData(FAKE_TEMPLATE_ID, new HashMap<String, String>());
     }
 }
