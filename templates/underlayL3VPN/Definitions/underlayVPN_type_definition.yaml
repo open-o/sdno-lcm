@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
- 
+
 tosca_definitions_version: tosca_simple_yaml_1_0
 description: undelay vpn type definitions
 
@@ -31,11 +31,12 @@ imports:
 # DSL definitions
 # *****************************************************************************
 dsl_definitions:
- 
+
 # *****************************************************************************
 # data types
 # *****************************************************************************
 data_types:
+
 
     # Base SDNO Type for Specs - used in Underlay VPN only for now, check reuse and move to common if needed. May need to move iot from type to node
     sdno.datatypes.Spec:
@@ -45,7 +46,7 @@ data_types:
                 type: string
                 description: unique id, format maxLength36
                 required: true
-                default: none
+                default: 'none'
             additionalInfo:
                 type: list
                 #max size = 1000
@@ -54,7 +55,8 @@ data_types:
                 required: false
 
     # PW Schema Type
-    PWSchema:
+
+    PWSchema: 
         derived_from: sdno.datatypes.Spec
         properties:
             pwTech:
@@ -64,6 +66,7 @@ data_types:
                 default: 'none'
 
     # Tunnel Schema Type
+
     TunnelSchema:
         derived_from: sdno.datatypes.Spec
         properties:
@@ -147,7 +150,7 @@ data_types:
                 required: false
             tunnelProtectPolicy:
                 type: ProtectionSchema
-                description:
+                description: 
                 required: false
 
     TunnelPathConstraint:
@@ -207,7 +210,9 @@ data_types:
                 required: true
                 default: 1
             selectTunnels:
-                type: SelectTunnel
+                type: list
+                entry_schema:
+                    type: SelectTunnel
                 description: Tunnel Selection Policy
                 required: true
 
@@ -328,7 +333,9 @@ data_types:
                     - valid_values: ['NOP','LDP','RSVP-TE','SR-TE','MPLS-TP','TE-ANY','TE','GRE']
                 required: true
 
+
      # VPN TYPES
+
     DiffService:
         derived_from: sdno.datatypes.Spec 
         properties:
@@ -391,6 +398,7 @@ data_types:
                     - valid_values: ['l3vpn','l2vpn','other']
                 required: true
                 default: 'l3vpn'
+ 
             technology:
                 type: string
                 description: type of VPN technology
@@ -403,12 +411,13 @@ data_types:
                 description: IP MTU, format is int32, minimum 46 and maximum 9600
                 required: true
                 default: 9600
-            ipVpnSpec:
+            ipVpnSpec: 
                 type: IpVpnSpec
                 description: IP VPN Spec
                 required: false
 
     # VPN TYPES
+
     TpTypeSpec:
         derived_from: sdno.datatypes.Spec
         properties:
@@ -422,9 +431,9 @@ data_types:
             ethernetTpSpec:
                 required: false
                 type: EthernetTpSpec
-            IpTpSpec:
+            ipTpSpec:
                 required: false
-                type: ipTpSpec
+                type: IpTpSpec
 
 
     EthernetTpSpec:
@@ -520,6 +529,7 @@ node_types:
                 default: '0.0.0.0'
 
 
+
     # ***************************************************************************** 
     #            Underlay VPN Connectivity Service
     # *****************************************************************************
@@ -532,17 +542,17 @@ node_types:
                 deploy:
                     description: "Deploy VPN"
                     implementation:
-                        # primary:
+                        # primary: 
                         dependencies:
                             - sdno.node.Connection.UnderlayVpn/deploy
 
-        requirements:
+        requirements: 
             - endPoint:
                 node: sdno.node.ServiceEndPoint.AC
                 capability: sdno.capability.ServiceEndPoint
                 relationship: sdno.relationship.ServiceEndPoint
                 occurrences: [2, UNBOUNDED]
-            - realizes:
+            - realizes: 
                 node: sdno.node.Connection.UnderlayVpn
                 capability: sdno.capability.Realizes
                 relationship: sdno.relationship.RealizedBy
@@ -554,6 +564,9 @@ node_types:
         description: Attach Circuit
         derived_from: sdno.node.ConnectionEndPoint
         properties:
+            neId:
+                type: string
+                required: false
             edgePointRole:
                 type: string
                 description: Role of the edge point
@@ -637,16 +650,16 @@ node_types:
         properties:
             pwSchema:
                 type: PWSchema
-                required: true
+                required: false
             tunnelSchema:
                 type: TunnelSchema
-                required: true
+                required: false
             pathConstraints:
                 type: PathConstraints
                 required: false
             vpnBasicInfo:
                 type: VpnBasicInfo
-                required: true
+                required: false
 
         requirements:
             - endPoint:
@@ -666,7 +679,7 @@ node_types:
         interfaces:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
-                create: 
+                create:
                     #implementation: 'POST /openoapi/sdnol3vpn/v1/l3vpns'
                 delete:
                     implementation: 'DELETE /openoapi/sdnol3vpn/v1/l3vpns/{uuid}'

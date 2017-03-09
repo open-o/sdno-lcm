@@ -150,8 +150,13 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
                     //create new object node for sub-model and add to the node for output.
                     newObjectNode = nodeFactory.objectNode();
                     objectNode.put(apiFieldName, newObjectNode);
-                    mapping(valueNode, mapperSpec, rule.getKeyObjectModelName(), newObjectNode);
 
+                    //handle the case that one type (object) in API has no correponding definition in TOSCA template
+                    if(rule.getValueName().equals(RequestBodyMappingRule.NO_STEP_INTO_STR)) {
+                        valueNode = properties;
+                    }
+
+                    mapping(valueNode, mapperSpec, rule.getKeyObjectModelName(), newObjectNode);
                     break;
                 case SCALAR_ARRAY: //mapping scalar array
                     //create new array node and add to the node for output.

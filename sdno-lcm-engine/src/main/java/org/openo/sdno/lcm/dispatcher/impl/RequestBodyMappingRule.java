@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.*;
  * this class represents a mapping rule.
  */
 public class RequestBodyMappingRule {
+    public static final String NO_STEP_INTO_STR = "NO-STEP-INTO";
 
     /**
      * one internal class to represent the key or value of a mapping rule.

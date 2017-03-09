@@ -1,0 +1,206 @@
+{
+  "VpnVo": {
+    "pwSchema#PWSchema#": "pwSchema#PWSchema#",
+    "tunnelSchema#TunnelSchema#": "tunnelSchema#TunnelSchema#",
+    "pathConstraints#PathConstraints#": "pathConstraints#PathConstraints#",
+    "vpn#Vpn#": "NO-STEP-INTO"
+  },
+  "PWSchema": {
+    "pwTech": "pwTech"
+  },
+  "PWSpec": {
+    "uuid": "uuid",
+    "controlWord": "controlWord",
+    "pwVlanAction": "pwVlanAction"
+  },
+  "TunnelSchema": {
+    "uuid": "uuid",
+    "tunnelTech": "tunnalTech",
+    "pwTech#PWSpec#": "pwTech#PWSpec#",
+    "tunnelLatency": "tunnelLatency",
+    "tunnelSelectMode": "tunnelSelectMode",
+    "tunnelCreatePolicy#MplsTESpec#": "tunnelCreatePolicy#MplsTESpec#",
+    "tunnelAutoSelectPolicy#SelectTunnelPolicy#": "tunnelAutoSelectPolicy#SelectTunnelPolicy#"
+  },
+  "MplsTESpec": {
+    "uuid": "uuid",
+    "bestEffort": "bestEffort",
+    "shareMode": "shareMode",
+    "coRoute": "coRoute",
+    "bdfEnable": "bdfEnable",
+    "pathConstraint#TunnelPathConstraint#": "pathConstraint#TunnelPathConstraint#",
+    "tunnelProtectPolicy#ProtectionSchema#": "tunnelProtectPolicy#ProtectionSchema#"
+  },
+  "ProtectionSchema": {
+    "uuid": "uuid",
+    "layerRate": "layerRate",
+    "protectType": "protectType",
+    "protectDetailType": "protectDetailType",
+    "reversionMode": "reversionMode",
+    "wtr" : "wtr"
+  },
+  "TunnelPathConstraint": {
+    "uuid": "uuid",
+    "setupPriority": "setupPriority",
+    "holdupPriority": "holdupPriority"
+  },
+  "SelectTunnelPolicy": {
+    "uuid": "uuid",
+    "loadBalanceNum": "loadBalanceNum",
+    "selectTunnels[]#SelectTunnel#": "selectTunnels[]#SelectTunnel#"
+  },
+  "SelectTunnel": {
+    "uuid": "uuid",
+    "priority": "priority",
+    "tunnelTech": "tunnelTech"
+  },
+  "PathConstraints": {
+    "uuid": "uuid",
+    "tunnelConstraints[]#TunnelSpecificPathConstraint#": "",
+    "pwConstraints[]#PWSpecPathConstraint#": "pwConstraints[]#PWSpecPathConstraint#"
+  },
+  "TunnelSpecificPathConstraint": {
+    "uuid": "uuid",
+    "pathConnection#PathConnection#": "pathConnection#PathConnection#",
+    "tunnelWorkMode": "tunnelWorkMode",
+    "tunnelTech": "tunnelTech",
+    "bodMode": "bodMode",
+    "bandwidth": "bandwidth",
+    "latency": "latency",
+    "bindingTunnels[]": "bindingTunnels"
+  },
+  "Vpn": {
+    "id": "id",
+    "name": "name",
+    "description": "description",
+    "vpnBasicInfo#VpnBasicInfo#": "vpnBasicInfo#VpnBasicInfo#",
+    "operStatus": "operStatus",
+    "syncStatus": "syncStatus",
+    "accessPointList[]#Tp#": "accessPointList[]#Tp#",
+    "additionalInfo[]#NVString#": "additionalInfo[]#AdditionalInfoRow#"
+  },
+  "Tp": {
+    "id": "id",
+    "name": "name",
+    "description": "description",
+    "adminStatus": "adminStatus",
+    "operStatus": "operStatus",
+    "neId": "neId",
+    "edgePointRole": "edgePointRole",
+    "hubSpoke": "hubSpoke",
+    "type": "type",
+    "workingLayer": "workingLayer",
+    "typeSpecList[]#TpTypeSpec#": "typeSpecList[]#TpTypeSpec#",
+    "peerCeTp#CeTp#": "peerCeTp#CeTp#",
+    "qosProfileId": "",
+    "inboundQosPolicyId": "inboundQosPolicyId",
+    "outboundQosPolicyId": "outboundQosPolicyId",
+    "inboundQueueProfileId": "inboundQueueProfileId",
+    "outboundQueueProfileId": "outboundQueueProfileId",
+    "containedMainTP": "containedMainTP",
+    "routeProtocolSpecs[]#RouteProtocolSpec#": "routeProtocolSpecs[]#RouteProtocolSpec#",
+    "additionalInfo[]#NVString#": "additionalInfo[]#AdditionalInfoRow#",
+    "direction": "direction",
+    "tpRole": "tpRole"
+  },
+  "TpTypeSpec": {
+    "uuid": "uuid",
+    "layerRate": "layerRate",
+    "ethernetTpSpec#EthernetTpSpec#": "ethernetTpSpec#EthernetTpSpec#",
+    "ipTpSpec#IpTpSpec#": "ipTpSpec#IpTpSpec#"
+  },
+  "EthernetTpSpec": {
+    "uuid": "uuid",
+    "accessType": "accessType",
+    "vlanAction": "vlanAction",
+    "actionValue": "actionValue",
+    "qinqCvlanList": "qinqCvlanList",
+    "qinqSvlanList": "qinqSvlanList",
+    "dot1qVlanList": "dot1qVlanList",
+    "additionalInfo[]#NVString#": ""
+  },
+  "IpTpSpec": {
+    "uuid": "uuid",
+    "masterIp": "masterIp",
+    "additionalInfo[]#NVString#": "additionalInfo[]#AdditionalInfoRow#"
+  },
+  "NVString": {
+    "name": "name",
+    "value": "value"
+  },
+  "PathConnection": {
+    "id": "uuid",
+    "aObject#ObjectIdentifier#": "aObject#ObjectIdentifier#",
+    "zObject#ObjectIdentifier#": "zObject#ObjectIdentifier#",
+    "direction": "direction",
+    "linkPoolLabel": "linkPoolLabel"
+  },
+  "ObjectIdentifier": {
+    "uuid": "uuid",
+    "objectId": "objectId",
+    "roleLabel": "roleLabel",
+    "objectRouteRole": "objectRouteRole",
+    "objectType": "objectType",
+    "appendix": "appendix"
+  },
+  "VpnBasicInfo": {
+    "uuid": "uuid",
+    "topology": "topology",
+    "serviceType": "serviceType",
+    "technology": "technology",
+    "adminStatus": "adminStatus",
+    "additionalInfo[]#NVString#": "additionalInfo[]#AdditionalInfoRow#",
+    "ipMtu": "ipMtu",
+    "ipVpnSpec#IpVpnSpec#": "ipVpnSpec#IpVpnSpec#"
+  },
+  "IpVpnSpec": {
+    "id": "uuid",
+    "labelMode": "labelMode",
+    "frrEnable": "frrEnable",
+    "diffServ#DiffService#": "diffServ#DiffService#"
+  },
+  "DiffService": {
+    "id": "uuid",
+    "diffServMode": "diffServMode",
+    "serviceClass": "serviceClass",
+    "serviceColor": "serviceColor"
+  },
+  "RouteProtocolSpec": {
+    "uuid": "uuid",
+    "type": "type",
+    "additionalInfo[]#NVString#": "additionalInfo[]#AdditionalInfoRow#",
+    "bgpRoute#BgpProtocolItem#": "bgpRoute#BgpProtocolItem#",
+    "staticRoute#StaticRouteTable#": "staticRoute#StaticRouteTable#"
+  },
+  "BgpProtocolItem": {
+    "id": "uuid",
+    "idx": "idx",
+    "peerAsNumber": "peerAsNumber",
+    "keepAliveTime": "keepAliveTime",
+    "holdTime": "holdTime",
+    "password": "password",
+    "bgpMaxPrefix": "bgpMaxPrefix",
+    "bgpMaxPrefixAlarm": "bgpMaxPrefixAlarm",
+    "peerIp": "peerIp",
+    "community": "community",
+    "extCommunity": "extCommunity"
+  },
+  "StaticRouteTable": {
+    "uuid": "uuid",
+    "destinationCidr": "destinationCidr",
+    "routePreference": "routePreference",
+    "nextHopIp": "nextHopIp",
+    "additionalInfo[]#NVString#": "additionalInfo[]#AdditionalInfoRow#"
+  },
+  "CeTp": {
+    "uuid": "uuid",
+    "ceID": "ceID",
+    "ceDirectNeID": "ceDirectNeID",
+    "ceDirectTPID": "ceDirectTPID",
+    "siteName": "siteName",
+    "ceName": "ceName",
+    "ceIfmasterIp": "ceIfmasterIp",
+    "location": "location",
+    "additionalInfo[]#NVString#": "additionalInfo[]#AdditionalInfoRow#"
+  }
+}
