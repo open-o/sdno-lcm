@@ -5,7 +5,16 @@
     "description": "description",
     "tenantId": "tenantID",
     "deployStatus": "TBD",
-
+    "actionState": "actionState",
+    "activeStatus": "TBD",
+    "runningStatus": "TBD",
+    "createtime": "createTime",
+    "updatetime": "updateTime",
+    "vpnConnections[]#NbiVpnConnection#": "UNNECESSARY",
+    "vpnGateways[]#NbiVpnGateway#": "UNNECESSARY",
+    "siteList[]": "UNNECESSARY",
+    "vpcList[]": "UNNECESSARY",
+    "ext": "TBD",
     "vpnDescriptor": "vpnDescriptor"
   },
   "NbiVpnConnection": {
@@ -14,17 +23,35 @@
     "description": "description",
     "tenantId": "tenantID",
     "deployStatus": "TBD",
+    "actionState": "actionState",
+    "activeStatus": "TBD",
+    "runningStatus": "TBD",
+    "createtime": "createTime",
+    "updatetime": "updateTime",
+
+    "technology": "TBD",
+    "netConnections[]#NbiNetConnection#": "UNNECESSARY",
 
     "vpnId": "vpnId",
+    "routeType": "TBD",
     "aEndVpnGatewayId": "aEndVpnGatewayId",
     "zEndVpnGatewayId": "zEndVpnGatewayId",
-    "vni": "vni"
+    "aEndVpnGateway#NbiVpnGateway#": "UNNECESSARY",
+    "zEndVpnGateway#NbiVpnGateway#": "UNNECESSARY",
+    "vni": "vni",
+    "ext": "TBD"
   },
   "NbiVpnGateway": {
     "id": "id",
     "name": "name",
     "description": "description",
     "tenantId": "tenantID",
+    "deployStatus": "TBD",
+    "actionState": "actionState",
+    "activeStatus": "TBD",
+    "runningStatus": "TBD",
+    "createtime": "createTime",
+    "updatetime": "updateTime",
 
     "vpnId": "vpnId",
     "siteId": "siteId",
@@ -32,9 +59,32 @@
     "deployPosition": "deployPosition",
     "upstreamBandwidth": "upstreamBandwidth",
     "downstreamBandwidth": "downstreamBandwidth",
-    "vlans": "vlans",
     "ports[]": "ports[]",
     "portNames[]": "portNames[]",
-    "regionId": "regionId"
+    "subnets[]": "TBD",
+    "vpnDescriptor": "TBD",
+    "regionId": "regionId",
+    "ext": "TBD"
+  },
+  "NbiNetConnection": {
+    "id": "TBD",
+    "name": "TBD",
+    "description": "TBD",
+    "tenantId": "TBD",
+    "deployStatus": "TBD",
+    "actionState": "TBD",
+    "activeStatus": "TBD",
+    "runningStatus": "TBD",
+    "createtime": "TBD",
+    "updatetime": "TBD",
+
+    "type": "TBD",
+    "srcNeId": "TBD",
+    "destNeId": "TBD",
+    "srcNeRole": "TBD",
+    "destNeRole": "TBD",
+    "connectionId": "TBD",
+    "srcPortName": "TBD",
+    "destPortName": "TBD"
   }
 }
