@@ -133,6 +133,12 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
             String nodePropertyName = rule.getValueName();
             JsonNode valueNode = (properties.get(nodePropertyName));
 
+            //handle the case that one type (object) in API has no correponding definition in TOSCA template
+            if((rule.getValueName().equals(RequestBodyMappingRule.NO_STEP_INTO_STR))
+               &&(rule.getKeyType() == RequestBodyMappingRuleType.OBJECT)) {
+                valueNode = properties;
+            }
+
             //skip if properties has no such value (optional property)
             if(null == valueNode) continue;
 
@@ -150,11 +156,6 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
                     //create new object node for sub-model and add to the node for output.
                     newObjectNode = nodeFactory.objectNode();
                     objectNode.put(apiFieldName, newObjectNode);
-
-                    //handle the case that one type (object) in API has no correponding definition in TOSCA template
-                    if(rule.getValueName().equals(RequestBodyMappingRule.NO_STEP_INTO_STR)) {
-                        valueNode = properties;
-                    }
 
                     mapping(valueNode, mapperSpec, rule.getKeyObjectModelName(), newObjectNode);
                     break;
