@@ -62,22 +62,14 @@ public class TemplateInstanceParserImpl implements TemplateInstanceParser {
     @Override
     public Instance parse(Map<String, Object> serviceInstanceMap) {
 
-        // Instance instance = new Instance();
-        // instance.setDescription((String)serviceInstanceMap.get("description"));
-        // instance.setMetadata((Metadata)serviceInstanceMap.get("metadata"));
-        // LinkedHashMap<String, Object> nodeMap = (LinkedHashMap<String,
-        // Object>)serviceInstanceMap.get("nodes");
-        // List<Node> nodeList = new ArrayList<>();
-        // for(Object n:nodeMap.values()) {
-        //
-        //
-        // Node node = mapper.mapToBean(Node.class, (Map<String,Object>)n);
-        // nodeList.add(node);
-        // }
-        // instance.setNodes(nodeList);
         Object instanceObj = serviceInstanceMap.get("instance");
+        if(null == instanceObj) {
+
+            log.severe(String.format("The serviceInstanceMap is invalid: %s" + serviceInstanceMap.toString()));
+            throw new LcmInternalException("The serviceInstanceMap is invalid");
+        }
         Instance instance = mapper.mapToBean(Instance.class, (Map<String, Object>)instanceObj);
-        log.info("Parsed Instance from Map:\n" + instance.toString());
+        log.info("Parsed Instance from serviceInstanceMap:\n" + instance.toString());
         return instance;
     }
 

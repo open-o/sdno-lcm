@@ -134,7 +134,7 @@ public class LcmStateEngineImpl implements LcmStateEngine {
         Map<String, Object> serviceInstanceMap =
                 parserApiClient.parseControllerInstanceIndirect(templateDownloadUri, inputParams);
         // String serviceInstanceJson
-
+        log.fine("serviceInstanceMap: " + serviceInstanceMap.toString());
         // add the instance to the params
         Instance templateInstance = templateInstanceParser.parse(serviceInstanceMap);
         params.put(Constants.LCM_TEMPLATE_INSTANCE, templateInstance);
