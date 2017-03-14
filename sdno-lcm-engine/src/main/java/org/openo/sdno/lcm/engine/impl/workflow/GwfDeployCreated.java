@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityServiceRequest;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateResponse;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
 import org.openo.sdno.lcm.util.Constants;
 import org.springframework.stereotype.Component;
@@ -49,7 +50,8 @@ public class GwfDeployCreated extends GenericWorkflowImpl {
 
         UpdateConnectivityServiceRequest body = new UpdateConnectivityServiceRequest();
         body.setLifecycleState(Constants.LCM_STATE_DEPLOYED);
-        defaultMssApiClient.updateConnectivityServiceRequest(serviceId, body);
+        UpdateResponse updateResponse = defaultMssApiClient.updateConnectivityServiceRequest(serviceId, body);
+        log.info(String.format("Updated connectivity service:\n%s", updateResponse.toString()));
 
         HashMap<String, Object> responseMap = new HashMap<String, Object>();
         // we can put the service ID here instead of job ID as the task is synchronous for now

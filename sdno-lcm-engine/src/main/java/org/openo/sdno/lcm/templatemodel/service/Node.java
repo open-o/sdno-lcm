@@ -222,11 +222,18 @@ public class Node {
     public String getPropertyValue(String propertyName) {
 
         JsonNode jsonNode = getPropertyJsonNode(propertyName);
-        if(null != jsonNode) {
+
+        if(null != jsonNode && !jsonNode.isNull()) {
+
+            if(jsonNode.isLong()) {
+                return Long.toString(jsonNode.asLong());
+            }
+            if(jsonNode.isFloatingPointNumber()) {
+                return Double.toString(jsonNode.asDouble());
+            }
             return jsonNode.asText();
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**

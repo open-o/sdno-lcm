@@ -47,23 +47,40 @@ public class GwfCreate extends GenericWorkflowImpl {
         String apiOperation = (String)super.getParam(Constants.LCM_NBI_API_OPERATION, params);
         String serviceTemplateId = (String)super.getParam(Constants.LCM_NBI_TEMPLATE_ID, params);
         Instance templateInstance = (Instance)super.getParam(Constants.LCM_TEMPLATE_INSTANCE, params);
+        String serviceName = (String)super.getParam(Constants.LCM_NBI_SERVICE_NAME, params);
+        String serviceDescription = (String)super.getParam(Constants.LCM_NBI_SERVICE_DESCRIPTION, params);
         Node connectivityServiceNode = templateInstance.getRootNode();
 
         // create the Connectivity Service in DB
         ConnectivityService connectivityService = new ConnectivityService();
-        connectivityService.setLifecycleState("created");
+        connectivityService.setLifecycleState(Constants.LCM_STATE_CREATED);
         connectivityService.setTemplateId(serviceTemplateId);
-        connectivityService.setId(connectivityServiceNode.getPropertyValue("id"));
-        connectivityService.setName(connectivityServiceNode.getPropertyValue("name"));
-        connectivityService.setActionState(connectivityServiceNode.getPropertyValue("actionState"));
-        connectivityService.setAdminStatus(connectivityServiceNode.getPropertyValue("adminStatus"));
-        connectivityService.setDescription(connectivityServiceNode.getPropertyValue("description"));
-        connectivityService.setLocation(connectivityServiceNode.getPropertyValue("location"));
-        connectivityService.setOperStatus(connectivityServiceNode.getPropertyValue("operStatus"));
-        connectivityService.setOwnerID(connectivityServiceNode.getPropertyValue("ownerID"));
-        connectivityService.setStatusReason(connectivityServiceNode.getPropertyValue("statusReason"));
-        connectivityService.setTenantID(connectivityServiceNode.getPropertyValue("tenantID"));
-        connectivityService.setVersion(connectivityServiceNode.getPropertyValue("version"));
+        connectivityService.setName(serviceName);
+        if(null != connectivityServiceNode.getPropertyValue("id")) {
+            connectivityService.setId(connectivityServiceNode.getPropertyValue("id"));
+        }
+        if(null != connectivityServiceNode.getPropertyValue("actionState")) {
+            connectivityService.setActionState(connectivityServiceNode.getPropertyValue("actionState"));
+        }
+        if(null != connectivityServiceNode.getPropertyValue("adminStatus")) {
+            connectivityService.setAdminStatus(connectivityServiceNode.getPropertyValue("adminStatus"));
+        }
+        connectivityService.setDescription(serviceDescription);
+        if(null != connectivityServiceNode.getPropertyValue("location")) {
+            connectivityService.setLocation(connectivityServiceNode.getPropertyValue("location"));
+        }
+        if(null != connectivityServiceNode.getPropertyValue("operStatus")) {
+            connectivityService.setOperStatus(connectivityServiceNode.getPropertyValue("operStatus"));
+        }
+        if(null != connectivityServiceNode.getPropertyValue("ownerID")) {
+            connectivityService.setOwnerID(connectivityServiceNode.getPropertyValue("ownerID"));
+        }
+        if(null != connectivityServiceNode.getPropertyValue("statusReason")) {
+            connectivityService.setStatusReason(connectivityServiceNode.getPropertyValue("statusReason"));
+        }
+        if(null != connectivityServiceNode.getPropertyValue("version")) {
+            connectivityService.setVersion(connectivityServiceNode.getPropertyValue("version"));
+        }
 
         CreateConnectivityServiceResponse createConnectivityService =
                 defaultMssApiClient.createConnectivityService(connectivityService);
@@ -71,12 +88,14 @@ public class GwfCreate extends GenericWorkflowImpl {
                 createConnectivityService.getObjects().get(0);
         String createdNsId = createConnectivityServiceResponseSample.getId();
         log.info("Created Connectivity Service ID is " + createdNsId);
+        log.info(
+                String.format("Created connectivity service:\n%s", createConnectivityServiceResponseSample.toString()));
         // put the id into the params in case we are passing on to another wfl eg deployCreated as
         // part of deploy
         params.put(Constants.LCM_NBI_SERVICE_ID, createdNsId);
 
         executeWorkplan(csarId, apiOperation, templateInstance);
-        
+
         HashMap<String, Object> responseMap = new HashMap<String, Object>();
         responseMap.put(Constants.LCM_NBI_SERVICE_ID, createdNsId);
         return responseMap;

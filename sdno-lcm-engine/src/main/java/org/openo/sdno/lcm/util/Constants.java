@@ -35,6 +35,8 @@ public class Constants {
     public static final String LCM_NBI_TEMPLATE_ID = "nsdId";
 
     public static final String LCM_NBI_SERVICE_NAME = "nsName";
+    
+    public static final String LCM_NBI_SERVICE_DESCRIPTION = "description";
 
     public static final String LCM_NBI_SERVICE_ID = "nsInstanceId";
 
