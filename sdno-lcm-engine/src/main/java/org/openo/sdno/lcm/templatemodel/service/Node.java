@@ -221,17 +221,19 @@ public class Node {
      */
     public String getPropertyValue(String propertyName) {
 
-        JsonNode jsonNode = getPropertyJsonNode(propertyName);
+        JsonNode propertyNode = getPropertyJsonNode(propertyName);
+        if(null != propertyNode) {
+            JsonNode jsonNode = propertyNode.get("value");
+            if(null != jsonNode && !jsonNode.isNull()) {
 
-        if(null != jsonNode && !jsonNode.isNull()) {
-
-            if(jsonNode.isLong()) {
-                return Long.toString(jsonNode.asLong());
+                if(jsonNode.isLong()) {
+                    return Long.toString(jsonNode.asLong());
+                }
+                if(jsonNode.isFloatingPointNumber()) {
+                    return Double.toString(jsonNode.asDouble());
+                }
+                return jsonNode.asText();
             }
-            if(jsonNode.isFloatingPointNumber()) {
-                return Double.toString(jsonNode.asDouble());
-            }
-            return jsonNode.asText();
         }
         return null;
     }
