@@ -74,7 +74,7 @@ public class CsarHandlerImplTest {
     @DataProvider
     public Object[][] SwaggerTestDataProvider() {
         return new Object[][] {{"swagger/overlay.jaml", "/openoapi/sdnooverlay/v1"},
-                        {"swagger/sfc.jaml", "/openoapi/sdnoservicechain/v1"}, {"swagger/site.jaml", "/v1"},
+                        {"swagger/sfc.jaml", "/openoapi/sdnoservicechain/v1"}, {"swagger/site.jaml", "/openoapi/sdnolocalsite/v1"},
                         {"swagger/vpc.jaml", "/openoapi/sdnovpc/v1"}};
     }
 

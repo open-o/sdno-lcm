@@ -19,6 +19,7 @@ package org.openo.sdno.lcm.templatemodel.service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.openo.sdno.lcm.exception.LcmInternalException;
@@ -127,24 +128,34 @@ public class NodeTest {
     @Test
     public void setPropertyTestSuccess() {
 
+        int expectedChecks = 1;
+        int performedChecks = 0;
         // case of adding a property that is not present
-        node = instance.getNode("site_uziswppa151na59rcxce4sr95");
-        String propertyName = "banana";
-        String value = "BANANA!!!";
-        String typeName = "string";
-        node.setProperty(propertyName, value, typeName);
-        JsonNode bananode = node.getProperties().get(propertyName);
-        Assert.assertNotNull(bananode, "The property banana was not found!");
-        Assert.assertEquals(bananode.findValue("type_name").asText(), typeName);
-        Assert.assertEquals(bananode.findValue("value").asText(), value);
+        List<Node> nodes = instance.getNodes();
+        for(Node n : nodes) {
 
-        // case of updating a property value
-        propertyName = "id";
-        node.setProperty(propertyName, value, typeName);
-        JsonNode idNode = node.getProperties().get(propertyName);
-        Assert.assertNotNull(idNode, "The property id was not found!");
-        Assert.assertEquals(idNode.findValue("type_name").asText(), typeName);
-        Assert.assertEquals(idNode.findValue("value").asText(), value);
+            if(n.getId().startsWith("site_")) {
+                performedChecks++;
+                node = n;
+                String propertyName = "banana";
+                String value = "BANANA!!!";
+                String typeName = "string";
+                node.setProperty(propertyName, value, typeName);
+                JsonNode bananode = node.getProperties().get(propertyName);
+                Assert.assertNotNull(bananode, "The property banana was not found!");
+                Assert.assertEquals(bananode.findValue("type_name").asText(), typeName);
+                Assert.assertEquals(bananode.findValue("value").asText(), value);
+
+                // case of updating a property value
+                propertyName = "id";
+                node.setProperty(propertyName, value, typeName);
+                JsonNode idNode = node.getProperties().get(propertyName);
+                Assert.assertNotNull(idNode, "The property id was not found!");
+                Assert.assertEquals(idNode.findValue("type_name").asText(), typeName);
+                Assert.assertEquals(idNode.findValue("value").asText(), value);
+            }
+        }
+        Assert.assertEquals(performedChecks, expectedChecks, "Did not check the expected number of nodes");
     }
 
     @DataProvider
