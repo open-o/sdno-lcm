@@ -879,9 +879,9 @@ node_types:
                     implementation:
                         primary: 'POST /openoapi/sdnolocalsite/v1/sites'
                         dependencies:
+                            - sdno.node.Connection.Site/deploy
                             - sdno.node.ConnectionEndPoint.ThinCpe/deploy
                             - sdno.node.ConnectionEndPoint.VCpe/deploy
-                            - sdno.node.Connection.Site/deploy
                 undeploy:
                     implementation: 'DELETE /openoapi/sdnolocalsite/v1/sites/{uuid}'
                 update:
