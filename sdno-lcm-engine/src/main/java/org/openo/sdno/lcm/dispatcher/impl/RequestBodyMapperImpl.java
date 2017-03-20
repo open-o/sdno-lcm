@@ -140,7 +140,7 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
             }
 
             //skip if properties has no such value (optional property)
-            if(null == valueNode) continue;
+            if(null == valueNode || valueNode.isNull()) continue;
 
             //variables for holding temporary results
             ArrayNode arrayNode = null;
