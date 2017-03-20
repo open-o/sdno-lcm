@@ -76,6 +76,9 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
         ObjectNode objectNode = nodeFactory.objectNode();  //the output
 
         //real workhorse
+        logger.info(
+                String.format("Start to map node properties to API data model: %s. Node properties: %s",
+                              modelName, nodeProperties.toString()));
         mapping(nodeProperties, mapperSpec, modelName, objectNode);
 
         //return as JsonNode
@@ -140,7 +143,11 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
             }
 
             //skip if properties has no such value (optional property)
-            if(null == valueNode || valueNode.isNull()) continue;
+            if(null == valueNode || valueNode.isNull() || valueNode.isMissingNode()) continue;
+
+            logger.info(
+                String.format("Start to map value node to one field: %s. Value Node: %s",
+                              apiFieldName, valueNode.toString()));
 
             //variables for holding temporary results
             ArrayNode arrayNode = null;
