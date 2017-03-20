@@ -384,8 +384,55 @@ node_types:
             It represents an “intent-like” request for connectivity between two or more ServiceEndPoints.
             As such, ConnectivityService is a container for connectivity request details and is distinct 
             from the Connection that realizes the request
-        properties: *BaseServiceInfo
-        properties: 
+        # properties: *BaseServiceInfo
+        properties:
+            adminStatus:
+                type: AdministrationStateType
+                description: Used to administratively activate or deactivate already deployed service object
+                default: 'none'
+            operStatus:
+                type: OperationalStateType
+                description: Used to indicate if the service entity is operational.
+                default: 'none'
+            syncStatus:
+                type: SyncStateType
+                description: Used to indicate of the service entity is in sync or out of sync with the network
+                default: 'none'
+            actionState:
+                type: ActionStateType
+                description: Stores the result of the last action on the service object.
+                default: 'none'
+            statusReason:
+                type: string
+                description: In case of ERROR actionState, it will have the reason for the error. 
+                             Otherwise its empty. It is required to make create process to be asynchronous.
+                default: 'none'
+            createTime:
+                type: string
+                description: create time
+                default: 'none'
+            updateTime:
+                type: string
+                description: update time
+                default: 'none' 
+            ownerID:
+                type: string
+                description: ID of the owner of the object, can contain controllerID
+                default: 'sdno' 
+            tenantID:
+                type: string
+                description: ID of the tenant
+                default: 'none'
+            location:
+                type: string
+                description: Location if on single location
+                default: 'none'
+            additionalInfo:
+                type: list
+                #max size = 1000
+                entry_schema:                     
+                    type: AdditionalInfoRow
+                required: false
             templateId:
                 type: string
                 default: 'none'
