@@ -156,13 +156,28 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
             JsonNode value = null;
             switch(rule.getKeyType()) {
                 case SCALAR:  //mapping scalar
-                    value = valueNode.get("value");
+                    /***************************************************************************************
+                     * If this scalar is a node property, it exists in node properties as one object
+                     * and the value is in the "value" field of the corresponding object.
+                     * If this scalar is one field of internal/second-tier data type, it exists as a scalar.
+                     * The same process is necessary for other types too. 
+                     ***************************************************************************************/
+                    if(valueNode.isObject()) {
+                        value = valueNode.get("value");
+                    } else {
+                        value = valueNode;
+                    }
                     objectNode.put(apiFieldName, value);
                     break;
                 case OBJECT: //mapping object
                     //create new object node for sub-model and add to the node for output.
                     newObjectNode = nodeFactory.objectNode();
                     objectNode.put(apiFieldName, newObjectNode);
+
+                    JsonNode tmpNode = valueNode.get("value");
+                    if((null!=tmpNode) && (tmpNode.isObject())) {
+                        valueNode = tmpNode;
+                    }
 
                     mapping(valueNode, mapperSpec, rule.getKeyObjectModelName(), newObjectNode);
                     break;
@@ -173,6 +188,10 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
 
                     //convert valueNode to array node
                     try {
+                        if(valueNode.isObject()) {
+                            valueNode = valueNode.get("value");
+                        }
+
                         valueArray = (ArrayNode) new ObjectMapper().readTree(valueNode.toString());
                     } catch(IOException e) {
                         logger.severe(
@@ -184,7 +203,13 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
                     //mapping array items one by one
                     for(int i=0; i<valueArray.size(); i++) {
                         JsonNode itemNode = valueArray.get(i);
-                        value = itemNode.get("value");
+
+                        if(itemNode.isObject()) {
+                            value = itemNode.get("value");
+                        } else {
+                            value = itemNode;
+                        }
+
                         arrayNode.add(value);
                     }
 
@@ -196,6 +221,10 @@ public class RequestBodyMapperImpl implements RequestBodyMapper {
 
                     //convert valueNode to array node
                     try {
+                        if(valueNode.isObject()) {
+                            valueNode = valueNode.get("value");
+                        }
+
                         valueArray = (ArrayNode) new ObjectMapper().readTree(valueNode.toString());
                     } catch(IOException e) {
                         logger.severe(

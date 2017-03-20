@@ -40,9 +40,7 @@ paths:
         description: vpn object to be created.
         required: true
         schema:
-          type: object
-          items:
-            $ref: '#/definitions/NbiVpn'
+          $ref: '#/definitions/NbiVpn'
       responses:
         200:
           description: create vpn success.
@@ -229,9 +227,7 @@ paths:
         description: vpn connection object to be created.
         required: true
         schema:
-          type: object
-          items:
-            $ref: '#/definitions/NbiVpnConnection'
+          $ref: '#/definitions/NbiVpnConnection'
       responses:
         200:
           description: create vpn connection success.
@@ -281,9 +277,7 @@ paths:
         description: vpn connection object to be modified.
         required: true
         schema:
-          type: object
-          items:
-            $ref: '#/definitions/NbiVpnConnection'
+          $ref: '#/definitions/NbiVpnConnection'
       responses:
         200:
           description: modify vpn connection success.
@@ -435,9 +429,7 @@ paths:
         description: vpn gateway object to be created.
         required: true
         schema:
-          type: object
-          items:
-            $ref: '#/definitions/NbiVpnGateway'
+          $ref: '#/definitions/NbiVpnGateway'
       responses:
         200:
           description: create vpn gateway success.
