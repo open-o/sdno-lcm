@@ -52,6 +52,9 @@ dsl_definitions:
                  type: string
             description: port name list
             required: false
+        description:
+            type: string
+            default: 'Vlan Service' 
 
     SiteSubnet: &SiteSubnet
         siteId:
@@ -116,6 +119,9 @@ dsl_definitions:
             description: >-
                 BDIF interface name, when vni is not null and need to read from AC, pass this parameter to lower layer
             required: false
+        description:
+            type: string
+            default: 'SiteSubnet Service' 
 
     Gateway: &Gateway                
         vpnId:
@@ -154,6 +160,9 @@ dsl_definitions:
         regionId:
             type: string
             required: false
+        description:
+            type: string
+            default: 'Vpn Gateway' 
 
 # *****************************************************************************
 # data types
@@ -477,6 +486,9 @@ node_types:
             attributes:
                 type: SubnetAttributes
                 required: false
+            description:
+                type: string
+                default: "VpcSubnet Service"
         requirements:
             - realizes:
                 node: sdno.node.Connection.Vpc
@@ -522,6 +534,9 @@ node_types:
             attributes:
                 type: UnderlayResourcesType 
                 required: false
+            description:
+                type: string
+                default: "Vpc Service"
         artifacts:
             swagger:
                 file: swagger/vpc.jaml
@@ -638,6 +653,9 @@ node_types:
                 type: string
                 description: local cpe type
                 required: false
+            description:
+                type: string
+                default: 'ThinCpe'
         requirements:
             - realizes:
                 node: sdno.node.Connection.Site
@@ -742,6 +760,9 @@ node_types:
                 type: string
                 description: template
                 required: false
+            description:
+                type: string
+                default: 'vCpe'
         requirements:
             - realizes:
                 node: sdno.node.Connection.Site
@@ -849,6 +870,9 @@ node_types:
                 entry_schema:
                     type: GatewayType
                 required: false
+            description:
+                type: string
+                default: 'Site Service'  
 # MUST FIND ANOTHER WAY TO RESTRICT THE SPECIFIC NETWORK HIERARCHY FOR THE SERVICE AT THE SERVICE DEFINITION LAYER
 # CURRENTLY ENFORCED IN THE TEMPLATE
 #
@@ -998,6 +1022,9 @@ node_types:
             vni:
                 type: string
                 required: false
+            description:
+                type: string
+                default: 'vpn connection'
 # MUST FIND ANOTHER WAY TO RESTRICT THE SPECIFIC NETWORK HIERARCHY FOR THE SERVICE AT THE SERVICE DEFINITION LAYER
 # CURRENTLY ENFORCED IN THE TEMPLATE
 #
@@ -1079,6 +1106,9 @@ node_types:
                       type: ServiceClassiferType
                 description: The list of sfc
                 required: false
+            description:
+                type: string
+                default: 'Service Function Chain Service'
         artifacts:
             swagger:
                 file: swagger/sfc.jaml

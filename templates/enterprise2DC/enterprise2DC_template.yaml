@@ -174,6 +174,7 @@ topology_template:
                 properties:
                     vni:        {get_input: siteVni}
                     cidrBlock:  {get_input: siteCidr}
+                    name:       {concat: ['siteSubnet_' , {get_input: vpcName}]}
                 requirements:
                     - realizes: vlan
 
@@ -181,6 +182,7 @@ topology_template:
                 type: sdno.node.Connection.Vlan
                 properties:
                     vlanId:     {get_input: subnetVlan}
+                    name:       {concat: ['vlan_' , {get_input: vpcName}]}
                 requirements:
                     - realizes: site
 
@@ -221,12 +223,18 @@ topology_template:
 
             siteGateway:
                 type: sdno.node.ConnectionEndPoint.SiteGateway
+                properties:
+                    name:       {concat: ['siteGateway_' , {get_input: vpcName}]}
 
             vpcGateway:
                 type: sdno.node.ConnectionEndPoint.VpcGateway
+                properties:
+                    name:       {concat: ['vpcGateway_' , {get_input: vpcName}]}
 
             vpnConnection:
                 type: sdno.node.Connection.VpnConnection
+                properties:
+                    name:       {concat: ['vpnConnection_' , {get_input: vpcName}]}
                 requirements:
                     - endPoint: siteGateway
                     - endPoint: vpcGateway
@@ -240,6 +248,7 @@ topology_template:
                 type: sdno.node.Connection.Sfc
                 properties:
                     servicePathHops: 
-                        - {hopNumber: 1, sfiId: {get_attribute: [dcFw, id] }, sfgId: null}
-                        - {hopNumber: 2, sfiId: {get_attribute: [dcLb, id] }, sfgId: null}
-                    scfNeId: {get_attribute: [dcGw, id]}
+                        - {hopNumber: 1, sfiId: {get_property: [dcFw, id] }, sfgId: null}
+                        - {hopNumber: 2, sfiId: {get_property: [dcLb, id] }, sfgId: null}
+                    scfNeId: {get_property: [dcGw, id]}
+                    name:    {concat: ['sfc_' , {get_input: vpcName}]}
