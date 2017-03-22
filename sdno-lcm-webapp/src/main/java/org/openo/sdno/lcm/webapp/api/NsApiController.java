@@ -73,7 +73,7 @@ public class NsApiController implements NsApi {
         
         LongOperationResponse responseEntity = new LongOperationResponse();
         // return the service ID for the moment as it's not really an asynchronous operation
-        responseEntity.setJobId((String)responseMap.get("nsInstanceId"));
+        responseEntity.setJobId((String)responseMap.get("jobId"));
         ResponseEntity<LongOperationResponse> response = new ResponseEntity<LongOperationResponse>(responseEntity, HttpStatus.OK);
         return response;
     }
