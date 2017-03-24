@@ -250,6 +250,10 @@ data_types:
     ServicePathHopType:
         derived_from: tosca.datatypes.Root
         properties:
+            name:
+                type: string
+                description: "SFC name"
+                default: 'none'
             hopNumber:
                 type: integer
                 description: Hop Number of the SFC. Starting from 1.

@@ -24,7 +24,7 @@ imports:
 
 metadata:
     id: enterprise2Dc
-    template_name: enterprise2Dc
+    template_name: enterprise2DC
     version: 0.1
     vendor: sdno
     template_author: Huawei
@@ -248,7 +248,7 @@ topology_template:
                 type: sdno.node.Connection.Sfc
                 properties:
                     servicePathHops: 
-                        - {hopNumber: 1, sfiId: {get_property: [dcFw, id] }, sfgId: null}
-                        - {hopNumber: 2, sfiId: {get_property: [dcLb, id] }, sfgId: null}
+                        - {hopNumber: 1, sfiId: {get_property: [dcFw, id] }, sfgId: "", name: 'dcFw'}
+                        - {hopNumber: 2, sfiId: {get_property: [dcLb, id] }, sfgId: "", name: 'dcLb'}
                     scfNeId: {get_property: [dcGw, id]}
                     name:    {concat: ['sfc_' , {get_input: vpcName}]}
