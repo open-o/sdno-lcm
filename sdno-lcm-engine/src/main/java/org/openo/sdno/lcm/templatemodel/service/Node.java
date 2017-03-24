@@ -219,7 +219,7 @@ public class Node {
      * @param propertyName the name of the property to get
      * @return the value of the property as a String
      */
-    public String getPropertyValue(String propertyName) {
+    public String getPropertyValue(final String propertyName) {
 
         JsonNode propertyNode = getPropertyJsonNode(propertyName);
         if(null != propertyNode) {
@@ -244,7 +244,7 @@ public class Node {
      * @param propertyName the name of the property to get
      * @return the whole JsonNode for the property, not just the value
      */
-    public JsonNode getPropertyJsonNode(String propertyName) {
+    public JsonNode getPropertyJsonNode(final String propertyName) {
 
         // TODO check error handling logic
         JsonNode propertiesNode = this.getProperties();
@@ -252,7 +252,30 @@ public class Node {
         return propertyNode;
     }
 
-    public void setProperty(String propertyName, String value, String typeName) {
+    /**
+     * Returns true if the named property exists in the Node.
+     * 
+     * @param propertyName
+     * @return
+     */
+    public boolean hasProperty(final String propertyName) {
+
+        JsonNode propertyJsonNode = getPropertyJsonNode(propertyName);
+        if(null == propertyJsonNode) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Add a property to the Node or overwrite if already present.
+     * 
+     * @param propertyName the name of the property
+     * @param value the value of the property
+     * @param typeName the typeName of the property
+     */
+    public void setProperty(final String propertyName, final String value, final String typeName) {
 
         try {
             if(propertyName.isEmpty() || value.isEmpty() || typeName.isEmpty()) {
@@ -271,6 +294,49 @@ public class Node {
             throw new LcmInternalException(String.format("Failed to set property: %s, %s, %s due to %s", propertyName,
                     typeName, value, e.getMessage()), e);
         }
+    }
+
+    /**
+     * Replaces the value of the named property if it exists, throws LcmInternalException if the
+     * named property doesn't exist.
+     * 
+     * @param propertyName the property name
+     * @param newValue the value to assign to the named property
+     */
+    public void replacePropertyValue(final String propertyName, final String newValue) {
+
+        if(!this.hasProperty(propertyName)) {
+
+            throw new LcmInternalException(String
+                    .format("can't replace the value of property %s as it doesn't exist in the Node", propertyName));
+        }
+        String typeName = this.getPropertyTypeName(propertyName);
+        this.setProperty(propertyName, newValue, typeName);
+        log.info(String.format("Replaced the value of property %s with the new value %s", propertyName, newValue));
+    }
+
+    /**
+     * Gets the type_name of the named property, or throws LcmInternalException if not found
+     * 
+     * @param propertyName the property name
+     * @return the type_name
+     */
+    private String getPropertyTypeName(final String propertyName) {
+
+        String theTypeName = null;
+        JsonNode propertyNode = getPropertyJsonNode(propertyName);
+        if(null != propertyNode) {
+            JsonNode jsonNode = propertyNode.get("type_name");
+            if(null != jsonNode && !jsonNode.isNull()) {
+
+                theTypeName = jsonNode.asText();
+            }
+        }
+        if(null == theTypeName) {
+
+            throw new LcmInternalException(String.format("failed to get the type_name for property %s", propertyName));
+        }
+        return theTypeName;
     }
 
     private final static long serialVersionUID = 2435488133886152314L;

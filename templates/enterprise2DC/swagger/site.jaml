@@ -893,9 +893,6 @@ definitions:
           adminStatus:
             type: string
             description:  admin state (scope = none, active, inactive, partially_inactive)
-          operStatus:
-            type: string
-            description: (scope = none, up, down, partially_down)
           actionState:
             type: string
             description: (scope = none, normal, creating, deleting, updating, create_exception, update_exception, delete_exception, deploying, deploy_exception, undeploying, undeploy_exception, checking, check_exception)
@@ -1244,9 +1241,6 @@ definitions:
           adminState:
             type: string
             description: (scope=active,inactive)
-          operState:
-            type: string
-            description: (scope=up,down,unknown)
           nativeId:
             type: string
             description: native id

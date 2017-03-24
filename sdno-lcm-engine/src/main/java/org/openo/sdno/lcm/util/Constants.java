@@ -35,7 +35,7 @@ public class Constants {
     public static final String LCM_NBI_TEMPLATE_ID = "nsdId";
 
     public static final String LCM_NBI_SERVICE_NAME = "nsName";
-    
+
     public static final String LCM_NBI_SERVICE_DESCRIPTION = "description";
 
     public static final String LCM_NBI_SERVICE_ID = "nsInstanceId";
@@ -51,15 +51,25 @@ public class Constants {
     public static final String LCM_NBI_JOB_ID = "jobId";
 
     // state machine constants
-    public static final String LCM_STATE_NONE = "none";
+    public static final String LCM_LIFECYCLESTATE_NONE = "none";
 
-    public static final String LCM_STATE_DEPLOYED = "deployed";
+    public static final String LCM_LIFECYCLESTATE_DEPLOYED = "deployed";
 
-    public static final String LCM_STATE_CREATED = "created";
+    public static final String LCM_LIFECYCLESTATE_CREATED = "created";
+
+    // per-workflow assigned property values
+    public static final String LCM_ADMINISTRATIONSTATE_ACTIVE = "active";
+
+    public static final String LCM_ACTIONSTATE_DEPLOYING = "deploying";
+
+    public static final String LCM_ACTIONSTATE = "actionState";
+
+    public static final String LCM_ADMINSTATUS = "adminStatus";
+
+    public static final String LCM_CREATETIME = "createTime";
 
     // temporary
     public static final String SDNO_BRS_ADDR = "http://192.168.99.100:80";
-
 
     /**
      * Server Failed Code.
@@ -88,7 +98,7 @@ public class Constants {
 
     /**
      * EXCEED REQUEST CODE.
-    */
+     */
     public static final int EXCEED_REQUEST = 413;
 
     public static final String DB_FILLTER_NOT_SUPPORT = "overlayvpn.db.fillter.error";
@@ -97,12 +107,10 @@ public class Constants {
         return httpCode / 100 == 2;
     }
 
-
     public static final String DB_RETURN_ERROR = "overlayvpn.db.return.error";
-    
+
     public static final String THIN_CPE = "thinCPE";
-    
+
     public static final String vCPE = "vCPE";
-    
 
 }

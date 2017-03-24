@@ -53,7 +53,7 @@ public class GwfCreate extends GenericWorkflowImpl {
 
         // create the Connectivity Service in DB
         ConnectivityService connectivityService = new ConnectivityService();
-        connectivityService.setLifecycleState(Constants.LCM_STATE_CREATED);
+        connectivityService.setLifecycleState(Constants.LCM_LIFECYCLESTATE_CREATED);
         connectivityService.setTemplateId(serviceTemplateId);
         connectivityService.setName(serviceName);
         // we don't set 'id' so it will be assigned a generated uuid value by the MSS  

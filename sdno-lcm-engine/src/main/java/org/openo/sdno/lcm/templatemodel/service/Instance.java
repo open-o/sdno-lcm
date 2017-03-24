@@ -128,6 +128,24 @@ public class Instance {
         throw new LcmInternalException(UNABLE_TO_FIND_NODE_ERR + nodeId);
     }
 
+    /**
+     * Replace a property value if such a property is present in any Node in the Instance
+     * 
+     * @param propertyName the name of the property to modify
+     * @param newValue the value to assign to the named property
+     */
+    public void replacePropertyValueInAllNodes(String propertyName, String newValue) {
+
+        for(Node node : this.nodes) {
+            if(node.hasProperty(propertyName)) {
+                node.replacePropertyValue(propertyName, newValue);
+            }
+        }
+    }
+
+    /**
+     * @return the state table JsonNode
+     */
     public JsonNode getStateTableDefinition() {
         Node connectivityServiceNode = this.getRootNode();
         return connectivityServiceNode.getPropertyJsonNode("state_machine");

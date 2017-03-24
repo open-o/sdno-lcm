@@ -84,6 +84,7 @@ public class NodeTest {
         node.setExamined();
     }
 
+    @Test
     public void isConnectionNodeTrueSuccess() {
 
         node.setTypeName("sdno.node.Connection.Site");
@@ -92,6 +93,7 @@ public class NodeTest {
         Assert.assertTrue(node.isConnectionNode());
     }
 
+    @Test
     public void isConnectionNodeFalseSuccess() {
 
         node.setTypeName("xxx.node.Connection.Site");
@@ -180,4 +182,46 @@ public class NodeTest {
         Assert.assertEquals(nodeForOperationTests.getOperationHttpMethod(operationName), expectedHttpMethod);
     }
 
+    @Test
+    public void replacePropertyValueTestSuccess() {
+
+        int expectedChecks = 1;
+        int performedChecks = 0;
+        // case of adding a property that is not present
+        List<Node> nodes = instance.getNodes();
+        for(Node n : nodes) {
+
+            if(n.getId().startsWith("site_")) {
+                performedChecks++;
+                node = n;
+                String propertyName = "operStatus";
+                Assert.assertEquals(n.getPropertyValue(propertyName), "none", "the precondition was not as expected");
+                String value = "UniverseInABall!";
+                node.replacePropertyValue(propertyName, value);
+                Assert.assertEquals(n.getPropertyValue(propertyName), value);
+
+            }
+        }
+        Assert.assertEquals(performedChecks, expectedChecks, "Did not check the expected number of nodes");
+    }
+    
+    @Test(expectedExceptions = LcmInternalException.class)
+    public void replacePropertyValueTestFail() {
+
+        int expectedChecks = 1;
+        int performedChecks = 0;
+        // case of adding a property that is not present
+        List<Node> nodes = instance.getNodes();
+        for(Node n : nodes) {
+
+            if(n.getId().startsWith("site_")) {
+                performedChecks++;
+                node = n;
+                String propertyName = "SUPERCRUSH!";
+                String value = "HYPERDRIVE!";
+                node.replacePropertyValue(propertyName, value);
+            }
+        }
+        Assert.assertEquals(performedChecks, expectedChecks, "Did not check the expected number of nodes");
+    }
 }

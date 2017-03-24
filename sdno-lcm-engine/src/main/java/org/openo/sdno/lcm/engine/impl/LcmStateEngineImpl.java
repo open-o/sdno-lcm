@@ -101,7 +101,7 @@ public class LcmStateEngineImpl implements LcmStateEngine {
                 && !((String)params.get(Constants.LCM_NBI_TEMPLATE_ID)).isEmpty())) {
 
             templateId = (String)params.get(Constants.LCM_NBI_TEMPLATE_ID);
-            currentState = Constants.LCM_STATE_NONE;
+            currentState = Constants.LCM_LIFECYCLESTATE_NONE;
 
         } else {
             log.severe(String.format("Neither %s nor %s foudn in params - cannot continue",
