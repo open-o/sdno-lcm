@@ -24,7 +24,7 @@ imports:
 
 metadata:
     id: vpnUnderlayL3
-    template_name: vpnUnderlayL3
+    template_name: underlayvpn
     version: 0.1
     vendor: sdno
     template_author: Huawei
