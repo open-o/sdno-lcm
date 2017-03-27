@@ -87,6 +87,16 @@ public class DispatcherImpl implements Dispatcher {
                     return result;
                 }
             }
+
+            /** 
+             * sleep/cool-down between two work items
+             * TODO: remove after demonstration is improved.
+             */
+            try {
+                Thread.sleep(5000);
+            } catch(InterruptedException e) {
+                log.severe(String.format("Sleep (between two work items) is interrupted unexpectedly!"));
+            }
         }
         return result;
     }
