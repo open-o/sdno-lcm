@@ -73,6 +73,12 @@ topology_template:
                 type: integer
                 description: vpc subnet vxlanID, should keep consistent with NFVO
                 default: 0
+            vpnType:
+                type: string
+                description: vpn connection type between vCPE and vpc.
+                constraints:
+                    - valid_values: ['IpSec','VxLAN','MPLS_VPN']
+                default: IpSec
             dcGwIp:
                 type: string
                 description: mgrIp of dcGW
@@ -202,6 +208,7 @@ topology_template:
                 type: sdno.node.Connection.Site
                 properties:
                     name:       {get_input: siteName}
+                    siteDescriptor: {get_input: vpnType}
                 requirements:
                     - endPoint: vCpeConnectionEndPoint
                     - endPoint: thinCpeConnectionEndPoint
@@ -217,6 +224,7 @@ topology_template:
                 properties:
                     name: {get_input: vpnName}
                     description: {get_input: vpnDescription}
+                    vpnDescriptor: {get_input: vpnType}
                 requirements:
                     - realizes: vpnConnection
 
