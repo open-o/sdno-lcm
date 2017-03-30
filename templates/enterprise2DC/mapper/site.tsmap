@@ -6,8 +6,6 @@
     "*tenantId": "tenantID",
     "location": "location",
     "actionState": "actionState",
-    "createtime": "createTime",
-    "updatetime": "updateTime",
 
     "deployCloudCpeByDefault": "deployCloudCpeByDefault",
     "popId": "popId",
@@ -36,10 +34,6 @@
     "*adminStatus": "adminStatus",
     "operStatus": "operStatus",
     "actionState": "actionState",
-    "createTime": "createTime",
-
-    "createtime": "createTime",
-    "updatetime": "updateTime",
 
     "siteId": "siteId",
     "vlanId": "vlanId",
@@ -56,8 +50,6 @@
     "*adminStatus": "adminStatus",
     "operStatus": "operStatus",
     "actionState": "actionState",
-    "createTime": "createTime",
-    "updateTime": "updateTime",
 
     "siteId": "siteId",
     "cidrBlock": "cidrBlock",
@@ -127,10 +119,6 @@
     "*adminStatus": "UNNECESSARY",
     "operStatus": "UNNECESSARY",
     "actionStatus": "UNNECESSARY",
-    "createTime": "UNNECESSARY",
-
-    "createtime": "UNNECESSARY",
-    "updatetime": "UNNECESSARY",
 
     "vpnId": "vpnId",
     "*siteId": "siteId",
@@ -179,7 +167,6 @@
     "*adminStatus": "UNNECESSARY",
     "operStatus": "UNNECESSARY",
     "actionState": "UNNECESSARY",
-    "createTime": "UNNECESSARY",
 
     "*siteId": "siteId",
     "subnetId": "subnetId",

@@ -8,8 +8,7 @@
     "actionState": "actionState",
     "activeStatus": "TBD",
     "runningStatus": "TBD",
-    "createtime": "createTime",
-    "updatetime": "updateTime",
+
     "vpnConnections[]#NbiVpnConnection#": "UNNECESSARY",
     "vpnGateways[]#NbiVpnGateway#": "UNNECESSARY",
     "siteList[]": "UNNECESSARY",
@@ -26,8 +25,6 @@
     "actionState": "actionState",
     "activeStatus": "TBD",
     "runningStatus": "TBD",
-    "createtime": "createTime",
-    "updatetime": "updateTime",
 
     "technology": "TBD",
     "netConnections[]#NbiNetConnection#": "UNNECESSARY",
@@ -50,8 +47,6 @@
     "actionState": "actionState",
     "activeStatus": "TBD",
     "runningStatus": "TBD",
-    "createtime": "createTime",
-    "updatetime": "updateTime",
 
     "vpnId": "vpnId",
     "siteId": "siteId",
@@ -75,8 +70,6 @@
     "actionState": "TBD",
     "activeStatus": "TBD",
     "runningStatus": "TBD",
-    "createtime": "TBD",
-    "updatetime": "TBD",
 
     "type": "TBD",
     "srcNeId": "TBD",

@@ -4,8 +4,6 @@
     "*name": "name",
     "description": "description",
     "statusReason": "statusReason",
-    "createdAt": "createTime",
-    "updatedAt": "updateTime",
 
     "*externalIp": "externalIp",
     "*osControllerId": "ownerID",
@@ -23,8 +21,6 @@
     "description": "description",
     "statusReason": "statusReason",
     "*adminStatus": "adminStatus",
-    "createdAt": "createTime",
-    "updatedAt": "updateTime",
     
     "*cidr": "cidr",
     "*vni": "vni",
