@@ -43,128 +43,141 @@ import io.swagger.models.Swagger;
 @Component
 public class DecomposerImpl implements Decomposer {
 
-    private static final String MAPPER = "mapper";
+	private static final String MAPPER = "mapper";
 
-    private static final String SWAGGER = "swagger";
+	private static final String SWAGGER = "swagger";
 
-    private final Logger log = Logger.getLogger("DecomposerImpl");
+	private final Logger log = Logger.getLogger("DecomposerImpl");
 
-    private CsarHandler csarHandler;
+	private CsarHandler csarHandler;
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.openo.sdno.lcm.decomposer.Decomposer#decompose(org.openo.sdno.lcm.templatemodel.service.
-     * Instance, java.lang.String, org.openo.sdno.lcm.templatemodel.csar.Csar)
-     */
-    @Override
-    public WorkPlan decompose(final Instance serviceTemplateInstance, final String operation, final String csarId) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.openo.sdno.lcm.decomposer.Decomposer#decompose(org.openo.sdno.lcm.
+	 * templatemodel.service. Instance, java.lang.String,
+	 * org.openo.sdno.lcm.templatemodel.csar.Csar)
+	 */
+	@Override
+	public WorkPlan decompose(final Instance serviceTemplateInstance, final String operation, final String csarId) {
 
-        // PSEUDO:
-        // TODO
-        // retrieve resources from BRS and fill required data as defined by the template
-        // TODO
+		// retrieve resources from BRS and fill required data
+		serviceTemplateInstance.fillResourceNodes();
+		// fill values for nodes that reference other nodes, usually this will
+		// be an id retrieved from resource inventory in the previous step
+		serviceTemplateInstance.fillNodeReferences();
 
-        WorkPlan workplan = new WorkPlan();
-        // determine node order (required input: instance, operation)
-        // determine root node (find the Node that has type_name prefix
-        // sdno.node.ConnectivityService)
-        Node rootNode = serviceTemplateInstance.getRootNode();
-        // starting from the root node, proceed in a depth-first traversal of the Node tree:
-        Stack<Node> nodeStack = new Stack<Node>();
-        nodeStack.push(rootNode);
-        // while stack not empty:
-        while(!nodeStack.isEmpty()) {
-            // pop the top Node from the stack
-            Node node = nodeStack.pop();
-            String nodeType = node.getTypeName();
-            // get the dependencies for the Node for the operation (assume operation is the
-            // same for every node)
-            List<Dependency> nodeDependencies = node.getDependencies(operation);
-            if(nodeDependencies.isEmpty()) {
-                // if there are no dependencies, add the Node to the WorkItem list as it is a leaf
-                // Node
-                node.setExamined();
-                this.addWorkItem(workplan, node, csarId, operation);
-            } else if(node.isExamined()) {
-                // or if there are dependencies but we have added them to the Node stack already add
-                // the Node to the WorkItem list
-                this.addWorkItem(workplan, node, csarId, operation);
-            } else {
-                // else mark the Node as examined and add its related nodes (maybe including
-                // itself) to the stack
-                node.setExamined();
-                // for each dependency, examined in reverse order we want to pop them:
-                for(int d = nodeDependencies.size() - 1; d >= 0; d--) {
-                    Dependency nodeDependency = nodeDependencies.get(d);
-                    // get all the related Nodes that are identified in the relationships of
-                    // this Node and are the same type as the dependency
-                    List<Node> relatedNodesOfType =
-                            node.getRelatedNodesOfType(nodeDependency.getType(), serviceTemplateInstance);
-                    // need to add the Node as its own child as it may be listed in the
-                    // dependencies but will not be in the relationships
-                    if(nodeDependency.getType().equals(nodeType)) {
-                        relatedNodesOfType.add(node);
-                    }
-                    // for each related Node, add to stack in reverse order we want to pop them
-                    for(int n = relatedNodesOfType.size() - 1; n >= 0; n--) {
-                        Node relatedNode = relatedNodesOfType.get(n);
-                        nodeStack.push(relatedNode);
-                    }
-                }
-            }
-        }
+		WorkPlan workplan = new WorkPlan();
+		// determine node order (required input: instance, operation)
+		// determine root node (find the Node that has type_name prefix
+		// sdno.node.ConnectivityService)
+		Node rootNode = serviceTemplateInstance.getRootNode();
+		// starting from the root node, proceed in a depth-first traversal of
+		// the Node tree:
+		Stack<Node> nodeStack = new Stack<Node>();
+		nodeStack.push(rootNode);
+		// while stack not empty:
+		while (!nodeStack.isEmpty()) {
+			// pop the top Node from the stack
+			Node node = nodeStack.pop();
+			String nodeType = node.getTypeName();
+			// get the dependencies for the Node for the operation (assume
+			// operation is the
+			// same for every node)
+			List<Dependency> nodeDependencies = node.getDependencies(operation);
+			if (nodeDependencies.isEmpty()) {
+				// if there are no dependencies, add the Node to the WorkItem
+				// list as it is a leaf
+				// Node
+				node.setExamined();
+				this.addWorkItem(workplan, node, csarId, operation);
+			} else if (node.isExamined()) {
+				// or if there are dependencies but we have added them to the
+				// Node stack already add
+				// the Node to the WorkItem list
+				this.addWorkItem(workplan, node, csarId, operation);
+			} else {
+				// else mark the Node as examined and add its related nodes
+				// (maybe including
+				// itself) to the stack
+				node.setExamined();
+				// for each dependency, examined in reverse order we want to pop
+				// them:
+				for (int d = nodeDependencies.size() - 1; d >= 0; d--) {
+					Dependency nodeDependency = nodeDependencies.get(d);
+					// get all the related Nodes that are identified in the
+					// relationships of
+					// this Node and are the same type as the dependency
+					List<Node> relatedNodesOfType = node.getRelatedNodesOfType(nodeDependency.getType(),
+							serviceTemplateInstance);
+					// need to add the Node as its own child as it may be listed
+					// in the
+					// dependencies but will not be in the relationships
+					if (nodeDependency.getType().equals(nodeType)) {
+						relatedNodesOfType.add(node);
+					}
+					// for each related Node, add to stack in reverse order we
+					// want to pop them
+					for (int n = relatedNodesOfType.size() - 1; n >= 0; n--) {
+						Node relatedNode = relatedNodesOfType.get(n);
+						nodeStack.push(relatedNode);
+					}
+				}
+			}
+		}
 
-        return workplan;
-    }
+		return workplan;
+	}
 
-    private void decorateNode(final Node node) {
+	private void decorateNode(final Node node) {
 
-        // generate UUIDs for Nodes that will be created by atomic services
-        if(node.isConnectionNode()) {
-            String uuid = UUID.randomUUID().toString();
-            node.setProperty("id", uuid, "string");
-            log.info(String.format("Generated random ID property %s for Node %s", uuid, node.getId()));
-        }
-    }
+		// generate UUIDs for Nodes that will be created by atomic services
+		if (node.isConnectionNode()) {
+			String uuid = UUID.randomUUID().toString();
+			node.setProperty("id", uuid, "string");
+			log.info(String.format("Generated random ID property %s for Node %s", uuid, node.getId()));
+		}
+	}
 
-    private void addWorkItem(WorkPlan workplan, final Node node, final String csarId, final String operation) {
+	private void addWorkItem(WorkPlan workplan, final Node node, final String csarId, final String operation) {
 
-        node.clearExamined();
+		node.clearExamined();
 
-        if(node.isRootNode()) {
+		if (node.isRootNode()) {
 
-            log.warning(String.format("No workitem added to workplan for the root node:%s\n csarId:%s\n operation:%s\n ",
-                    node.getId(), csarId, operation));
-            
-        } else if(node.hasOperationImplementation(operation)) {
-            
-            // add required extras to the node itself eg ID property
-            this.decorateNode(node);
-            // clean examined flag from all Nodes that are added to WorkPlan
+			log.warning(
+					String.format("No workitem added to workplan for the root node:%s\n csarId:%s\n operation:%s\n ",
+							node.getId(), csarId, operation));
 
-            Artifact swaggerArtifact = node.getArtifact(SWAGGER);
-            String swaggerPath = swaggerArtifact.getSourcePath();
-            Swagger swaggerSpec = csarHandler.getSwaggerSpec(csarId, swaggerPath);
+		} else if (node.hasOperationImplementation(operation)) {
 
-            Artifact mapperArtifact = node.getArtifact(MAPPER);
-            String mapperPath = mapperArtifact.getSourcePath();
-            JsonNode mapperSpec = csarHandler.getMapperSpec(csarId, mapperPath);
+			// add required extras to the node itself eg ID property
+			this.decorateNode(node);
+			// clean examined flag from all Nodes that are added to WorkPlan
 
-            String apiUrl = node.getOperationPath(operation);
-            HttpMethod httpMethod = node.getOperationHttpMethod(operation);
-            workplan.insert(new WorkItem(node, swaggerSpec, mapperSpec, apiUrl, httpMethod));
-            log.info("Added workitem: " + node.getTypeName() + " " + node.getId());
-            
-        } else {
+			Artifact swaggerArtifact = node.getArtifact(SWAGGER);
+			String swaggerPath = swaggerArtifact.getSourcePath();
+			Swagger swaggerSpec = csarHandler.getSwaggerSpec(csarId, swaggerPath);
 
-            log.warning(String.format("No workitem added to workplan for node:%s\n csarId:%s\n operation:%s\n ",
-                    node.getId(), csarId, operation));
-        }
-    }
+			Artifact mapperArtifact = node.getArtifact(MAPPER);
+			String mapperPath = mapperArtifact.getSourcePath();
+			JsonNode mapperSpec = csarHandler.getMapperSpec(csarId, mapperPath);
 
-    @Autowired
-    public void setCsarHandler(CsarHandler csarHandler) {
-        this.csarHandler = csarHandler;
-    }
+			String apiUrl = node.getOperationPath(operation);
+			HttpMethod httpMethod = node.getOperationHttpMethod(operation);
+			workplan.insert(new WorkItem(node, swaggerSpec, mapperSpec, apiUrl, httpMethod));
+			log.info("Added workitem: " + node.getTypeName() + " " + node.getId());
+
+		} else {
+
+			log.warning(String.format("No workitem added to workplan for node:%s\n csarId:%s\n operation:%s\n ",
+					node.getId(), csarId, operation));
+		}
+	}
+
+	@Autowired
+	public void setCsarHandler(CsarHandler csarHandler) {
+		this.csarHandler = csarHandler;
+	}
 }

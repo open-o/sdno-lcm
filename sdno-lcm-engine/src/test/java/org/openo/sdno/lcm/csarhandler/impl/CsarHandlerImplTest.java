@@ -52,7 +52,7 @@ public class CsarHandlerImplTest {
     public void beforeMethod() throws IOException {
 
         mockFileHandler = mock(FileHandler.class);
-        File csarFile = FileUtils.getFile("src", "test", "resources", "enterprise2Dc.csar");
+        File csarFile = FileUtils.getFile("src", "test", "resources", "enterprise2DC.csar");
         expect(mockFileHandler.getFile(anyString(), anyString(), anyString())).andReturn(csarFile).once();
         replay(mockFileHandler);
 

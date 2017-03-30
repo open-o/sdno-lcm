@@ -18,6 +18,7 @@ package org.openo.sdno.lcm.templatemodel.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.exception.LcmInternalException;
@@ -30,131 +31,202 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder({"description", "metadata", "nodes", "inputs"})
+@JsonPropertyOrder({ "description", "metadata", "nodes", "inputs" })
 public class Instance {
 
-    private static final String UNABLE_TO_DETERMINE_ROOT_ERR = "Unable to determine root Node";
+	private static final String UNABLE_TO_DETERMINE_ROOT_ERR = "Unable to determine root Node";
 
-    private static final String UNABLE_TO_FIND_NODE_ERR = "Unable to find Node with ID ";
+	private static final String UNABLE_TO_FIND_NODE_ERR = "Unable to find Node with ID ";
 
-    private final Logger log = Logger.getLogger("Instance");
+	private static final String SDNO_NODE_NODE = "sdno.node.Node";
 
-    private JsonNode inputsJson;
+	private final Logger log = Logger.getLogger("Instance");
 
-    @JsonProperty("description")
-    private String description;
+	private JsonNode inputsJson;
 
-    @JsonProperty("metadata")
-    private Metadata metadata;
+	@JsonProperty("description")
+	private String description;
 
-    @JsonProperty("nodes")
-    private List<Node> nodes = new ArrayList<Node>();
+	@JsonProperty("metadata")
+	private Metadata metadata;
 
-    private final static long serialVersionUID = 6264243172150130363L;
+	@JsonProperty("nodes")
+	private List<Node> nodes = new ArrayList<Node>();
 
-    @JsonProperty("description")
-    public String getDescription() {
-        return description;
-    }
+	private final static long serialVersionUID = 6264243172150130363L;
 
-    @JsonProperty("description")
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	@JsonProperty("description")
+	public String getDescription() {
+		return description;
+	}
 
-    @JsonProperty("metadata")
-    public Metadata getMetadata() {
-        return metadata;
-    }
+	@JsonProperty("description")
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    @JsonProperty("metadata")
-    public void setMetadata(Metadata metadata) {
-        this.metadata = metadata;
-    }
+	@JsonProperty("metadata")
+	public Metadata getMetadata() {
+		return metadata;
+	}
 
-    @JsonProperty("nodes")
-    public List<Node> getNodes() {
-        return nodes;
-    }
+	@JsonProperty("metadata")
+	public void setMetadata(Metadata metadata) {
+		this.metadata = metadata;
+	}
 
-    @JsonProperty("nodes")
-    public void setNodes(List<Node> nodes) {
-        this.nodes = nodes;
-    }
+	@JsonProperty("nodes")
+	public List<Node> getNodes() {
+		return nodes;
+	}
 
-    public JsonNode getInputs() {
-        return inputsJson;
-    }
+	@JsonProperty("nodes")
+	public void setNodes(List<Node> nodes) {
+		this.nodes = nodes;
+	}
 
-    public void setInputs(JsonNode inputs) {
-        this.inputsJson = inputs;
-    }
+	public JsonNode getInputs() {
+		return inputsJson;
+	}
 
-    /**
-     * Get the root Node of the hierarchy in this instance, identified by the type prefix
-     * sdno.node.ConnectivityService.
-     * 
-     * @throws LcmInternalException if the root cannot be determined
-     * @return the root Node
-     */
-    public Node getRootNode() {
+	public void setInputs(JsonNode inputs) {
+		this.inputsJson = inputs;
+	}
 
-        for(Node n : this.getNodes()) {
+	/**
+	 * Get the root Node of the hierarchy in this instance, identified by the
+	 * type prefix sdno.node.ConnectivityService.
+	 * 
+	 * @throws LcmInternalException
+	 *             if the root cannot be determined
+	 * @return the root Node
+	 */
+	public Node getRootNode() {
 
-            if(n.isRootNode()) {
-                return n;
-            }
-        }
-        log.severe(UNABLE_TO_DETERMINE_ROOT_ERR);
-        throw new LcmInternalException(UNABLE_TO_DETERMINE_ROOT_ERR);
-    }
+		for (Node n : this.getNodes()) {
 
-    /**
-     * Get the node with the ID provided.
-     * 
-     * @param nodeId the ID
-     * @throws LcmInternalException if no matching Node is found
-     * @return the Node
-     */
-    public Node getNode(String nodeId) {
+			if (n.isRootNode()) {
+				return n;
+			}
+		}
+		log.severe(UNABLE_TO_DETERMINE_ROOT_ERR);
+		throw new LcmInternalException(UNABLE_TO_DETERMINE_ROOT_ERR);
+	}
 
-        for(Node n : this.getNodes()) {
+	/**
+	 * Get the node with the ID provided.
+	 * 
+	 * @param nodeId
+	 *            the ID
+	 * @throws LcmInternalException
+	 *             if no matching Node is found
+	 * @return the Node
+	 */
+	public Node getNode(String nodeId) {
 
-            if(n.getId().equals(nodeId)) {
-                return n;
-            }
-        }
-        log.severe(UNABLE_TO_FIND_NODE_ERR + nodeId);
-        throw new LcmInternalException(UNABLE_TO_FIND_NODE_ERR + nodeId);
-    }
+		for (Node n : this.getNodes()) {
 
-    /**
-     * Replace a property value if such a property is present in any Node in the Instance
-     * 
-     * @param propertyName the name of the property to modify
-     * @param newValue the value to assign to the named property
-     */
-    public void replacePropertyValueInAllNodes(String propertyName, String newValue) {
+			if (n.getId().equals(nodeId)) {
+				return n;
+			}
+		}
+		log.severe(UNABLE_TO_FIND_NODE_ERR + nodeId);
+		throw new LcmInternalException(UNABLE_TO_FIND_NODE_ERR + nodeId);
+	}
 
-        for(Node node : this.nodes) {
-            if(node.hasProperty(propertyName)) {
-                node.replacePropertyValue(propertyName, newValue);
-            }
-        }
-    }
+	/**
+	 * Replace a property value if such a property is present in any Node in the
+	 * Instance
+	 * 
+	 * @param propertyName
+	 *            the name of the property to modify
+	 * @param newValue
+	 *            the value to assign to the named property
+	 */
+	public void replacePropertyValueInAllNodes(String propertyName, String newValue) {
 
-    /**
-     * @return the state table JsonNode
-     */
-    public JsonNode getStateTableDefinition() {
-        Node connectivityServiceNode = this.getRootNode();
-        return connectivityServiceNode.getPropertyJsonNode("state_machine");
-    }
+		for (Node node : this.nodes) {
+			if (node.hasProperty(propertyName)) {
+				node.replacePropertyValue(propertyName, newValue);
+			}
+		}
+	}
 
-    @Override
-    public String toString() {
-        return String.format("Instance [log=%s, inputsJson=%s, description=%s, metadata=%s, nodes=%s]", log, inputsJson,
-                description, metadata, nodes.toString());
-    }
+	/**
+	 * @return the state table JsonNode
+	 */
+	public JsonNode getStateTableDefinition() {
+		Node connectivityServiceNode = this.getRootNode();
+		return connectivityServiceNode.getPropertyJsonNode("state_machine");
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Instance [log=%s, inputsJson=%s, description=%s, metadata=%s, nodes=%s]", log, inputsJson,
+				description, metadata, nodes.toString());
+	}
+
+	/**
+	 * Get the value of a given field in a node with a given template_name
+	 * 
+	 * @param templateName
+	 * @param attributeName
+	 * @return
+	 */
+	public String getAttributeValue(String templateName, String attributeName) {
+
+		Node node = this.getNodeByTemplateName(templateName);
+		if (null == node) {
+			throw new LcmInternalException(String.format("Failed to find a node with template name %s", templateName));
+		}
+		String propertyValue = node.getPropertyValue(attributeName);
+		if (null == propertyValue) {
+			throw new LcmInternalException(
+					String.format("Failed to find a value for attribute %s in node %s", attributeName, node.getId()));
+		}
+		return propertyValue;
+	}
+
+	private Node getNodeByTemplateName(String templateName) {
+
+		for (Node n : this.getNodes()) {
+
+			if (n.getTemplateName().equals(templateName)) {
+				return n;
+			}
+		}
+		throw new LcmInternalException("Unable to find node with template_name " + templateName);
+	}
+
+	// TODO move this to decomposer
+	/**
+	 * 
+	 */
+	public void fillResourceNodes() {
+
+		for (Node node : this.getNodes()) {
+
+			if (node.getTypeName().equals(SDNO_NODE_NODE)) {
+				log.info(String.format("fillResourceNodes: %s is a resource Node", node.getId()));
+				for (String nameString : node.getNamesOfPropertiesWithValue("0")) {
+
+					log.info(String.format("set a value for the resource node field %s", nameString));
+					// TODO go to BRS !!!
+					node.replacePropertyValue(nameString, UUID.randomUUID().toString());
+				}
+			} else {
+				log.fine(String.format("fillResourceNodes: %s is not a resource Node - no values will be filled",
+						node.getId()));
+			}
+		}
+	}
+
+	public void fillNodeReferences() {
+
+		for (Node node : this.getNodes()) {
+
+			node.fillNodeReferences(this);
+		}
+	}
 
 }

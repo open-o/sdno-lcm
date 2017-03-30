@@ -25,50 +25,70 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-@Test(groups = {"sdno-lcm-unit"})
+@Test(groups = { "sdno-lcm-unit" })
 public class InstanceTest {
 
-    Instance instance;
+	Instance instance;
 
-    @BeforeClass
-    public void beforeClass() throws Exception {
-        TemplateInstanceParserImpl templateInstanceParserImpl = new TemplateInstanceParserImpl();
-        instance = templateInstanceParserImpl.parse(FileUtils.readFileToString(
-                FileUtils.getFile("src", "test", "resources", "instance.json"), Charset.defaultCharset()));
-    }
+	@BeforeClass
+	public void beforeClass() throws Exception {
+		TemplateInstanceParserImpl templateInstanceParserImpl = new TemplateInstanceParserImpl();
+		instance = templateInstanceParserImpl.parse(FileUtils.readFileToString(
+				FileUtils.getFile("src", "test", "resources", "instance.json"), Charset.defaultCharset()));
+	}
 
-    @Test
-    public void replacePropertyValueInAllNodes() {
+	@Test
+	public void replacePropertyValueInAllNodes() {
 
-        int expectedChecks = 2;
-        int performedChecks = 0;
+		int expectedChecks = 2;
+		int performedChecks = 0;
 
-        String propertyName = "operStatus";
+		String propertyName = "operStatus";
 
-        List<Node> nodes = instance.getNodes();
-        for(Node node : nodes) {
+		List<Node> nodes = instance.getNodes();
+		for (Node node : nodes) {
 
-            if(node.getId().startsWith("site_") || node.getId().startsWith("vlan_")) {
-                performedChecks++;
-                Assert.assertEquals(node.getPropertyValue(propertyName), "none", "failed the precondition check");
-            }
-        }
-        Assert.assertEquals(performedChecks, expectedChecks,
-                "Did not check the expected number of nodes for precondition");
-        expectedChecks = 2;
-        performedChecks = 0;
-        String newValue = "IH-AH!";
+			if (node.getId().startsWith("site_") || node.getId().startsWith("vlan_")) {
+				performedChecks++;
+				Assert.assertEquals(node.getPropertyValue(propertyName), "none", "failed the precondition check");
+			}
+		}
+		Assert.assertEquals(performedChecks, expectedChecks,
+				"Did not check the expected number of nodes for precondition");
+		expectedChecks = 2;
+		performedChecks = 0;
+		String newValue = "IH-AH!";
 
-        instance.replacePropertyValueInAllNodes(propertyName, newValue);
-        
-        for(Node node : nodes) {
+		instance.replacePropertyValueInAllNodes(propertyName, newValue);
 
-            if(node.getId().startsWith("site_") || node.getId().startsWith("vlan_")) {
-                performedChecks++;
-                Assert.assertEquals(node.getPropertyValue(propertyName), newValue);
-            }
-        }
-        Assert.assertEquals(performedChecks, expectedChecks,
-                "Did not check the expected number of nodes");
-    }
+		for (Node node : nodes) {
+
+			if (node.getId().startsWith("site_") || node.getId().startsWith("vlan_")) {
+				performedChecks++;
+				Assert.assertEquals(node.getPropertyValue(propertyName), newValue);
+			}
+		}
+		Assert.assertEquals(performedChecks, expectedChecks, "Did not check the expected number of nodes");
+	}
+
+	@Test
+	public void fillResourceNodesTest() {
+
+		int expectedChecks = 1;
+		int performedChecks = 0;
+		// case of adding a property that is not present
+		List<Node> nodes = instance.getNodes();
+		for (Node node : nodes) {
+
+			if (node.getId().startsWith("thinCpe_")) {
+				performedChecks++;
+				Assert.assertEquals(node.getPropertyValue("id"), "0");
+				instance.fillResourceNodes();
+				// a generated uuid should be filled for now - the real value
+				// should come from BRS
+				Assert.assertNotEquals(node.getPropertyValue("id"), "0");
+			}
+		}
+		Assert.assertEquals(performedChecks, expectedChecks, "Did not check the expected number of nodes");
+	}
 }

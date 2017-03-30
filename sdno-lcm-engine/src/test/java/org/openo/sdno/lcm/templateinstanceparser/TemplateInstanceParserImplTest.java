@@ -51,7 +51,7 @@ public class TemplateInstanceParserImplTest {
         Assert.assertNotNull(instance);
         Assert.assertEquals(instance.getDescription(), "sdno basic types");
         Assert.assertEquals(instance.getNodes().size(), 20);
-        Assert.assertEquals(instance.getMetadata(), expectedMetadata);
+        Assert.assertTrue(instance.getMetadata().equals(expectedMetadata));
         Assert.assertNotNull(instance.getInputs());
 
         int checkedNodes = 0;
@@ -157,7 +157,7 @@ public class TemplateInstanceParserImplTest {
         instanceJson = FileUtils.readFileToString(FileUtils.getFile("src", "test", "resources", "instance.json"),
                 Charset.defaultCharset());
         expectedMetadata = new Metadata();
-        expectedMetadata.setTemplateName("enterprise2Dc");
+        expectedMetadata.setTemplateName("enterprise2DC");
         expectedMetadata.setTemplateAuthor("Huawei");
         expectedMetadata.setVersion(0.1d);
         expectedMetadata.setId("enterprise2Dc");
