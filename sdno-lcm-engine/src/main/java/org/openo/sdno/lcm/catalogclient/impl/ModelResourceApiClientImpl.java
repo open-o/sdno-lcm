@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.exception.ExternalComponentException;
+import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.restclient.catalog.api.ModelResourceApi;
 import org.openo.sdno.lcm.restclient.catalog.model.KeyValuePair;
 import org.openo.sdno.lcm.restclient.catalog.model.Parameters;
@@ -76,6 +77,10 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
      */
     @Override
     public ServiceTemplate getServiceTemplateById(String serviceTemplateId) {
+    	
+    	if(null==serviceTemplateId) {
+    		throw new LcmInternalException("serviceTemplateId cannot be null");
+    	}
 
         ModelResourceApi modelResourceApi = getModelResourceApi();
         try {
@@ -93,11 +98,15 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
      * getServiceTemplateParameters(java.lang.String)
      */
     @Override
-    public Parameters getServiceTemplateParameters(String servicetemplateid) {
+    public Parameters getServiceTemplateParameters(String serviceTemplateId) {
+    	
+    	if(null==serviceTemplateId) {
+    		throw new LcmInternalException("serviceTemplateId cannot be null");
+    	}
 
         ModelResourceApi modelResourceApi = getModelResourceApi();
         try {
-            return modelResourceApi.getServiceTemplateParameters(servicetemplateid);
+            return modelResourceApi.getServiceTemplateParameters(serviceTemplateId);
 
         } catch(Exception e) {
             log.severe(FAILED_TO_GET_SERVICE_TEMPLATE_PARAMETERS);

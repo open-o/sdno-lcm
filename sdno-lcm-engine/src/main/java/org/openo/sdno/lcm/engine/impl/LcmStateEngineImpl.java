@@ -104,7 +104,7 @@ public class LcmStateEngineImpl implements LcmStateEngine {
             currentState = Constants.LCM_LIFECYCLESTATE_NONE;
 
         } else {
-            log.severe(String.format("Neither %s nor %s foudn in params - cannot continue",
+            log.severe(String.format("Neither %s nor %s found in params - cannot continue",
                     Constants.LCM_NBI_TEMPLATE_ID, Constants.LCM_NBI_SERVICE_ID));
             throw new LcmInternalException("No workflows possible with the parameters given");
         }

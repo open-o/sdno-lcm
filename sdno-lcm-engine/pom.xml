@@ -137,7 +137,45 @@
 			<artifactId>sdno-lcm-restclient-msb</artifactId>
 			<version>${sdno-lcm.version}</version>
 		</dependency>
-         
+
+		<dependency>
+			<groupId>org.openo.sdno.utils</groupId>
+			<artifactId>org.openo.sdno.common-cbb</artifactId>
+			<version>1.1.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+				    <groupId>org.apache.cxf</groupId>
+				    <artifactId>cxf-rt-rs-client</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openo.sdno.utils</groupId>
+			<artifactId>org.openo.sdno.framework.base</artifactId>
+			<version>1.1.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+				    <groupId>org.apache.cxf</groupId>
+				    <artifactId>cxf-rt-rs-client</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>    
+
 	</dependencies>
 
 

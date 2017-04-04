@@ -16,7 +16,7 @@
 
 package org.openo.sdno.lcm.decomposer.impl;
 
-import static org.easymock.EasyMock.anyString;
+import static org.easymock.EasyMock.*;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.replay;
@@ -29,6 +29,7 @@ import org.apache.commons.io.FileUtils;
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.csarhandler.impl.CsarHandlerImpl;
 import org.openo.sdno.lcm.csarhandler.impl.FileHandler;
+import org.openo.sdno.lcm.decomposer.BrsMapping;
 import org.openo.sdno.lcm.model.workplan.WorkItem;
 import org.openo.sdno.lcm.model.workplan.WorkPlan;
 import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
@@ -74,6 +75,10 @@ public class DecomposerImplTest {
 		String instanceJson = FileUtils.readFileToString(FileUtils.getFile("src", "test", "resources", "instance.json"),
 				Charset.defaultCharset());
 		instance = templateInstanceParser.parse(instanceJson);
+		
+		BrsMapping mockBrsMapping = niceMock(BrsMapping.class);
+		replay(mockBrsMapping);
+		decomposer.setBrsMapping(mockBrsMapping);
 	}
 
 	@Test
@@ -92,6 +97,28 @@ public class DecomposerImplTest {
 		this.checkWorkItem(10, workplan.getWorkItem(10), "vpnConnection_");
 		this.checkWorkItem(11, workplan.getWorkItem(11), "sfc_");
 	}
+	
+//	@Test
+//	public void fillResourceNodesTest() {
+//
+//		int expectedChecks = 1;
+//		int performedChecks = 0;
+//		// case of adding a property that is not present
+//		List<Node> nodes = instance.getNodes();
+//		for (Node node : nodes) {
+//
+//			if (node.getId().startsWith("thinCpe_")) {
+//				performedChecks++;
+//				Assert.assertEquals(node.getPropertyValue("id"), "0");
+//				decomposer.fillResourceNodes(instance);
+//				// a generated uuid should be filled for now - the real value
+//				// should come from BRS
+//				String nodeValue = node.getPropertyValue("id");
+//				Assert.assertNotEquals(nodeValue, "0");
+//			}
+//		}
+//		Assert.assertEquals(performedChecks, expectedChecks, "Did not check the expected number of nodes");
+//	}
 
 	private void checkWorkItem(int index, WorkItem workItem, String prefix) {
 		String workItemId = workItem.getNode().getId();

@@ -29,6 +29,8 @@ public class Constants {
 
     public static final String SDNO_BRS_SERVICEINVENTORY_BASE_PATH = "sdno-brs.serviceinventory.base-path";
 
+    public static final String SDNO_BRS_RESOURCEINVENTORY_BASE_PATH = "sdno-brs.resourceinventory.base-path";
+
     public static final String SDNO_LCM_DEFAULT_IP = "sdno-lcm.default-ip";
 
     // NBI input constants
@@ -69,32 +71,7 @@ public class Constants {
     public static final String LCM_CREATETIME = "createTime";
 
     // temporary
-    public static final String SDNO_BRS_ADDR = "http://192.168.99.100:80";
-
-    /**
-     * Server Failed Code.
-     */
-    public static final int ERR_FAILED = 500;
-
-    /**
-     * OK Code.
-     */
-    public static final int RESPOND_OK = 200;
-
-    /**
-     * CREATED OK Code.
-     */
-    public static final int CREATE_OK = 201;
-
-    /**
-     * Not Found Code.
-     */
-    public static final int NOT_FOUND = 404;
-
-    /**
-     * BAD REQUEST CODE.
-     */
-    public static final int BAD_REQUEST = 400;
+    public static final String SDNO_BRS_ADDR = "http://127.0.0.1:80";
 
     /**
      * EXCEED REQUEST CODE.
@@ -103,14 +80,10 @@ public class Constants {
 
     public static final String DB_FILLTER_NOT_SUPPORT = "overlayvpn.db.fillter.error";
 
-    public static boolean isSucess(int httpCode) {
-        return httpCode / 100 == 2;
-    }
-
     public static final String DB_RETURN_ERROR = "overlayvpn.db.return.error";
 
-    public static final String THIN_CPE = "thinCPE";
+    public static final String THIN_CPE = "thinCpe";
 
-    public static final String vCPE = "vCPE";
+    public static final String vCPE = "vCpe";
 
 }

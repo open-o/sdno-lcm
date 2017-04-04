@@ -70,25 +70,4 @@ public class InstanceTest {
 		}
 		Assert.assertEquals(performedChecks, expectedChecks, "Did not check the expected number of nodes");
 	}
-
-	@Test
-	public void fillResourceNodesTest() {
-
-		int expectedChecks = 1;
-		int performedChecks = 0;
-		// case of adding a property that is not present
-		List<Node> nodes = instance.getNodes();
-		for (Node node : nodes) {
-
-			if (node.getId().startsWith("thinCpe_")) {
-				performedChecks++;
-				Assert.assertEquals(node.getPropertyValue("id"), "0");
-				instance.fillResourceNodes();
-				// a generated uuid should be filled for now - the real value
-				// should come from BRS
-				Assert.assertNotEquals(node.getPropertyValue("id"), "0");
-			}
-		}
-		Assert.assertEquals(performedChecks, expectedChecks, "Did not check the expected number of nodes");
-	}
 }
