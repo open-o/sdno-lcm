@@ -26,9 +26,13 @@ import org.openo.baseservice.remoteservice.exception.ServiceException;
 import org.openo.baseservice.roa.util.restclient.RestfulParametes;
 import org.openo.baseservice.roa.util.restclient.RestfulResponse;
 import org.openo.sdno.framework.container.resthelper.RestfulProxy;
-import org.openo.sdno.lcm.util.Constants;
+import org.openo.sdno.lcm.exception.ExternalComponentException;
 
 public class BrsRestconfProxy {
+
+    private static final String BRS_REQUEST_FAILED_RESPONSE_WAS_NULL = "Brs request Failed - response was null!!";
+
+    private static final String BRS_REQUEST_FAILED = "brs request Failed!!";
 
     /**
      * Server Failed Code.
@@ -55,7 +59,7 @@ public class BrsRestconfProxy {
      */
     public static final int BAD_REQUEST = 400;
 
-    public static boolean isSucess(int httpCode) {
+    public static boolean isSuccess(int httpCode) {
         return httpCode / 100 == 2;
     }
 
@@ -175,19 +179,19 @@ public class BrsRestconfProxy {
         RestfulResponse response = doRestfulInvoke(url, action, restfulParametes);
 
         if (null == response) {
-            log.severe("Brs request Failed - response was null!!");
-            throw new ServiceException(Constants.DB_RETURN_ERROR);
+            log.severe(BRS_REQUEST_FAILED_RESPONSE_WAS_NULL);
+            throw new ExternalComponentException(BRS_REQUEST_FAILED_RESPONSE_WAS_NULL);
         }
         log.info("BRS response: " + response.getStatus());
 
-        if (!isSucess(response.getStatus())) {
+        if (!isSuccess(response.getStatus())) {
             // if code is 404,then not found
             if (GET_ACTION.equals(action) && (NOT_FOUND == response.getStatus())) {
                 return response;
             }
 
-            log.severe("brs request Failed!!");
-            throw new ServiceException(Constants.DB_RETURN_ERROR, response.getStatus());
+            log.severe(BRS_REQUEST_FAILED);
+            throw new ExternalComponentException(BRS_REQUEST_FAILED);
         }
 
         return response;

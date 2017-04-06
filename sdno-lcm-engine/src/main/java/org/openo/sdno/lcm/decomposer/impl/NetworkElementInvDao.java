@@ -76,11 +76,13 @@ public class NetworkElementInvDao {
             RestfulResponse response = new RestfulResponse();
             // condition doesn't seem to work if it's siteID
             if (!condition.containsKey(SITE_ID)) {
-                response = BrsRestconfProxy.get(Constants.SDNO_BRS_ADDR + NEURI, "", condition);
+                response = BrsRestconfProxy.get(env.getProperty(Constants.SDNO_BRS_RESOURCEINVENTORY_BASE_PATH) + NEURI,
+                        "", condition);
             } else {
-                response = BrsRestconfProxy.get(Constants.SDNO_BRS_ADDR + NEURI, "");
+                response = BrsRestconfProxy.get(env.getProperty(Constants.SDNO_BRS_RESOURCEINVENTORY_BASE_PATH) + NEURI,
+                        "");
             }
-            if (!BrsRestconfProxy.isSucess(response.getStatus())) {
+            if (!BrsRestconfProxy.isSuccess(response.getStatus())) {
                 log.severe("Query Network Element by condition failed");
                 throw new ServiceException("Query Network Element through condition failed");
             }
@@ -129,7 +131,8 @@ public class NetworkElementInvDao {
 
     public JsonNode query(String id) throws ServiceException {
 
-        RestfulResponse response = BrsRestconfProxy.get(Constants.SDNO_BRS_ADDR + NEURI + "/" + id, "");
+        RestfulResponse response = BrsRestconfProxy
+                .get(env.getProperty(Constants.SDNO_BRS_RESOURCEINVENTORY_BASE_PATH) + NEURI + "/" + id, "");
         JsonNode stringToNode = mapper.stringToNode(response.getResponseContent());
         return stringToNode.get(NE_KEY);
     }

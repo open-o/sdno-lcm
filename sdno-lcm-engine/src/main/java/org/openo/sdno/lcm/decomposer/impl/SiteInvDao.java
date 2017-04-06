@@ -27,6 +27,7 @@ import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.util.Constants;
 import org.openo.sdno.lcm.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,7 +42,12 @@ public class SiteInvDao {
 
     private static final String SITES_KEY = "sites";
 
-    private static final String SITE_KEY = "site";
+    @Autowired
+    private Environment env;
+
+    public void setEnv(Environment env) {
+        this.env = env;
+    }
 
     @Autowired
     private Mapper mapper;
@@ -62,7 +68,8 @@ public class SiteInvDao {
 
         checkFilterData(condition);
 
-        RestfulResponse response = BrsRestconfProxy.get(Constants.SDNO_BRS_ADDR + SITEURI, "", condition);
+        RestfulResponse response = BrsRestconfProxy
+                .get(env.getProperty(Constants.SDNO_BRS_RESOURCEINVENTORY_BASE_PATH) + SITEURI, "", condition);
         JsonNode listJsonObjectResponse = mapper.stringToNode(response.getResponseContent());
         ArrayNode sitesArray = (ArrayNode) listJsonObjectResponse.get(SITES_KEY);
         JsonNode site = sitesArray.get(0);

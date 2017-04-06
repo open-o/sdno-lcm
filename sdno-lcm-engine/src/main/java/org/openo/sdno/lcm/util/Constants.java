@@ -70,18 +70,6 @@ public class Constants {
 
     public static final String LCM_CREATETIME = "createTime";
 
-    // temporary
-    public static final String SDNO_BRS_ADDR = "http://127.0.0.1:80";
-
-    /**
-     * EXCEED REQUEST CODE.
-     */
-    public static final int EXCEED_REQUEST = 413;
-
-    public static final String DB_FILLTER_NOT_SUPPORT = "overlayvpn.db.fillter.error";
-
-    public static final String DB_RETURN_ERROR = "overlayvpn.db.return.error";
-
     public static final String THIN_CPE = "thinCpe";
 
     public static final String vCPE = "vCpe";
