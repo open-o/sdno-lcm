@@ -16,13 +16,23 @@
 
 package org.openo.sdno.lcm.engine.impl.workflow;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
+import org.openo.sdno.lcm.templatemodel.service.Instance;
+import org.openo.sdno.lcm.util.Constants;
 import org.springframework.stereotype.Component;
 
+/**
+ * Delete workflow is a special case, it is not composed of other workflows but neither can it share
+ * the generic implementation of execute() in AtomicWorkflow.
+ */
 @Component
 public class GwfDeleteCreated extends GenericWorkflowImpl {
+
+    private static final Logger log = Logger.getLogger("GwfDeleteCreated");
 
     /*
      * (non-Javadoc)
@@ -30,8 +40,25 @@ public class GwfDeleteCreated extends GenericWorkflowImpl {
      */
     @Override
     public Map<String, Object> execute(Map<String, Object> params) {
-        // TODO Auto-generated method stub
-        return null;
+
+        this.getLogger().fine(String.format("Execute %s workflow", this.getWorkflowId()));
+        // get the required params
+        String csarId = (String)this.getParam(Constants.LCM_NBI_CSAR_ID, params);
+        String apiOperation = (String)this.getParam(Constants.LCM_NBI_API_OPERATION, params);
+        String serviceId = (String)this.getParam(Constants.LCM_NBI_SERVICE_ID, params);
+        Instance templateInstance = (Instance)this.getParam(Constants.LCM_TEMPLATE_INSTANCE, params);
+
+        // execute the workplan
+        executeWorkplan(csarId, apiOperation, templateInstance);
+
+        // delete the service in inventory
+        defaultMssApiClient.deleteConnectivityService(serviceId);
+
+        // fill response map
+        HashMap<String, Object> responseMap = new HashMap<String, Object>();
+        // we can put the service ID here instead of job ID as the task is synchronous for now
+        responseMap.put(Constants.LCM_NBI_JOB_ID, serviceId);
+        return responseMap;
     }
 
     /*
@@ -42,6 +69,11 @@ public class GwfDeleteCreated extends GenericWorkflowImpl {
     public String getWorkflowId() {
 
         return GenericWorkflowId.DELETECREATED.toString();
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return log;
     }
 
 }

@@ -73,7 +73,6 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
     @Override
     public CreateConnectivityServiceResponse createConnectivityService(ConnectivityService connectivityService) {
 
-        // TODO change parameter type to generic?
         DefaultApi defaultApi = this.getDefaultApi();
         try {
             CreateConnectivityServiceRequest body = new CreateConnectivityServiceRequest();
@@ -94,7 +93,7 @@ public class DefaultMssApiClientImpl implements DefaultMssApiClient {
      * lang.String)
      */
     @Override
-    public void deleteConnectivityService(String id) {
+    public void deleteConnectivityService(final String id) {
 
         DefaultApi defaultApi = this.getDefaultApi();
         try {

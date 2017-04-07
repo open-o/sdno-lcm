@@ -17,12 +17,23 @@
 package org.openo.sdno.lcm.engine.impl.workflow;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
+import org.openo.sdno.lcm.util.Constants;
 import org.springframework.stereotype.Component;
 
+/**
+ * This workflow corresponds to the following state table row:
+ * "apiOperation": "delete",
+ * "currentState": "deployed",
+ * "newState": "none",
+ * "transitionWorkflow": "deleteDeployed"
+ */
 @Component
-public class GwfDeleteDeployed extends GenericWorkflowImpl {
+public class GwfDeleteDeployed extends CompositeWorkflow {
+
+    private static final Logger log = Logger.getLogger("GwfDeleteDeployed");
 
     /*
      * (non-Javadoc)
@@ -30,8 +41,16 @@ public class GwfDeleteDeployed extends GenericWorkflowImpl {
      */
     @Override
     public Map<String, Object> execute(Map<String, Object> params) {
-        // TODO Auto-generated method stub
-        return null;
+
+        log.info("Beginning composite workflow GwfDeleteDeployed");
+
+        log.info("Composite workflow step 1: UNDEPLOY");
+        params.put(Constants.LCM_NBI_API_OPERATION, Constants.LCM_NBI_API_OPERATION_UNDEPLOY);
+        workflowRegistry.executeWorkflow(GenericWorkflowId.UNDEPLOY.toString(), params);
+
+        log.info("Composite workflow step 2: DELETECREATED");
+        params.put(Constants.LCM_NBI_API_OPERATION, Constants.LCM_NBI_API_OPERATION_DELETE);
+        return workflowRegistry.executeWorkflow(GenericWorkflowId.DELETECREATED.toString(), params);
     }
 
     /*
@@ -42,6 +61,11 @@ public class GwfDeleteDeployed extends GenericWorkflowImpl {
     public String getWorkflowId() {
 
         return GenericWorkflowId.DELETEDEPLOYED.toString();
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return log;
     }
 
 }

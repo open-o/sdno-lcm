@@ -23,6 +23,15 @@ import java.util.Map;
  */
 public interface Workflow {
 
+    /**
+     * Execute a workflow. The implementation can differ depending on the workflow, but will always
+     * include creating or updating the Connectivity Service in the service inventory, decomposing
+     * the workflow into an ordered set of actions per node and dispatching messages to perform
+     * these actions.
+     * 
+     * @param params Map<String, Object> of parameters needed to execute the workflow
+     * @return Map<String, Object> of return values
+     */
     Map<String, Object> execute(Map<String, Object> params);
 
 }

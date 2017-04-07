@@ -16,22 +16,46 @@
 
 package org.openo.sdno.lcm.engine.impl.workflow;
 
-import java.util.Map;
+import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
+import org.openo.sdno.lcm.templatemodel.service.Instance;
+import org.openo.sdno.lcm.util.Constants;
 import org.springframework.stereotype.Component;
 
+/**
+ * This workflow corresponds to the following state table row:
+ * "apiOperation": "undeploy",
+ * "currentState": "deployed",
+ * "newState": "created",
+ * "transitionWorkflow": "undeploy"
+ */
 @Component
-public class GwfUndeploy extends GenericWorkflowImpl {
+public class GwfUndeploy extends AtomicWorkflow {
+
+    private static final Logger log = Logger.getLogger("GwfUndeploy");
 
     /*
      * (non-Javadoc)
-     * @see org.openo.sdno.lcm.engine.GenericWorkflow#execute(java.util.Map)
+     * @see
+     * org.openo.sdno.lcm.engine.impl.workflow.GenericWorkflowImpl#updateTemplateInstance(org.openo.
+     * sdno.lcm.templatemodel.service.Instance, java.lang.String)
      */
-    @Override
-    public Map<String, Object> execute(Map<String, Object> params) {
-        // TODO Auto-generated method stub
-        return null;
+    protected void updateTemplateInstance(Instance templateInstance, String serviceCreateTime) {
+        // update the nodes with correct values for this workflow
+        templateInstance.replacePropertyValueInAllNodes(Constants.LCM_ADMINSTATUS,
+                Constants.LCM_ADMINISTRATIONSTATE_NONE);
+        templateInstance.replacePropertyValueInAllNodes(Constants.LCM_ACTIONSTATE,
+                Constants.LCM_ACTIONSTATE_UNDEPLOYING);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see org.openo.sdno.lcm.engine.impl.workflow.GenericWorkflowImpl#getNewState()
+     */
+    protected String getNewState() {
+
+        return Constants.LCM_LIFECYCLESTATE_CREATED;
     }
 
     /*
@@ -42,6 +66,12 @@ public class GwfUndeploy extends GenericWorkflowImpl {
     public String getWorkflowId() {
 
         return GenericWorkflowId.UNDEPLOY.toString();
+    }
+
+    @Override
+    public Logger getLogger() {
+
+        return log;
     }
 
 }

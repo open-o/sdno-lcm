@@ -25,6 +25,7 @@ import org.openo.sdno.lcm.decomposer.Decomposer;
 import org.openo.sdno.lcm.dispatcher.Dispatcher;
 import org.openo.sdno.lcm.engine.RegisterWorkflow;
 import org.openo.sdno.lcm.engine.Workflow;
+import org.openo.sdno.lcm.engine.impl.WorkflowRegistry;
 import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.exception.SouthboundExecutionException;
 import org.openo.sdno.lcm.model.workplan.WorkPlan;
@@ -36,10 +37,11 @@ import org.openo.sdno.lcm.serviceinventoryclient.DefaultMssApiClient;
 import org.openo.sdno.lcm.statetablehandler.StateTableHandler;
 import org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
+import org.openo.sdno.lcm.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Abstract superclass of generic workflows, providing properties and showing implemented
+ * Abstract superclass of generic workflows, providing spring dependencies and showing implemented
  * interfaces.
  */
 public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow {
@@ -55,27 +57,32 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
     protected TemplateInstanceParser templateInstanceParser;
 
     protected Decomposer decomposer;
-    
+
     protected Dispatcher dispatcher;
-    
-    private static final Logger log = Logger.getLogger("GenericWorkflowImpl");
 
-    public GenericWorkflowImpl() {
-        super();
-    }
+    protected WorkflowRegistry workflowRegistry;
 
+    protected Mapper mapper;
+
+    /**
+     * Gets a certain parameter from the passed param map.
+     * 
+     * @param key the param key
+     * @param params
+     * @return
+     */
     protected Object getParam(String key, Map<String, Object> params) {
-        
+
         Object param = params.get(key);
-        if(param == null){
-            
-            throw new LcmInternalException(key+" may not be null");
+        if(param == null) {
+
+            throw new LcmInternalException(key + " may not be null");
         }
         if(param instanceof String && ((String)param).isEmpty()) {
-            
-            throw new LcmInternalException(key+"string may not be empty");
+
+            throw new LcmInternalException(key + "string may not be empty");
         }
-        log.fine(String.format("Value of param %s is %s", key, param.toString()));
+        this.getLogger().fine(String.format("Value of param %s is %s", key, param.toString()));
         return param;
     }
 
@@ -88,6 +95,12 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
         return this;
     }
 
+    /**
+     * Reads a certain Connectivity Service from service inventory (MSS)
+     * 
+     * @param serviceId the id of the CS to read
+     * @return
+     */
     protected GetConnectivityServiceResponseSample readConnectivityServiceFromMss(String serviceId) {
         GetConnectivityServiceResponse readConnectivityService = defaultMssApiClient.readConnectivityService(serviceId);
         return readConnectivityService.getObject();
@@ -123,25 +136,42 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
         this.decomposer = decomposer;
     }
 
-    @Autowired    
+    @Autowired
     public void setDispatcher(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
 
+    @Autowired
+    public void setWorkflowRegistry(WorkflowRegistry workflowRegistry) {
+        this.workflowRegistry = workflowRegistry;
+    }
+
     /**
-     * Generate the Workplan via decomposer and execute it via dispatcher
+     * Generate the Workplan via decomposer and execute it via dispatcher.
      * 
      * @param csarId
      * @param apiOperation
      * @param templateInstance
      * @throws SouthboundExecutionException
      */
-    protected void executeWorkplan(String csarId, String apiOperation, Instance templateInstance) throws SouthboundExecutionException {
+    protected void executeWorkplan(String csarId, String apiOperation, Instance templateInstance)
+            throws SouthboundExecutionException {
         WorkPlan workPlan = this.decomposer.decompose(templateInstance, apiOperation, csarId);
         WorkPlanExecutionResult dispatchResult = dispatcher.dispatch(workPlan, WorkPlanExecutionStrategy.FAIL_FAST);
         if(!dispatchResult.getOverallResult()) {
-            throw new SouthboundExecutionException("Execution failed in the SBI:\n"+ dispatchResult.toString());
+            throw new SouthboundExecutionException("Execution failed in the SBI:\n" + dispatchResult.toString());
         }
     }
 
+    /**
+     * Get the logger specific to the workflow concrete class
+     * 
+     * @return
+     */
+    protected abstract Logger getLogger();
+
+    @Autowired
+    public void setMapper(Mapper mapper) {
+        this.mapper = mapper;
+    }
 }

@@ -17,12 +17,18 @@
 package org.openo.sdno.lcm.engine.impl.workflow;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
+import org.openo.sdno.lcm.exception.LcmInternalException;
+import org.openo.sdno.lcm.templatemodel.service.Instance;
+import org.openo.sdno.lcm.util.Constants;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GwfUpdateDeployed extends GenericWorkflowImpl {
+public class GwfUpdateDeployed extends AtomicWorkflow {
+
+    private static final Logger log = Logger.getLogger("GwfUpdateDeployed");
 
     /*
      * (non-Javadoc)
@@ -30,8 +36,7 @@ public class GwfUpdateDeployed extends GenericWorkflowImpl {
      */
     @Override
     public Map<String, Object> execute(Map<String, Object> params) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new LcmInternalException("WFL NOT IMPLEMENTED!");
     }
 
     /*
@@ -42,6 +47,22 @@ public class GwfUpdateDeployed extends GenericWorkflowImpl {
     public String getWorkflowId() {
 
         return GenericWorkflowId.UPDATEDEPLOYED.toString();
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return log;
+    }
+
+    @Override
+    protected String getNewState() {
+        return Constants.LCM_LIFECYCLESTATE_DEPLOYED;
+    }
+
+    @Override
+    protected void updateTemplateInstance(Instance templateInstance, String serviceCreateTime) {
+        // TODO Auto-generated method stub
+
     }
 
 }

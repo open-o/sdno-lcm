@@ -17,12 +17,16 @@
 package org.openo.sdno.lcm.engine.impl.workflow;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
+import org.openo.sdno.lcm.util.Constants;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GwfDeploy extends GenericWorkflowImpl {
+public class GwfDeploy extends CompositeWorkflow {
+
+    private static final Logger log = Logger.getLogger("GwfDeploy");
 
     /*
      * (non-Javadoc)
@@ -30,8 +34,15 @@ public class GwfDeploy extends GenericWorkflowImpl {
      */
     @Override
     public Map<String, Object> execute(Map<String, Object> params) {
-        // TODO Auto-generated method stub
-        return null;
+
+        params.put(Constants.LCM_NBI_API_OPERATION, Constants.LCM_NBI_API_OPERATION_CREATE);
+        Map<String, Object> createResultMap =
+                workflowRegistry.executeWorkflow(GenericWorkflowId.CREATE.toString(), params);
+
+        // insert the id of the created service to the params
+        params.put(Constants.LCM_NBI_SERVICE_ID, createResultMap.get(Constants.LCM_NBI_SERVICE_ID));
+        params.put(Constants.LCM_NBI_API_OPERATION, Constants.LCM_NBI_API_OPERATION_DEPLOY);
+        return workflowRegistry.executeWorkflow(GenericWorkflowId.DEPLOYCREATED.toString(), params);
     }
 
     /*
@@ -42,6 +53,11 @@ public class GwfDeploy extends GenericWorkflowImpl {
     public String getWorkflowId() {
 
         return GenericWorkflowId.DEPLOY.toString();
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return log;
     }
 
 }

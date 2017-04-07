@@ -160,7 +160,11 @@ public class NsInstanceQueryResponse   {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    nsdId: ").append(toIndentedString(nsdId)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    additionalParams: ").append(toIndentedString(additionalParams)).append("\n");
+    sb.append("    additionalParams: ").append("[");
+    for(SdnoTemplateParameter additionalParam:additionalParams) {
+        sb.append(additionalParam.toString()).append(" ");
+    }
+    sb.append("]\n");
     sb.append("}");
     return sb.toString();
   }

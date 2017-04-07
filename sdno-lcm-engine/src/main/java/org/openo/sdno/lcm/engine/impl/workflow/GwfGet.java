@@ -17,12 +17,23 @@
 package org.openo.sdno.lcm.engine.impl.workflow;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
+import org.openo.sdno.lcm.exception.ExternalComponentException;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponse;
+import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponseSample;
+import org.openo.sdno.lcm.util.Constants;
 import org.springframework.stereotype.Component;
 
+/**
+ * Get workflow is a special case, it is not composed of other workflows but neither can it share
+ * the generic implementation of execute() in AtomicWorkflow as we need to return the whole object.
+ */
 @Component
 public class GwfGet extends GenericWorkflowImpl {
+
+    private static final Logger log = Logger.getLogger("GwfGet");
 
     /*
      * (non-Javadoc)
@@ -30,8 +41,20 @@ public class GwfGet extends GenericWorkflowImpl {
      */
     @Override
     public Map<String, Object> execute(Map<String, Object> params) {
-        // TODO Auto-generated method stub
-        return null;
+
+        String serviceId = (String)this.getParam(Constants.LCM_NBI_SERVICE_ID, params);
+
+        GetConnectivityServiceResponse readConnectivityService;
+        Map<String, Object> beanToMap = null;
+        try {
+            readConnectivityService = defaultMssApiClient.readConnectivityService(serviceId);
+            GetConnectivityServiceResponseSample object = readConnectivityService.getObject();
+            beanToMap = mapper.beanToMap(object);
+
+        } catch(Exception e1) {
+            throw new ExternalComponentException("Failed to read connectivity service due to " + e1.getMessage(), e1);
+        }
+        return beanToMap;
     }
 
     /*
@@ -42,6 +65,11 @@ public class GwfGet extends GenericWorkflowImpl {
     public String getWorkflowId() {
 
         return GenericWorkflowId.GET.toString();
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return log;
     }
 
 }

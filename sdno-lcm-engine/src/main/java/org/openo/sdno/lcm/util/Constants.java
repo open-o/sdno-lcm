@@ -43,6 +43,18 @@ public class Constants {
     public static final String LCM_NBI_SERVICE_ID = "nsInstanceId";
 
     public static final String LCM_NBI_API_OPERATION = "apiOperation";
+    
+    public static final String LCM_NBI_API_OPERATION_CREATE = "create";
+
+    public static final String LCM_NBI_API_OPERATION_DELETE = "delete";
+
+    public static final String LCM_NBI_API_OPERATION_GET = "get";
+
+    public static final String LCM_NBI_API_OPERATION_DEPLOY = "deploy";
+
+    public static final String LCM_NBI_API_OPERATION_UNDEPLOY = "undeploy";
+
+    public static final String LCM_NBI_API_OPERATION_UPDATE = "update";
 
     public static final String LCM_NBI_ADDITIONAL_PARAMS = "additionalParamForNs";
 
@@ -61,6 +73,14 @@ public class Constants {
 
     // per-workflow assigned property values
     public static final String LCM_ADMINISTRATIONSTATE_ACTIVE = "active";
+
+    public static final String LCM_ADMINISTRATIONSTATE_NONE = "none";
+
+    public static final String LCM_ACTIONSTATE_UNDEPLOYING = "undeploying";
+
+    public static final String LCM_ACTIONSTATE_CREATING = "creating";
+
+    public static final String LCM_ACTIONSTATE_DELETING = "deleting";
 
     public static final String LCM_ACTIONSTATE_DEPLOYING = "deploying";
 

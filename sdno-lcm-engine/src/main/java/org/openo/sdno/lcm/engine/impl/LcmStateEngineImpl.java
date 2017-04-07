@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import org.openo.sdno.lcm.ariaclient.ParserApiClient;
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.engine.LcmStateEngine;
+import org.openo.sdno.lcm.exception.ExternalComponentException;
 import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.restclient.catalog.model.ServiceTemplate;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServiceResponseSample;
@@ -94,6 +95,14 @@ public class LcmStateEngineImpl implements LcmStateEngine {
             // get the csar ID from service instance
             // *** ASSUME CSAR_ID == TEMPLATE_ID ***
             templateId = connectivityService.getTemplateId();
+            // some kind of null object can be returned if the connectivity service is not found
+            // so check we have the templateId to proceed
+            if(null == templateId) {
+                String errString =
+                        String.format("the template ID was null as connectivity service %s was not found", nsid);
+                log.severe(errString);
+                throw new ExternalComponentException(errString);
+            }
             log.info(String.format("Adding template ID to params as %s=%s", Constants.LCM_NBI_TEMPLATE_ID, templateId));
             params.put(Constants.LCM_NBI_TEMPLATE_ID, templateId);
 

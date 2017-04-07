@@ -16,6 +16,9 @@
 
 package org.openo.sdno.lcm.webapp.api;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -26,6 +29,7 @@ import org.openo.sdno.lcm.webapp.model.NsCreationRequest;
 import org.openo.sdno.lcm.webapp.model.NsCreationResponse;
 import org.openo.sdno.lcm.webapp.model.NsInstanceQueryResponse;
 import org.openo.sdno.lcm.webapp.model.NsTerminationRequest;
+import org.openo.sdno.lcm.webapp.model.SdnoTemplateParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,14 +57,17 @@ public class NsApiController implements NsApi {
         Map<String, Object> params = mapper.beanToMap(nsRequest);
         Map<String, Object> responseMap = nsApiControllerFacade.nsCreationPost(params);
         NsCreationResponse nsCreationResponse = mapper.mapToBean(NsCreationResponse.class, responseMap);
-        ResponseEntity<NsCreationResponse> response = new ResponseEntity<NsCreationResponse>(nsCreationResponse, HttpStatus.CREATED);
+        ResponseEntity<NsCreationResponse> response =
+                new ResponseEntity<NsCreationResponse>(nsCreationResponse, HttpStatus.CREATED);
         return response;
     }
 
     public ResponseEntity<Void> nsDeletionDelete(
             @ApiParam(value = "ID of the SDN-O service instance to be deleted", required = true) @PathVariable("instanceid") String instanceid) {
-        // do some magic!
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        Map<String, Object> params = new HashMap<>();
+        params.put("instanceid", instanceid);
+        nsApiControllerFacade.nsDeletionDelete(params);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
     public ResponseEntity<LongOperationResponse> nsInstantiationPost(
@@ -70,25 +77,52 @@ public class NsApiController implements NsApi {
         log.fine("~~~~~ NsApiController - nsInstantiationPost ~~~~~");
         Map<String, Object> params = mapper.beanToMap(nsInstantiationRequest);
         Map<String, Object> responseMap = nsApiControllerFacade.nsInstantiationPost(params);
-        
+
         LongOperationResponse responseEntity = new LongOperationResponse();
         // return the service ID for the moment as it's not really an asynchronous operation
         responseEntity.setJobId((String)responseMap.get("jobId"));
-        ResponseEntity<LongOperationResponse> response = new ResponseEntity<LongOperationResponse>(responseEntity, HttpStatus.OK);
+        ResponseEntity<LongOperationResponse> response =
+                new ResponseEntity<LongOperationResponse>(responseEntity, HttpStatus.OK);
         return response;
     }
 
     public ResponseEntity<NsInstanceQueryResponse> nsQueryGet(
             @ApiParam(value = "ID of the SDN-O service instance to be queried", required = true) @PathVariable("instanceid") String instanceid) {
-        // do some magic!
-        return new ResponseEntity<NsInstanceQueryResponse>(HttpStatus.OK);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("instanceid", instanceid);
+        Map<String, Object> responseMap = nsApiControllerFacade.nsQueryGet(params);
+        NsInstanceQueryResponse nsInstanceQueryResponse = new NsInstanceQueryResponse();
+        nsInstanceQueryResponse.setId((String)responseMap.get("id"));
+        nsInstanceQueryResponse.setDescription((String)responseMap.get("description"));
+        nsInstanceQueryResponse.setName((String)responseMap.get("name"));
+        nsInstanceQueryResponse.setNsdId((String)responseMap.get("templateId"));
+
+        List<SdnoTemplateParameter> additionalParams = new ArrayList<>();
+        SdnoTemplateParameter serviceStateParam = new SdnoTemplateParameter();
+        serviceStateParam.setName("lifecycleState");
+        serviceStateParam.setValue((String)responseMap.get("lifecycleState"));
+        additionalParams.add(serviceStateParam);
+        nsInstanceQueryResponse.setAdditionalParams(additionalParams);
+        // TODO set remaining fields as 'additionalParams'
+        ResponseEntity<NsInstanceQueryResponse> response =
+                new ResponseEntity<NsInstanceQueryResponse>(nsInstanceQueryResponse, HttpStatus.OK);
+        return response;
     }
 
     public ResponseEntity<LongOperationResponse> nsTerminationPost(
             @ApiParam(value = "ID of the SDN-O service instance to be terminated", required = true) @PathVariable("instanceid") String instanceid,
             @ApiParam(value = "the request used to terminate a SDN-O service instance", required = true) @RequestBody NsTerminationRequest nsTerminationRequest) {
-        // do some magic!
-        return new ResponseEntity<LongOperationResponse>(HttpStatus.OK);
+
+        log.fine("~~~~~ NsApiController - nsTerminationPost ~~~~~");
+        Map<String, Object> params = mapper.beanToMap(nsTerminationRequest);
+        Map<String, Object> responseMap = nsApiControllerFacade.nsTerminationPost(params);
+        LongOperationResponse responseEntity = new LongOperationResponse();
+        // return the service ID for the moment as it's not really an asynchronous operation
+        responseEntity.setJobId((String)responseMap.get("jobId"));
+        ResponseEntity<LongOperationResponse> response =
+                new ResponseEntity<LongOperationResponse>(responseEntity, HttpStatus.OK);
+        return response;
     }
 
     @Autowired

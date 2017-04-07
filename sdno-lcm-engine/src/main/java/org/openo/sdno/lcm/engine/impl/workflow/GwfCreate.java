@@ -29,10 +29,22 @@ import org.openo.sdno.lcm.templatemodel.service.Node;
 import org.openo.sdno.lcm.util.Constants;
 import org.springframework.stereotype.Component;
 
+/**
+ * Create workflow is a special case, it is not composed of other workflows but neither can it share
+ * the generic implementation of execute() in AtomicWorkflow.
+ * This workflow corresponds to the following state table row:
+ * "apiOperation": "create",
+ * "currentState": "none",
+ * "newState": "created",
+ * "transitionWorkflow": "create"
+ */
 @Component
 public class GwfCreate extends GenericWorkflowImpl {
 
-    private static final Logger log = Logger.getLogger("GenericWorkflowCreate");
+    /*
+     */
+
+    private static final Logger log = Logger.getLogger("GwfCreate");
 
     /*
      * (non-Javadoc)
@@ -56,7 +68,7 @@ public class GwfCreate extends GenericWorkflowImpl {
         connectivityService.setLifecycleState(Constants.LCM_LIFECYCLESTATE_CREATED);
         connectivityService.setTemplateId(serviceTemplateId);
         connectivityService.setName(serviceName);
-        // we don't set 'id' so it will be assigned a generated uuid value by the MSS  
+        // we don't set 'id' so it will be assigned a generated uuid value by the MSS
         if(null != connectivityServiceNode.getPropertyValue("actionState")) {
             connectivityService.setActionState(connectivityServiceNode.getPropertyValue("actionState"));
         }
@@ -99,12 +111,14 @@ public class GwfCreate extends GenericWorkflowImpl {
         return responseMap;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.openo.sdno.lcm.engine.RegisterWorkflow#getWorkflowId()
-     */
+    @Override
+    protected Logger getLogger() {
+        return log;
+    }
+
     @Override
     public String getWorkflowId() {
+
         return GenericWorkflowId.CREATE.toString();
     }
 

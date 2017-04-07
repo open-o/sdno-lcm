@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.LcmStateEngine;
+import org.openo.sdno.lcm.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +36,7 @@ public class NsApiControllerFacade {
         log.info("begin nsCreationPost");
         log.fine("params: " + params.toString());
 
-        params.put("apiOperation", "create");
+        params.put(Constants.LCM_NBI_API_OPERATION, Constants.LCM_NBI_API_OPERATION_CREATE);
         return lcmStateEngine.execute(params);
     }
 
@@ -44,8 +45,38 @@ public class NsApiControllerFacade {
         log.info("begin nsInstantiationPost");
         log.fine("params: " + params.toString());
 
-        params.put("apiOperation", "deploy");
+        params.put(Constants.LCM_NBI_API_OPERATION, Constants.LCM_NBI_API_OPERATION_DEPLOY);
         return lcmStateEngine.execute(params);
+    }
+
+    public Map<String, Object> nsTerminationPost(Map<String, Object> params) {
+
+        log.info("begin nsTerminationPost");
+        log.fine("params: " + params.toString());
+
+        params.put(Constants.LCM_NBI_API_OPERATION, Constants.LCM_NBI_API_OPERATION_UNDEPLOY);
+        return lcmStateEngine.execute(params);
+    }
+
+    public Map<String, Object> nsQueryGet(Map<String, Object> params) {
+
+        log.info("begin nsQueryGet");
+        log.fine("params: " + params.toString());
+
+        params.put(Constants.LCM_NBI_API_OPERATION, Constants.LCM_NBI_API_OPERATION_GET);
+        params.put(Constants.LCM_NBI_SERVICE_ID, params.get("instanceid"));
+        return lcmStateEngine.execute(params);
+    }
+
+    public void nsDeletionDelete(Map<String, Object> params) {
+
+        log.info("begin nsDeletionDelete");
+        log.fine("params: " + params.toString());
+
+        params.put(Constants.LCM_NBI_API_OPERATION, Constants.LCM_NBI_API_OPERATION_DELETE);
+        params.put(Constants.LCM_NBI_SERVICE_ID, params.get("instanceid"));
+        lcmStateEngine.execute(params);
+
     }
 
     @Autowired
