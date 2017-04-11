@@ -1,0 +1,3115 @@
+{
+  "instance": {
+    "description": "sdno basic types",
+    "inputs": {
+      "ac1_ip": {
+        "description": "ip of ac1, only for layer3 vpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac1_peer_ip": {
+        "description": "ip of ac1 peer CE tp, only for layer3 vpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac1_port": {
+        "description": "ac1 port",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac1_route": {
+        "description": "route configure of ac1, only for layer3 vpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac1_svlan": {
+        "description": "ac1 svlan",
+        "type_name": "integer",
+        "value": 0
+      },
+      "ac2_ip": {
+        "description": "ip of ac2, only for layer3 vpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac2_peer_ip": {
+        "description": "ip of ac2 peer CE tp, only for layer3 vpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac2_port": {
+        "description": "ac2 port",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac2_route": {
+        "description": "route configure of ac2, only for layer3 vpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac2_svlan": {
+        "description": "ac2 svlan",
+        "type_name": "integer",
+        "value": 0
+      },
+      "description": {
+        "description": "description of underlayvpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "name": {
+        "description": "Name of underlayervpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "pe1_ip": {
+        "description": "mgrip of pe1",
+        "type_name": "string",
+        "value": "none"
+      },
+      "pe2_ip": {
+        "description": "mgrip of pe2",
+        "type_name": "string",
+        "value": "none"
+      },
+      "serviceType": {
+        "description": "serviceType of underlayvpn",
+        "type_name": "string",
+        "value": "l3vpn"
+      },
+      "technology": {
+        "description": "technology of underlayvpn",
+        "type_name": "string",
+        "value": "mpls"
+      },
+      "topology": {
+        "description": "topology of underlayvpn",
+        "type_name": "string",
+        "value": "point_to_point"
+      }
+    },
+    "metadata": {
+      "id": "vpnUnderlayL3",
+      "template_author": "Huawei",
+      "template_name": "underlayvpn",
+      "vendor": "sdno",
+      "version": 0.1
+    },
+    "nodes": [
+      {
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
+          }
+        ],
+        "id": "pe1_clo5p59q9co5kp6im3kqahza4",
+        "interfaces": [
+          {
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "name": "Standard",
+            "operations": [
+              {
+                "description": "Standard lifecycle create operation.",
+                "name": "create"
+              },
+              {
+                "description": "Standard lifecycle stop operation.",
+                "name": "stop"
+              },
+              {
+                "description": "Standard lifecycle start operation.",
+                "name": "start"
+              },
+              {
+                "description": "Standard lifecycle delete operation.",
+                "name": "delete"
+              },
+              {
+                "description": "Standard lifecycle configure operation.",
+                "name": "configure"
+              }
+            ],
+            "type_name": "tosca.interfaces.node.lifecycle.Standard"
+          }
+        ],
+        "properties": {
+          "controllerID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "ipAddress": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "logicID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "nativeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "phyNeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "siteID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "siteName": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          }
+        },
+        "template_name": "pe1",
+        "type_name": "sdno.node.Node"
+      },
+      {
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
+          }
+        ],
+        "id": "pe2_2x8k09zw20wyu3cy4ru0tkub5",
+        "interfaces": [
+          {
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "name": "Standard",
+            "operations": [
+              {
+                "description": "Standard lifecycle create operation.",
+                "name": "create"
+              },
+              {
+                "description": "Standard lifecycle stop operation.",
+                "name": "stop"
+              },
+              {
+                "description": "Standard lifecycle start operation.",
+                "name": "start"
+              },
+              {
+                "description": "Standard lifecycle delete operation.",
+                "name": "delete"
+              },
+              {
+                "description": "Standard lifecycle configure operation.",
+                "name": "configure"
+              }
+            ],
+            "type_name": "tosca.interfaces.node.lifecycle.Standard"
+          }
+        ],
+        "properties": {
+          "controllerID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "ipAddress": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "logicID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "nativeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "phyNeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "siteID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "siteName": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          }
+        },
+        "template_name": "pe2",
+        "type_name": "sdno.node.Node"
+      },
+      {
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ServiceEndPoint"
+          }
+        ],
+        "id": "ac2_7e1g82amtiwn5km0851x50kc2",
+        "interfaces": [
+          {
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "name": "Standard",
+            "operations": [
+              {
+                "description": "Standard lifecycle create operation.",
+                "name": "create"
+              },
+              {
+                "description": "Standard lifecycle stop operation.",
+                "name": "stop"
+              },
+              {
+                "description": "Standard lifecycle start operation.",
+                "name": "start"
+              },
+              {
+                "description": "Standard lifecycle delete operation.",
+                "name": "delete"
+              },
+              {
+                "description": "Standard lifecycle configure operation.",
+                "name": "configure"
+              }
+            ],
+            "type_name": "tosca.interfaces.node.lifecycle.Standard"
+          }
+        ],
+        "properties": {
+          "actionState": {
+            "description": "Stores the result of the last action on the service object.",
+            "type_name": "ActionStateType",
+            "value": "none"
+          },
+          "adminStatus": {
+            "description": "Used to administratively activate or deactivate already deployed service object",
+            "type_name": "AdministrationStateType",
+            "value": "none"
+          },
+          "createTime": {
+            "description": "create time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "ip": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "location": {
+            "description": "Location if on single location",
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "operStatus": {
+            "description": "Used to indicate if the service entity is operational.",
+            "type_name": "OperationalStateType",
+            "value": "none"
+          },
+          "ownerID": {
+            "description": "ID of the owner of the object, can contain controllerID",
+            "type_name": "string",
+            "value": "sdno"
+          },
+          "peerIp": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "port": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "route": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "statusReason": {
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous.",
+            "type_name": "string",
+            "value": "none"
+          },
+          "svlan": {
+            "type_name": "integer",
+            "value": 0
+          },
+          "syncStatus": {
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network",
+            "type_name": "SyncStateType",
+            "value": "none"
+          },
+          "tenantID": {
+            "description": "ID of the tenant",
+            "type_name": "string",
+            "value": "none"
+          },
+          "updateTime": {
+            "description": "update time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          }
+        },
+        "relationships": [
+          {
+            "name": "node",
+            "source_interfaces": [
+              {
+                "description": "The lifecycle interfaces define the essential, normative operations that each TOSCA Relationship Types may support.",
+                "name": "Configure",
+                "operations": [
+                  {
+                    "description": "Operation to notify the target node of a source node which is now available via a relationship.",
+                    "name": "add_source"
+                  },
+                  {
+                    "description": "Operation to pre-configure the target endpoint.",
+                    "name": "pre_configure_target"
+                  },
+                  {
+                    "description": "Operation to post-configure the source endpoint.",
+                    "name": "post_configure_source"
+                  },
+                  {
+                    "description": "Operation to notify source some property or attribute of the target changed",
+                    "name": "target_changed"
+                  },
+                  {
+                    "description": "Operation to pre-configure the source endpoint.",
+                    "name": "pre_configure_source"
+                  },
+                  {
+                    "description": "Operation to post-configure the target endpoint.",
+                    "name": "post_configure_target"
+                  },
+                  {
+                    "description": "Operation to remove a target node.",
+                    "name": "remove_target"
+                  },
+                  {
+                    "description": "Operation to notify the source node of a target node being added via a relationship.",
+                    "name": "add_target"
+                  }
+                ],
+                "type_name": "tosca.interfaces.relationship.Configure"
+              }
+            ],
+            "source_requirement_index": 0,
+            "target_node_id": "pe2_2x8k09zw20wyu3cy4ru0tkub5"
+          }
+        ],
+        "template_name": "ac2",
+        "type_name": "sdno.node.ServiceEndPoint.AC"
+      },
+      {
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ServiceEndPoint"
+          }
+        ],
+        "id": "ac1_4ccy40mw3uthzveay3yded8b5",
+        "interfaces": [
+          {
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "name": "Standard",
+            "operations": [
+              {
+                "description": "Standard lifecycle create operation.",
+                "name": "create"
+              },
+              {
+                "description": "Standard lifecycle stop operation.",
+                "name": "stop"
+              },
+              {
+                "description": "Standard lifecycle start operation.",
+                "name": "start"
+              },
+              {
+                "description": "Standard lifecycle delete operation.",
+                "name": "delete"
+              },
+              {
+                "description": "Standard lifecycle configure operation.",
+                "name": "configure"
+              }
+            ],
+            "type_name": "tosca.interfaces.node.lifecycle.Standard"
+          }
+        ],
+        "properties": {
+          "actionState": {
+            "description": "Stores the result of the last action on the service object.",
+            "type_name": "ActionStateType",
+            "value": "none"
+          },
+          "adminStatus": {
+            "description": "Used to administratively activate or deactivate already deployed service object",
+            "type_name": "AdministrationStateType",
+            "value": "none"
+          },
+          "createTime": {
+            "description": "create time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "ip": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "location": {
+            "description": "Location if on single location",
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "operStatus": {
+            "description": "Used to indicate if the service entity is operational.",
+            "type_name": "OperationalStateType",
+            "value": "none"
+          },
+          "ownerID": {
+            "description": "ID of the owner of the object, can contain controllerID",
+            "type_name": "string",
+            "value": "sdno"
+          },
+          "peerIp": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "port": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "route": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "statusReason": {
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous.",
+            "type_name": "string",
+            "value": "none"
+          },
+          "svlan": {
+            "type_name": "integer",
+            "value": 0
+          },
+          "syncStatus": {
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network",
+            "type_name": "SyncStateType",
+            "value": "none"
+          },
+          "tenantID": {
+            "description": "ID of the tenant",
+            "type_name": "string",
+            "value": "none"
+          },
+          "updateTime": {
+            "description": "update time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          }
+        },
+        "relationships": [
+          {
+            "name": "node",
+            "source_interfaces": [
+              {
+                "description": "The lifecycle interfaces define the essential, normative operations that each TOSCA Relationship Types may support.",
+                "name": "Configure",
+                "operations": [
+                  {
+                    "description": "Operation to notify the target node of a source node which is now available via a relationship.",
+                    "name": "add_source"
+                  },
+                  {
+                    "description": "Operation to pre-configure the target endpoint.",
+                    "name": "pre_configure_target"
+                  },
+                  {
+                    "description": "Operation to post-configure the source endpoint.",
+                    "name": "post_configure_source"
+                  },
+                  {
+                    "description": "Operation to notify source some property or attribute of the target changed",
+                    "name": "target_changed"
+                  },
+                  {
+                    "description": "Operation to pre-configure the source endpoint.",
+                    "name": "pre_configure_source"
+                  },
+                  {
+                    "description": "Operation to post-configure the target endpoint.",
+                    "name": "post_configure_target"
+                  },
+                  {
+                    "description": "Operation to remove a target node.",
+                    "name": "remove_target"
+                  },
+                  {
+                    "description": "Operation to notify the source node of a target node being added via a relationship.",
+                    "name": "add_target"
+                  }
+                ],
+                "type_name": "tosca.interfaces.relationship.Configure"
+              }
+            ],
+            "source_requirement_index": 0,
+            "target_node_id": "pe1_clo5p59q9co5kp6im3kqahza4"
+          }
+        ],
+        "template_name": "ac1",
+        "type_name": "sdno.node.ServiceEndPoint.AC"
+      },
+      {
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          }
+        ],
+        "id": "vpnService_8xe43r93oiq5rzczhupiwupgb",
+        "interfaces": [
+          {
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "name": "Standard",
+            "operations": [
+              {
+                "description": "Standard lifecycle create operation.",
+                "name": "create"
+              },
+              {
+                "description": "Standard lifecycle stop operation.",
+                "name": "stop"
+              },
+              {
+                "description": "Standard lifecycle start operation.",
+                "name": "start"
+              },
+              {
+                "description": "Standard lifecycle delete operation.",
+                "name": "delete"
+              },
+              {
+                "description": "Standard lifecycle configure operation.",
+                "name": "configure"
+              }
+            ],
+            "type_name": "tosca.interfaces.node.lifecycle.Standard"
+          },
+          {
+            "name": "standard",
+            "operations": [
+              {
+                "description": "Standard lifecycle undeploy operation.",
+                "implementation": "POST /openoapi/sdnonslcm/v1/ns/{instanceid}/terminate",
+                "name": "undeploy"
+              },
+              {
+                "description": "Standard lifecycle get operation.",
+                "implementation": "GET /openoapi/sdnonslcm/v1/ns/{instanceid}",
+                "name": "get"
+              },
+              {
+                "description": "Standard lifecycle create operation.",
+                "implementation": "POST /openoapi/sdnonslcm/v1/ns",
+                "name": "create"
+              },
+              {
+                "dependencies": [
+                  "sdno.node.Connection.UnderlayVpn/deploy"
+                ],
+                "description": "Deploy VPN",
+                "implementation": "POST /openoapi/sdnonslcm/v1/ns/{instanceid}/instantiate",
+                "name": "deploy"
+              },
+              {
+                "description": "Standard lifecycle configure and update operation.",
+                "implementation": "PUT /openoapi/sdnonslcm/v1/ns/{instanceid}",
+                "name": "update"
+              },
+              {
+                "description": "Standard lifecycle delete operation.",
+                "implementation": "DELETE /openoapi/sdnonslcm/v1/ns/{instanceid}",
+                "name": "delete"
+              }
+            ],
+            "type_name": "sdno.interfaces.lifecycle.Standard"
+          }
+        ],
+        "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "lifecycleState": {
+            "type_name": "LifecycleStateType",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "state_machine": {
+            "type_name": "StateMachineType",
+            "value": {
+              "rows": [
+                {
+                  "apiOperation": "create",
+                  "currentState": "none",
+                  "newState": "created",
+                  "transitionWorkflow": "create"
+                },
+                {
+                  "apiOperation": "create",
+                  "currentState": "created",
+                  "newState": "created",
+                  "transitionWorkflow": "error"
+                },
+                {
+                  "apiOperation": "create",
+                  "currentState": "deployed",
+                  "newState": "deployed",
+                  "transitionWorkflow": "error"
+                },
+                {
+                  "apiOperation": "deploy",
+                  "currentState": "none",
+                  "newState": "deployed",
+                  "transitionWorkflow": "deploy"
+                },
+                {
+                  "apiOperation": "deploy",
+                  "currentState": "created",
+                  "newState": "deployed",
+                  "transitionWorkflow": "deployCreated"
+                },
+                {
+                  "apiOperation": "deploy",
+                  "currentState": "deployed",
+                  "newState": "deployed",
+                  "transitionWorkflow": "ERR"
+                },
+                {
+                  "apiOperation": "get",
+                  "currentState": "none",
+                  "newState": "none",
+                  "transitionWorkflow": "ERR"
+                },
+                {
+                  "apiOperation": "get",
+                  "currentState": "created",
+                  "newState": "created",
+                  "transitionWorkflow": "get"
+                },
+                {
+                  "apiOperation": "get",
+                  "currentState": "deployed",
+                  "newState": "deployed",
+                  "transitionWorkflow": "get"
+                },
+                {
+                  "apiOperation": "update",
+                  "currentState": "none",
+                  "newState": "none",
+                  "transitionWorkflow": "ERR"
+                },
+                {
+                  "apiOperation": "update",
+                  "currentState": "created",
+                  "newState": "created",
+                  "transitionWorkflow": "updatecreated"
+                },
+                {
+                  "apiOperation": "update",
+                  "currentState": "deployed",
+                  "newState": "deployed",
+                  "transitionWorkflow": "updateDeployed"
+                },
+                {
+                  "apiOperation": "undeploy",
+                  "currentState": "none",
+                  "newState": "none",
+                  "transitionWorkflow": "ERR"
+                },
+                {
+                  "apiOperation": "undeploy",
+                  "currentState": "created",
+                  "newState": "created",
+                  "transitionWorkflow": "ERR"
+                },
+                {
+                  "apiOperation": "undeploy",
+                  "currentState": "deployed",
+                  "newState": "created",
+                  "transitionWorkflow": "undeploy"
+                },
+                {
+                  "apiOperation": "delete",
+                  "currentState": "none",
+                  "newState": "none",
+                  "transitionWorkflow": "ERR"
+                },
+                {
+                  "apiOperation": "delete",
+                  "currentState": "created",
+                  "newState": "none",
+                  "transitionWorkflow": "deleteCreated"
+                },
+                {
+                  "apiOperation": "delete",
+                  "currentState": "deployed",
+                  "newState": "none",
+                  "transitionWorkflow": "deleteDeployed"
+                }
+              ]
+            }
+          },
+          "templateId": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          }
+        },
+        "relationships": [
+          {
+            "name": "endPoint",
+            "source_interfaces": [
+              {
+                "description": "The lifecycle interfaces define the essential, normative operations that each TOSCA Relationship Types may support.",
+                "name": "Configure",
+                "operations": [
+                  {
+                    "description": "Operation to notify the target node of a source node which is now available via a relationship.",
+                    "name": "add_source"
+                  },
+                  {
+                    "description": "Operation to pre-configure the target endpoint.",
+                    "name": "pre_configure_target"
+                  },
+                  {
+                    "description": "Operation to post-configure the source endpoint.",
+                    "name": "post_configure_source"
+                  },
+                  {
+                    "description": "Operation to notify source some property or attribute of the target changed",
+                    "name": "target_changed"
+                  },
+                  {
+                    "description": "Operation to pre-configure the source endpoint.",
+                    "name": "pre_configure_source"
+                  },
+                  {
+                    "description": "Operation to post-configure the target endpoint.",
+                    "name": "post_configure_target"
+                  },
+                  {
+                    "description": "Operation to remove a target node.",
+                    "name": "remove_target"
+                  },
+                  {
+                    "description": "Operation to notify the source node of a target node being added via a relationship.",
+                    "name": "add_target"
+                  }
+                ],
+                "type_name": "tosca.interfaces.relationship.Configure"
+              }
+            ],
+            "source_requirement_index": 0,
+            "target_node_id": "ac1_4ccy40mw3uthzveay3yded8b5"
+          },
+          {
+            "name": "endPoint",
+            "source_interfaces": [
+              {
+                "description": "The lifecycle interfaces define the essential, normative operations that each TOSCA Relationship Types may support.",
+                "name": "Configure",
+                "operations": [
+                  {
+                    "description": "Operation to notify the target node of a source node which is now available via a relationship.",
+                    "name": "add_source"
+                  },
+                  {
+                    "description": "Operation to pre-configure the target endpoint.",
+                    "name": "pre_configure_target"
+                  },
+                  {
+                    "description": "Operation to post-configure the source endpoint.",
+                    "name": "post_configure_source"
+                  },
+                  {
+                    "description": "Operation to notify source some property or attribute of the target changed",
+                    "name": "target_changed"
+                  },
+                  {
+                    "description": "Operation to pre-configure the source endpoint.",
+                    "name": "pre_configure_source"
+                  },
+                  {
+                    "description": "Operation to post-configure the target endpoint.",
+                    "name": "post_configure_target"
+                  },
+                  {
+                    "description": "Operation to remove a target node.",
+                    "name": "remove_target"
+                  },
+                  {
+                    "description": "Operation to notify the source node of a target node being added via a relationship.",
+                    "name": "add_target"
+                  }
+                ],
+                "type_name": "tosca.interfaces.relationship.Configure"
+              }
+            ],
+            "source_requirement_index": 1,
+            "target_node_id": "ac2_7e1g82amtiwn5km0851x50kc2"
+          },
+          {
+            "name": "realizes",
+            "source_interfaces": [
+              {
+                "description": "The lifecycle interfaces define the essential, normative operations that each TOSCA Relationship Types may support.",
+                "name": "Configure",
+                "operations": [
+                  {
+                    "description": "Operation to notify the target node of a source node which is now available via a relationship.",
+                    "name": "add_source"
+                  },
+                  {
+                    "description": "Operation to pre-configure the target endpoint.",
+                    "name": "pre_configure_target"
+                  },
+                  {
+                    "description": "Operation to post-configure the source endpoint.",
+                    "name": "post_configure_source"
+                  },
+                  {
+                    "description": "Operation to notify source some property or attribute of the target changed",
+                    "name": "target_changed"
+                  },
+                  {
+                    "description": "Operation to pre-configure the source endpoint.",
+                    "name": "pre_configure_source"
+                  },
+                  {
+                    "description": "Operation to post-configure the target endpoint.",
+                    "name": "post_configure_target"
+                  },
+                  {
+                    "description": "Operation to remove a target node.",
+                    "name": "remove_target"
+                  },
+                  {
+                    "description": "Operation to notify the source node of a target node being added via a relationship.",
+                    "name": "add_target"
+                  }
+                ],
+                "type_name": "tosca.interfaces.relationship.Configure"
+              }
+            ],
+            "source_requirement_index": 2,
+            "target_node_id": "vpnConnection_yrc30lsinws4jl4ppkwbplgf2"
+          }
+        ],
+        "template_name": "vpnService",
+        "type_name": "sdno.node.ConnectivityService.UnderlayVpn"
+      },
+      {
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ConnectionEndPoint"
+          }
+        ],
+        "id": "tp2_dahui3gb0g4fmry9il5afj1cb",
+        "interfaces": [
+          {
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "name": "Standard",
+            "operations": [
+              {
+                "description": "Standard lifecycle create operation.",
+                "name": "create"
+              },
+              {
+                "description": "Standard lifecycle stop operation.",
+                "name": "stop"
+              },
+              {
+                "description": "Standard lifecycle start operation.",
+                "name": "start"
+              },
+              {
+                "description": "Standard lifecycle delete operation.",
+                "name": "delete"
+              },
+              {
+                "description": "Standard lifecycle configure operation.",
+                "name": "configure"
+              }
+            ],
+            "type_name": "tosca.interfaces.node.lifecycle.Standard"
+          },
+          {
+            "name": "standard",
+            "operations": [
+              {
+                "description": "Standard lifecycle undeploy operation.",
+                "name": "undeploy"
+              },
+              {
+                "description": "Standard lifecycle get operation.",
+                "name": "get"
+              },
+              {
+                "description": "Standard lifecycle create operation.",
+                "name": "create"
+              },
+              {
+                "description": "Standard lifecycle deploy operation.",
+                "name": "deploy"
+              },
+              {
+                "description": "Standard lifecycle configure and update operation.",
+                "name": "update"
+              },
+              {
+                "description": "Standard lifecycle delete operation.",
+                "name": "delete"
+              }
+            ],
+            "type_name": "sdno.interfaces.lifecycle.Standard"
+          }
+        ],
+        "properties": {
+          "actionState": {
+            "description": "Stores the result of the last action on the service object.",
+            "type_name": "ActionStateType",
+            "value": "none"
+          },
+          "adminStatus": {
+            "description": "Used to administratively activate or deactivate already deployed service object",
+            "type_name": "AdministrationStateType",
+            "value": "none"
+          },
+          "createTime": {
+            "description": "create time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "direction": {
+            "type_name": "string",
+            "value": "BI_DIRECTION"
+          },
+          "hubSpoke": {
+            "description": "Is the endpoint hub or spoke",
+            "type_name": "string",
+            "value": "spoke"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "location": {
+            "description": "Location if on single location",
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "operStatus": {
+            "description": "Used to indicate if the service entity is operational.",
+            "type_name": "OperationalStateType",
+            "value": "none"
+          },
+          "ownerID": {
+            "description": "ID of the owner of the object, can contain controllerID",
+            "type_name": "string",
+            "value": "sdno"
+          },
+          "statusReason": {
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous.",
+            "type_name": "string",
+            "value": "none"
+          },
+          "syncStatus": {
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network",
+            "type_name": "SyncStateType",
+            "value": "none"
+          },
+          "tenantID": {
+            "description": "ID of the tenant",
+            "type_name": "string",
+            "value": "none"
+          },
+          "tpRole": {
+            "type_name": "string",
+            "value": "UNI"
+          },
+          "type": {
+            "description": "Type of the TP",
+            "type_name": "string",
+            "value": "CTP"
+          },
+          "updateTime": {
+            "description": "update time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "workingLayer": {
+            "description": "Working Layer Rate",
+            "type_name": "string",
+            "value": "LR_IP"
+          }
+        },
+        "template_name": "tp2",
+        "type_name": "sdno.node.ConnectionEndPoint.Tp"
+      },
+      {
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ConnectionEndPoint"
+          }
+        ],
+        "id": "tp1_guh2htxip1w4jvtbc7ay5a869",
+        "interfaces": [
+          {
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "name": "Standard",
+            "operations": [
+              {
+                "description": "Standard lifecycle create operation.",
+                "name": "create"
+              },
+              {
+                "description": "Standard lifecycle stop operation.",
+                "name": "stop"
+              },
+              {
+                "description": "Standard lifecycle start operation.",
+                "name": "start"
+              },
+              {
+                "description": "Standard lifecycle delete operation.",
+                "name": "delete"
+              },
+              {
+                "description": "Standard lifecycle configure operation.",
+                "name": "configure"
+              }
+            ],
+            "type_name": "tosca.interfaces.node.lifecycle.Standard"
+          },
+          {
+            "name": "standard",
+            "operations": [
+              {
+                "description": "Standard lifecycle undeploy operation.",
+                "name": "undeploy"
+              },
+              {
+                "description": "Standard lifecycle get operation.",
+                "name": "get"
+              },
+              {
+                "description": "Standard lifecycle create operation.",
+                "name": "create"
+              },
+              {
+                "description": "Standard lifecycle deploy operation.",
+                "name": "deploy"
+              },
+              {
+                "description": "Standard lifecycle configure and update operation.",
+                "name": "update"
+              },
+              {
+                "description": "Standard lifecycle delete operation.",
+                "name": "delete"
+              }
+            ],
+            "type_name": "sdno.interfaces.lifecycle.Standard"
+          }
+        ],
+        "properties": {
+          "actionState": {
+            "description": "Stores the result of the last action on the service object.",
+            "type_name": "ActionStateType",
+            "value": "none"
+          },
+          "adminStatus": {
+            "description": "Used to administratively activate or deactivate already deployed service object",
+            "type_name": "AdministrationStateType",
+            "value": "none"
+          },
+          "createTime": {
+            "description": "create time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "direction": {
+            "type_name": "string",
+            "value": "BI_DIRECTION"
+          },
+          "hubSpoke": {
+            "description": "Is the endpoint hub or spoke",
+            "type_name": "string",
+            "value": "spoke"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "location": {
+            "description": "Location if on single location",
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "operStatus": {
+            "description": "Used to indicate if the service entity is operational.",
+            "type_name": "OperationalStateType",
+            "value": "none"
+          },
+          "ownerID": {
+            "description": "ID of the owner of the object, can contain controllerID",
+            "type_name": "string",
+            "value": "sdno"
+          },
+          "statusReason": {
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous.",
+            "type_name": "string",
+            "value": "none"
+          },
+          "syncStatus": {
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network",
+            "type_name": "SyncStateType",
+            "value": "none"
+          },
+          "tenantID": {
+            "description": "ID of the tenant",
+            "type_name": "string",
+            "value": "none"
+          },
+          "tpRole": {
+            "type_name": "string",
+            "value": "UNI"
+          },
+          "type": {
+            "description": "Type of the TP",
+            "type_name": "string",
+            "value": "CTP"
+          },
+          "updateTime": {
+            "description": "update time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "workingLayer": {
+            "description": "Working Layer Rate",
+            "type_name": "string",
+            "value": "LR_IP"
+          }
+        },
+        "template_name": "tp1",
+        "type_name": "sdno.node.ConnectionEndPoint.Tp"
+      },
+      {
+        "artifacts": [
+          {
+            "name": "mapper",
+            "source_path": "mapper/l3vpn.tsmap",
+            "type_name": "sdno.artifacts.Implementation.ToscaSwaggerMapper"
+          },
+          {
+            "name": "swagger",
+            "source_path": "swagger/l3vpn.jaml",
+            "type_name": "sdno.artifacts.Implementation.Swagger"
+          }
+        ],
+        "capabilities": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "realizes",
+            "type_name": "sdno.capability.Realizes"
+          }
+        ],
+        "id": "vpnConnection_yrc30lsinws4jl4ppkwbplgf2",
+        "interfaces": [
+          {
+            "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+            "name": "Standard",
+            "operations": [
+              {
+                "description": "Standard lifecycle create operation.",
+                "name": "create"
+              },
+              {
+                "description": "Standard lifecycle stop operation.",
+                "name": "stop"
+              },
+              {
+                "description": "Standard lifecycle start operation.",
+                "name": "start"
+              },
+              {
+                "description": "Standard lifecycle delete operation.",
+                "name": "delete"
+              },
+              {
+                "description": "Standard lifecycle configure operation.",
+                "name": "configure"
+              }
+            ],
+            "type_name": "tosca.interfaces.node.lifecycle.Standard"
+          },
+          {
+            "name": "standard",
+            "operations": [
+              {
+                "description": "Standard lifecycle undeploy operation.",
+                "implementation": "DELETE /openoapi/sdnol3vpn/v1/l3vpns/{uuid}",
+                "name": "undeploy"
+              },
+              {
+                "description": "Standard lifecycle get operation.",
+                "implementation": "GET /openoapi/sdnol3vpn/v1/l3vpns",
+                "name": "get"
+              },
+              {
+                "description": "Standard lifecycle create operation.",
+                "name": "create"
+              },
+              {
+                "description": "Standard lifecycle deploy operation.",
+                "implementation": "POST /openoapi/sdnol3vpn/v1/l3vpns",
+                "name": "deploy"
+              },
+              {
+                "description": "Standard lifecycle configure and update operation.",
+                "implementation": "PUT /openoapi/sdnol3vpn/v1/l3vpns/{uuid}",
+                "name": "update"
+              },
+              {
+                "description": "Standard lifecycle delete operation.",
+                "implementation": "DELETE /openoapi/sdnol3vpn/v1/l3vpns/{uuid}",
+                "name": "delete"
+              }
+            ],
+            "type_name": "sdno.interfaces.lifecycle.Standard"
+          }
+        ],
+        "properties": {
+          "actionState": {
+            "description": "Stores the result of the last action on the service object.",
+            "type_name": "ActionStateType",
+            "value": "none"
+          },
+          "adminStatus": {
+            "description": "Used to administratively activate or deactivate already deployed service object",
+            "type_name": "AdministrationStateType",
+            "value": "none"
+          },
+          "createTime": {
+            "description": "create time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "location": {
+            "description": "Location if on single location",
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "operStatus": {
+            "description": "Used to indicate if the service entity is operational.",
+            "type_name": "OperationalStateType",
+            "value": "none"
+          },
+          "ownerID": {
+            "description": "ID of the owner of the object, can contain controllerID",
+            "type_name": "string",
+            "value": "sdno"
+          },
+          "statusReason": {
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous.",
+            "type_name": "string",
+            "value": "none"
+          },
+          "syncStatus": {
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network",
+            "type_name": "SyncStateType",
+            "value": "none"
+          },
+          "tenantID": {
+            "description": "ID of the tenant",
+            "type_name": "string",
+            "value": "none"
+          },
+          "updateTime": {
+            "description": "update time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "vpnBasicInfo": {
+            "type_name": "VpnBasicInfo",
+            "value": {
+              "ipMtu": 9600,
+              "serviceType": "l3vpn",
+              "technology": "mpls",
+              "topology": "point_to_point",
+              "uuid": "none"
+            }
+          }
+        },
+        "relationships": [
+          {
+            "name": "endPoint",
+            "source_interfaces": [
+              {
+                "description": "The lifecycle interfaces define the essential, normative operations that each TOSCA Relationship Types may support.",
+                "name": "Configure",
+                "operations": [
+                  {
+                    "description": "Operation to notify the target node of a source node which is now available via a relationship.",
+                    "name": "add_source"
+                  },
+                  {
+                    "description": "Operation to pre-configure the target endpoint.",
+                    "name": "pre_configure_target"
+                  },
+                  {
+                    "description": "Operation to post-configure the source endpoint.",
+                    "name": "post_configure_source"
+                  },
+                  {
+                    "description": "Operation to notify source some property or attribute of the target changed",
+                    "name": "target_changed"
+                  },
+                  {
+                    "description": "Operation to pre-configure the source endpoint.",
+                    "name": "pre_configure_source"
+                  },
+                  {
+                    "description": "Operation to post-configure the target endpoint.",
+                    "name": "post_configure_target"
+                  },
+                  {
+                    "description": "Operation to remove a target node.",
+                    "name": "remove_target"
+                  },
+                  {
+                    "description": "Operation to notify the source node of a target node being added via a relationship.",
+                    "name": "add_target"
+                  }
+                ],
+                "type_name": "tosca.interfaces.relationship.Configure"
+              }
+            ],
+            "source_requirement_index": 0,
+            "target_node_id": "tp1_guh2htxip1w4jvtbc7ay5a869"
+          },
+          {
+            "name": "endPoint",
+            "source_interfaces": [
+              {
+                "description": "The lifecycle interfaces define the essential, normative operations that each TOSCA Relationship Types may support.",
+                "name": "Configure",
+                "operations": [
+                  {
+                    "description": "Operation to notify the target node of a source node which is now available via a relationship.",
+                    "name": "add_source"
+                  },
+                  {
+                    "description": "Operation to pre-configure the target endpoint.",
+                    "name": "pre_configure_target"
+                  },
+                  {
+                    "description": "Operation to post-configure the source endpoint.",
+                    "name": "post_configure_source"
+                  },
+                  {
+                    "description": "Operation to notify source some property or attribute of the target changed",
+                    "name": "target_changed"
+                  },
+                  {
+                    "description": "Operation to pre-configure the source endpoint.",
+                    "name": "pre_configure_source"
+                  },
+                  {
+                    "description": "Operation to post-configure the target endpoint.",
+                    "name": "post_configure_target"
+                  },
+                  {
+                    "description": "Operation to remove a target node.",
+                    "name": "remove_target"
+                  },
+                  {
+                    "description": "Operation to notify the source node of a target node being added via a relationship.",
+                    "name": "add_target"
+                  }
+                ],
+                "type_name": "tosca.interfaces.relationship.Configure"
+              }
+            ],
+            "source_requirement_index": 1,
+            "target_node_id": "tp2_dahui3gb0g4fmry9il5afj1cb"
+          }
+        ],
+        "template_name": "vpnConnection",
+        "type_name": "sdno.node.Connection.UnderlayVpn"
+      }
+    ]
+  },
+  "model": {
+    "description": "sdno basic types",
+    "inputs": {
+      "ac1_ip": {
+        "description": "ip of ac1, only for layer3 vpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac1_peer_ip": {
+        "description": "ip of ac1 peer CE tp, only for layer3 vpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac1_port": {
+        "description": "ac1 port",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac1_route": {
+        "description": "route configure of ac1, only for layer3 vpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac1_svlan": {
+        "description": "ac1 svlan",
+        "type_name": "integer",
+        "value": 0
+      },
+      "ac2_ip": {
+        "description": "ip of ac2, only for layer3 vpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac2_peer_ip": {
+        "description": "ip of ac2 peer CE tp, only for layer3 vpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac2_port": {
+        "description": "ac2 port",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac2_route": {
+        "description": "route configure of ac2, only for layer3 vpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "ac2_svlan": {
+        "description": "ac2 svlan",
+        "type_name": "integer",
+        "value": 0
+      },
+      "description": {
+        "description": "description of underlayvpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "name": {
+        "description": "Name of underlayervpn",
+        "type_name": "string",
+        "value": "none"
+      },
+      "pe1_ip": {
+        "description": "mgrip of pe1",
+        "type_name": "string",
+        "value": "none"
+      },
+      "pe2_ip": {
+        "description": "mgrip of pe2",
+        "type_name": "string",
+        "value": "none"
+      },
+      "serviceType": {
+        "description": "serviceType of underlayvpn",
+        "type_name": "string",
+        "value": "l3vpn"
+      },
+      "technology": {
+        "description": "technology of underlayvpn",
+        "type_name": "string",
+        "value": "mpls"
+      },
+      "topology": {
+        "description": "topology of underlayvpn",
+        "type_name": "string",
+        "value": "point_to_point"
+      }
+    },
+    "metadata": {
+      "id": "vpnUnderlayL3",
+      "template_author": "Huawei",
+      "template_name": "underlayvpn",
+      "vendor": "sdno",
+      "version": 0.1
+    },
+    "node_templates": [
+      {
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
+          }
+        ],
+        "default_instances": 1,
+        "interface_templates": [
+          "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x3914750>"
+        ],
+        "min_instances": 0,
+        "name": "pe1",
+        "properties": {
+          "controllerID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "ipAddress": {
+            "type_name": "string",
+            "value": {
+              "get_input": "pe1_ip"
+            }
+          },
+          "logicID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "nativeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "phyNeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "siteID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "siteName": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          }
+        },
+        "type_name": "sdno.node.Node"
+      },
+      {
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "host",
+            "type_name": "sdno.capability.Host"
+          },
+          {
+            "name": "binding",
+            "type_name": "sdno.capability.Bindable"
+          }
+        ],
+        "default_instances": 1,
+        "interface_templates": [
+          "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x3c15710>"
+        ],
+        "min_instances": 0,
+        "name": "pe2",
+        "properties": {
+          "controllerID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "ipAddress": {
+            "type_name": "string",
+            "value": {
+              "get_input": "pe2_ip"
+            }
+          },
+          "logicID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "nativeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "phyNeID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "siteID": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "siteName": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          }
+        },
+        "type_name": "sdno.node.Node"
+      },
+      {
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ServiceEndPoint"
+          }
+        ],
+        "default_instances": 1,
+        "interface_templates": [
+          "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x3dc3510>"
+        ],
+        "min_instances": 0,
+        "name": "ac2",
+        "properties": {
+          "actionState": {
+            "description": "Stores the result of the last action on the service object.",
+            "type_name": "ActionStateType",
+            "value": "none"
+          },
+          "adminStatus": {
+            "description": "Used to administratively activate or deactivate already deployed service object",
+            "type_name": "AdministrationStateType",
+            "value": "none"
+          },
+          "createTime": {
+            "description": "create time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "ip": {
+            "type_name": "string",
+            "value": {
+              "get_input": "ac2_ip"
+            }
+          },
+          "location": {
+            "description": "Location if on single location",
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "operStatus": {
+            "description": "Used to indicate if the service entity is operational.",
+            "type_name": "OperationalStateType",
+            "value": "none"
+          },
+          "ownerID": {
+            "description": "ID of the owner of the object, can contain controllerID",
+            "type_name": "string",
+            "value": "sdno"
+          },
+          "peerIp": {
+            "type_name": "string",
+            "value": {
+              "get_input": "ac2_peer_ip"
+            }
+          },
+          "port": {
+            "type_name": "string",
+            "value": {
+              "get_input": "ac2_port"
+            }
+          },
+          "route": {
+            "type_name": "string",
+            "value": {
+              "get_input": "ac2_route"
+            }
+          },
+          "statusReason": {
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous.",
+            "type_name": "string",
+            "value": "none"
+          },
+          "svlan": {
+            "type_name": "integer",
+            "value": {
+              "get_input": "ac2_svlan"
+            }
+          },
+          "syncStatus": {
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network",
+            "type_name": "SyncStateType",
+            "value": "none"
+          },
+          "tenantID": {
+            "description": "ID of the tenant",
+            "type_name": "string",
+            "value": "none"
+          },
+          "updateTime": {
+            "description": "update time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          }
+        },
+        "requirement_templates": [
+          {
+            "name": "node",
+            "relationship_template": {
+              "source_interface_templates": [
+                "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x3dc3a50>"
+              ],
+              "type_name": "sdno.relationship.HostedOn"
+            },
+            "target_node_template_name": "pe2"
+          }
+        ],
+        "type_name": "sdno.node.ServiceEndPoint.AC"
+      },
+      {
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ServiceEndPoint"
+          }
+        ],
+        "default_instances": 1,
+        "interface_templates": [
+          "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x7fc424719310>"
+        ],
+        "min_instances": 0,
+        "name": "ac1",
+        "properties": {
+          "actionState": {
+            "description": "Stores the result of the last action on the service object.",
+            "type_name": "ActionStateType",
+            "value": "none"
+          },
+          "adminStatus": {
+            "description": "Used to administratively activate or deactivate already deployed service object",
+            "type_name": "AdministrationStateType",
+            "value": "none"
+          },
+          "createTime": {
+            "description": "create time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "ip": {
+            "type_name": "string",
+            "value": {
+              "get_input": "ac1_ip"
+            }
+          },
+          "location": {
+            "description": "Location if on single location",
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "operStatus": {
+            "description": "Used to indicate if the service entity is operational.",
+            "type_name": "OperationalStateType",
+            "value": "none"
+          },
+          "ownerID": {
+            "description": "ID of the owner of the object, can contain controllerID",
+            "type_name": "string",
+            "value": "sdno"
+          },
+          "peerIp": {
+            "type_name": "string",
+            "value": {
+              "get_input": "ac1_peer_ip"
+            }
+          },
+          "port": {
+            "type_name": "string",
+            "value": {
+              "get_input": "ac1_port"
+            }
+          },
+          "route": {
+            "type_name": "string",
+            "value": {
+              "get_input": "ac1_route"
+            }
+          },
+          "statusReason": {
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous.",
+            "type_name": "string",
+            "value": "none"
+          },
+          "svlan": {
+            "type_name": "integer",
+            "value": {
+              "get_input": "ac1_svlan"
+            }
+          },
+          "syncStatus": {
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network",
+            "type_name": "SyncStateType",
+            "value": "none"
+          },
+          "tenantID": {
+            "description": "ID of the tenant",
+            "type_name": "string",
+            "value": "none"
+          },
+          "updateTime": {
+            "description": "update time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          }
+        },
+        "requirement_templates": [
+          {
+            "name": "node",
+            "relationship_template": {
+              "source_interface_templates": [
+                "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x7fc424719850>"
+              ],
+              "type_name": "sdno.relationship.HostedOn"
+            },
+            "target_node_template_name": "pe1"
+          }
+        ],
+        "type_name": "sdno.node.ServiceEndPoint.AC"
+      },
+      {
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          }
+        ],
+        "default_instances": 1,
+        "interface_templates": [
+          "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x7fc418171290>",
+          "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x7fc418171550>"
+        ],
+        "min_instances": 0,
+        "name": "vpnService",
+        "properties": {
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "lifecycleState": {
+            "type_name": "LifecycleStateType",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": {
+              "get_input": "name"
+            }
+          },
+          "state_machine": {
+            "type_name": "StateMachineType",
+            "value": {
+              "rows": [
+                {
+                  "apiOperation": "create",
+                  "currentState": "none",
+                  "newState": "created",
+                  "transitionWorkflow": "create"
+                },
+                {
+                  "apiOperation": "create",
+                  "currentState": "created",
+                  "newState": "created",
+                  "transitionWorkflow": "error"
+                },
+                {
+                  "apiOperation": "create",
+                  "currentState": "deployed",
+                  "newState": "deployed",
+                  "transitionWorkflow": "error"
+                },
+                {
+                  "apiOperation": "deploy",
+                  "currentState": "none",
+                  "newState": "deployed",
+                  "transitionWorkflow": "deploy"
+                },
+                {
+                  "apiOperation": "deploy",
+                  "currentState": "created",
+                  "newState": "deployed",
+                  "transitionWorkflow": "deployCreated"
+                },
+                {
+                  "apiOperation": "deploy",
+                  "currentState": "deployed",
+                  "newState": "deployed",
+                  "transitionWorkflow": "ERR"
+                },
+                {
+                  "apiOperation": "get",
+                  "currentState": "none",
+                  "newState": "none",
+                  "transitionWorkflow": "ERR"
+                },
+                {
+                  "apiOperation": "get",
+                  "currentState": "created",
+                  "newState": "created",
+                  "transitionWorkflow": "get"
+                },
+                {
+                  "apiOperation": "get",
+                  "currentState": "deployed",
+                  "newState": "deployed",
+                  "transitionWorkflow": "get"
+                },
+                {
+                  "apiOperation": "update",
+                  "currentState": "none",
+                  "newState": "none",
+                  "transitionWorkflow": "ERR"
+                },
+                {
+                  "apiOperation": "update",
+                  "currentState": "created",
+                  "newState": "created",
+                  "transitionWorkflow": "updatecreated"
+                },
+                {
+                  "apiOperation": "update",
+                  "currentState": "deployed",
+                  "newState": "deployed",
+                  "transitionWorkflow": "updateDeployed"
+                },
+                {
+                  "apiOperation": "undeploy",
+                  "currentState": "none",
+                  "newState": "none",
+                  "transitionWorkflow": "ERR"
+                },
+                {
+                  "apiOperation": "undeploy",
+                  "currentState": "created",
+                  "newState": "created",
+                  "transitionWorkflow": "ERR"
+                },
+                {
+                  "apiOperation": "undeploy",
+                  "currentState": "deployed",
+                  "newState": "created",
+                  "transitionWorkflow": "undeploy"
+                },
+                {
+                  "apiOperation": "delete",
+                  "currentState": "none",
+                  "newState": "none",
+                  "transitionWorkflow": "ERR"
+                },
+                {
+                  "apiOperation": "delete",
+                  "currentState": "created",
+                  "newState": "none",
+                  "transitionWorkflow": "deleteCreated"
+                },
+                {
+                  "apiOperation": "delete",
+                  "currentState": "deployed",
+                  "newState": "none",
+                  "transitionWorkflow": "deleteDeployed"
+                }
+              ]
+            }
+          },
+          "templateId": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          }
+        },
+        "requirement_templates": [
+          {
+            "name": "endPoint",
+            "relationship_template": {
+              "source_interface_templates": [
+                "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x7fc418171ed0>"
+              ],
+              "type_name": "sdno.relationship.ServiceEndPoint"
+            },
+            "target_node_template_name": "ac1"
+          },
+          {
+            "name": "endPoint",
+            "relationship_template": {
+              "source_interface_templates": [
+                "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x7fc41816f4d0>"
+              ],
+              "type_name": "sdno.relationship.ServiceEndPoint"
+            },
+            "target_node_template_name": "ac2"
+          },
+          {
+            "name": "realizes",
+            "relationship_template": {
+              "source_interface_templates": [
+                "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x7fc41816ff90>"
+              ],
+              "type_name": "sdno.relationship.RealizedBy"
+            },
+            "target_node_template_name": "vpnConnection"
+          }
+        ],
+        "type_name": "sdno.node.ConnectivityService.UnderlayVpn"
+      },
+      {
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ConnectionEndPoint"
+          }
+        ],
+        "default_instances": 1,
+        "interface_templates": [
+          "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x7fc41818f1d0>",
+          "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x7fc41818f490>"
+        ],
+        "min_instances": 0,
+        "name": "tp2",
+        "properties": {
+          "actionState": {
+            "description": "Stores the result of the last action on the service object.",
+            "type_name": "ActionStateType",
+            "value": "none"
+          },
+          "adminStatus": {
+            "description": "Used to administratively activate or deactivate already deployed service object",
+            "type_name": "AdministrationStateType",
+            "value": "none"
+          },
+          "createTime": {
+            "description": "create time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "direction": {
+            "type_name": "string",
+            "value": "BI_DIRECTION"
+          },
+          "hubSpoke": {
+            "description": "Is the endpoint hub or spoke",
+            "type_name": "string",
+            "value": "spoke"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "location": {
+            "description": "Location if on single location",
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "operStatus": {
+            "description": "Used to indicate if the service entity is operational.",
+            "type_name": "OperationalStateType",
+            "value": "none"
+          },
+          "ownerID": {
+            "description": "ID of the owner of the object, can contain controllerID",
+            "type_name": "string",
+            "value": "sdno"
+          },
+          "statusReason": {
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous.",
+            "type_name": "string",
+            "value": "none"
+          },
+          "syncStatus": {
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network",
+            "type_name": "SyncStateType",
+            "value": "none"
+          },
+          "tenantID": {
+            "description": "ID of the tenant",
+            "type_name": "string",
+            "value": "none"
+          },
+          "tpRole": {
+            "type_name": "string",
+            "value": "UNI"
+          },
+          "type": {
+            "description": "Type of the TP",
+            "type_name": "string",
+            "value": "CTP"
+          },
+          "updateTime": {
+            "description": "update time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "workingLayer": {
+            "description": "Working Layer Rate",
+            "type_name": "string",
+            "value": "LR_IP"
+          }
+        },
+        "type_name": "sdno.node.ConnectionEndPoint.Tp"
+      },
+      {
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "endPoint",
+            "type_name": "sdno.capability.ConnectionEndPoint"
+          }
+        ],
+        "default_instances": 1,
+        "interface_templates": [
+          "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x7fc41815b7d0>",
+          "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x7fc41815ba90>"
+        ],
+        "min_instances": 0,
+        "name": "tp1",
+        "properties": {
+          "actionState": {
+            "description": "Stores the result of the last action on the service object.",
+            "type_name": "ActionStateType",
+            "value": "none"
+          },
+          "adminStatus": {
+            "description": "Used to administratively activate or deactivate already deployed service object",
+            "type_name": "AdministrationStateType",
+            "value": "none"
+          },
+          "createTime": {
+            "description": "create time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "direction": {
+            "type_name": "string",
+            "value": "BI_DIRECTION"
+          },
+          "hubSpoke": {
+            "description": "Is the endpoint hub or spoke",
+            "type_name": "string",
+            "value": "spoke"
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "location": {
+            "description": "Location if on single location",
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "operStatus": {
+            "description": "Used to indicate if the service entity is operational.",
+            "type_name": "OperationalStateType",
+            "value": "none"
+          },
+          "ownerID": {
+            "description": "ID of the owner of the object, can contain controllerID",
+            "type_name": "string",
+            "value": "sdno"
+          },
+          "statusReason": {
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous.",
+            "type_name": "string",
+            "value": "none"
+          },
+          "syncStatus": {
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network",
+            "type_name": "SyncStateType",
+            "value": "none"
+          },
+          "tenantID": {
+            "description": "ID of the tenant",
+            "type_name": "string",
+            "value": "none"
+          },
+          "tpRole": {
+            "type_name": "string",
+            "value": "UNI"
+          },
+          "type": {
+            "description": "Type of the TP",
+            "type_name": "string",
+            "value": "CTP"
+          },
+          "updateTime": {
+            "description": "update time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "workingLayer": {
+            "description": "Working Layer Rate",
+            "type_name": "string",
+            "value": "LR_IP"
+          }
+        },
+        "type_name": "sdno.node.ConnectionEndPoint.Tp"
+      },
+      {
+        "artifact_templates": [
+          "<aria.parser.modeling.model_elements.ArtifactTemplate object at 0x3ce8c50>",
+          "<aria.parser.modeling.model_elements.ArtifactTemplate object at 0x3ce8c10>"
+        ],
+        "capability_templates": [
+          {
+            "name": "feature",
+            "type_name": "tosca.capabilities.Node"
+          },
+          {
+            "name": "realizes",
+            "type_name": "sdno.capability.Realizes"
+          }
+        ],
+        "default_instances": 1,
+        "interface_templates": [
+          "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x3ce8490>",
+          "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x3ce8750>"
+        ],
+        "min_instances": 0,
+        "name": "vpnConnection",
+        "properties": {
+          "actionState": {
+            "description": "Stores the result of the last action on the service object.",
+            "type_name": "ActionStateType",
+            "value": "none"
+          },
+          "adminStatus": {
+            "description": "Used to administratively activate or deactivate already deployed service object",
+            "type_name": "AdministrationStateType",
+            "value": "none"
+          },
+          "createTime": {
+            "description": "create time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "description": {
+            "type_name": "string",
+            "value": {
+              "get_input": "description"
+            }
+          },
+          "id": {
+            "type_name": "string",
+            "value": "none"
+          },
+          "location": {
+            "description": "Location if on single location",
+            "type_name": "string",
+            "value": "none"
+          },
+          "name": {
+            "type_name": "string",
+            "value": {
+              "get_input": "name"
+            }
+          },
+          "operStatus": {
+            "description": "Used to indicate if the service entity is operational.",
+            "type_name": "OperationalStateType",
+            "value": "none"
+          },
+          "ownerID": {
+            "description": "ID of the owner of the object, can contain controllerID",
+            "type_name": "string",
+            "value": "sdno"
+          },
+          "statusReason": {
+            "description": "In case of ERROR actionState, it will have the reason for the error. Otherwise its empty. It is required to make create process to be asynchronous.",
+            "type_name": "string",
+            "value": "none"
+          },
+          "syncStatus": {
+            "description": "Used to indicate of the service entity is in sync or out of sync with the network",
+            "type_name": "SyncStateType",
+            "value": "none"
+          },
+          "tenantID": {
+            "description": "ID of the tenant",
+            "type_name": "string",
+            "value": "none"
+          },
+          "updateTime": {
+            "description": "update time",
+            "type_name": "string",
+            "value": "none"
+          },
+          "version": {
+            "type_name": "string",
+            "value": "1.0"
+          },
+          "vpnBasicInfo": {
+            "type_name": "VpnBasicInfo",
+            "value": {
+              "ipMtu": 9600,
+              "serviceType": {
+                "get_input": "serviceType"
+              },
+              "technology": {
+                "get_input": "technology"
+              },
+              "topology": {
+                "get_input": "topology"
+              },
+              "uuid": "none"
+            }
+          }
+        },
+        "requirement_templates": [
+          {
+            "name": "endPoint",
+            "relationship_template": {
+              "source_interface_templates": [
+                "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x3cad110>"
+              ],
+              "type_name": "sdno.relationship.ConnectionEndPoint"
+            },
+            "target_node_template_name": "tp1"
+          },
+          {
+            "name": "endPoint",
+            "relationship_template": {
+              "source_interface_templates": [
+                "<aria.parser.modeling.model_elements.InterfaceTemplate object at 0x3cad910>"
+              ],
+              "type_name": "sdno.relationship.ConnectionEndPoint"
+            },
+            "target_node_template_name": "tp2"
+          }
+        ],
+        "type_name": "sdno.node.Connection.UnderlayVpn"
+      }
+    ]
+  },
+  "types": {
+    "artifact_types": [
+      {
+        "description": "This is the default (root) TOSCA Artifact Type definition that all other TOSCA base Artifact Types derive from.",
+        "name": "tosca.artifacts.Root",
+        "parent": null,
+        "role": null
+      },
+      {
+        "description": "This artifact type represents the parent type for all implementation artifacts in TOSCA. These artifacts are used to implement operations of TOSCA interfaces either directly (e.g., scripts) or indirectly (e.g., config. files).",
+        "name": "tosca.artifacts.Implementation",
+        "parent": "tosca.artifacts.Root",
+        "role": null
+      },
+      {
+        "description": "mapping between property of TOSCA node instance and data model used by swagger API",
+        "name": "sdno.artifacts.Implementation.ToscaSwaggerMapper",
+        "parent": "tosca.artifacts.Implementation",
+        "role": null
+      },
+      {
+        "description": "swagger API document",
+        "name": "sdno.artifacts.Implementation.Swagger",
+        "parent": "tosca.artifacts.Implementation",
+        "role": null
+      },
+      {
+        "description": "This artifact type represents a Bash script type that contains Bash commands that can be executed on the Unix Bash shell.",
+        "name": "tosca.artifacts.Implementation.Bash",
+        "parent": "tosca.artifacts.Implementation",
+        "role": null
+      },
+      {
+        "description": "This artifact type represents a Python file that contains Python language constructs that can be executed within a Python interpreter.",
+        "name": "tosca.artifacts.Implementation.Python",
+        "parent": "tosca.artifacts.Implementation",
+        "role": null
+      },
+      {
+        "description": "This artifact type represents the parent type for all deployment artifacts in TOSCA. This class of artifacts typically represents a binary packaging of an application or service that is used to install/create or deploy it as part of a node's lifecycle.",
+        "name": "tosca.artifacts.Deployment",
+        "parent": "tosca.artifacts.Root",
+        "role": null
+      },
+      {
+        "description": "This artifact represents the parent type for all Virtual Machine (VM) image and container formatted deployment artifacts. These images contain a stateful capture of a machine (e.g., server) including operating system and installed software along with any configurations and can be run on another machine using a hypervisor which virtualizes typical server (i.e., hardware) resources.",
+        "name": "tosca.artifacts.Deployment.Image.VM",
+        "parent": "tosca.artifacts.Deployment",
+        "role": null
+      },
+      {
+        "description": "This artifact type represents a parent type for any \"image\" which is an opaque packaging of a TOSCA Node's deployment (whether real or virtual) whose contents are typically already installed and pre-configured (i.e., \"stateful\") and prepared to be run on a known target container.",
+        "name": "tosca.artifacts.Deployment.Image",
+        "parent": "tosca.artifacts.Deployment",
+        "role": null
+      },
+      {
+        "description": "This artifact type is used when an artifact definition needs to have its associated file simply treated as a file and no special handling/handlers are invoked (i.e., it is not treated as either an implementation or deployment artifact type).",
+        "name": "tosca.artifacts.File",
+        "parent": "tosca.artifacts.Root",
+        "role": null
+      }
+    ],
+    "capability_types": [
+      {
+        "description": "This is the default (root) TOSCA Capability Type definition that all other TOSCA Capability Types derive from.",
+        "name": "tosca.capabilities.Root",
+        "parent": null,
+        "role": null
+      },
+      {
+        "description": null,
+        "name": "sdno.capability.ServiceEndPoint",
+        "parent": "tosca.capabilities.Root",
+        "role": null
+      },
+      {
+        "description": null,
+        "name": "sdno.capability.Realizes",
+        "parent": "tosca.capabilities.Root",
+        "role": null
+      },
+      {
+        "description": null,
+        "name": "sdno.capability.ConnectionEndPoint",
+        "parent": "tosca.capabilities.Root",
+        "role": null
+      },
+      {
+        "description": "The Container capability, when included on a Node Type or Template definition, indicates that the node can act as a container for (or a host for) one or more other declared Node Types.",
+        "name": "tosca.capabilities.Container",
+        "parent": "tosca.capabilities.Root",
+        "role": null
+      },
+      {
+        "description": "This is the default TOSCA type that should be used or extended to define an attachment capability of a (logical) infrastructure device node (e.g., BlockStorage node).",
+        "name": "tosca.capabilities.Attachment",
+        "parent": "tosca.capabilities.Root",
+        "role": null
+      },
+      {
+        "description": "This is the default TOSCA type that should be used or extended to define a network endpoint capability. This includes the information to express a basic endpoint with a single port or a complex endpoint with multiple ports. By default the Endpoint is assumed to represent an address on a private network unless otherwise specified.",
+        "name": "tosca.capabilities.Endpoint",
+        "parent": "tosca.capabilities.Root",
+        "role": null
+      },
+      {
+        "description": "This is the default TOSCA type that should be used or extended to define a specialized database endpoint capability.",
+        "name": "tosca.capabilities.Endpoint.Database",
+        "parent": "tosca.capabilities.Endpoint",
+        "role": null
+      },
+      {
+        "description": "This is the default TOSCA type that should be used or extended to define a specialized administrator endpoint capability.",
+        "name": "tosca.capabilities.Endpoint.Admin",
+        "parent": "tosca.capabilities.Endpoint",
+        "role": null
+      },
+      {
+        "description": "This capability represents a public endpoint which is accessible to the general internet (and its public IP address ranges).\nThis public endpoint capability also can be used to create a floating (IP) address that the underlying network assigns from a pool allocated from the application's underlying public network. This floating address is managed by the underlying network such that can be routed an application's private address and remains reliable to internet clients.",
+        "name": "tosca.capabilities.Endpoint.Public",
+        "parent": "tosca.capabilities.Endpoint",
+        "role": null
+      },
+      {
+        "description": "This is the default TOSCA type that should be used to express a scalability capability for a node.",
+        "name": "tosca.capabilities.Scalable",
+        "parent": "tosca.capabilities.Root",
+        "role": null
+      },
+      {
+        "description": "This is the default TOSCA type that should be used to express an Operating System capability for a node.",
+        "name": "tosca.capabilities.OperatingSystem",
+        "parent": "tosca.capabilities.Root",
+        "role": null
+      },
+      {
+        "description": "The Node capability indicates the base capabilities of a TOSCA Node Type.",
+        "name": "tosca.capabilities.Node",
+        "parent": "tosca.capabilities.Root",
+        "role": null
+      },
+      {
+        "description": "A node type that includes the Bindable capability indicates that it can be bound to a logical network association via a network port.",
+        "name": "tosca.capabilities.network.Bindable",
+        "parent": "tosca.capabilities.Node",
+        "role": null
+      },
+      {
+        "description": null,
+        "name": "sdno.capability.Bindable",
+        "parent": "tosca.capabilities.Node",
+        "role": null
+      },
+      {
+        "description": null,
+        "name": "sdno.capability.Host",
+        "parent": "tosca.capabilities.Node",
+        "role": null
+      },
+      {
+        "description": "A node type that includes the Linkable capability indicates that it can be pointed by tosca.relationships.network.LinksTo relationship type.",
+        "name": "tosca.capabilities.network.Linkable",
+        "parent": "tosca.capabilities.Node",
+        "role": null
+      }
+    ],
+    "group_types": [
+      {
+        "description": "This is the default (root) TOSCA Group Type definition that all other TOSCA base Group Types derive from.",
+        "name": "tosca.groups.Root",
+        "parent": null,
+        "role": null
+      }
+    ],
+    "interface_types": [
+      {
+        "description": "This is the default (root) TOSCA Interface Type definition that all other TOSCA Interface Types derive from.",
+        "name": "tosca.interfaces.Root",
+        "parent": null,
+        "role": null
+      },
+      {
+        "description": "The lifecycle interfaces define the essential, normative operations that each TOSCA Relationship Types may support.",
+        "name": "tosca.interfaces.relationship.Configure",
+        "parent": "tosca.interfaces.Root",
+        "role": null
+      },
+      {
+        "description": "This lifecycle interface defines the essential, normative operations that TOSCA nodes may support.",
+        "name": "tosca.interfaces.node.lifecycle.Standard",
+        "parent": "tosca.interfaces.Root",
+        "role": null
+      },
+      {
+        "description": null,
+        "name": "sdno.interfaces.lifecycle.Standard",
+        "parent": null,
+        "role": null
+      }
+    ],
+    "node_types": [
+      {
+        "description": "The TOSCA Root Node Type is the default type that all other TOSCA base Node Types derive from. This allows for all TOSCA nodes to have a consistent set of features for modeling and management (e.g., consistent definitions for requirements, capabilities and lifecycle interfaces).",
+        "name": "tosca.nodes.Root",
+        "parent": null,
+        "role": null
+      },
+      {
+        "description": "The TOSCA Port node represents a logical entity that associates between Compute and Network normative types.\nThe Port node type effectively represents a single virtual NIC on the Compute node instance.",
+        "name": "tosca.nodes.network.Port",
+        "parent": "tosca.nodes.Root",
+        "role": null
+      },
+      {
+        "description": "The TOSCA ObjectStorage node represents storage that provides the ability to store data as objects (or BLOBs of data) without consideration for the underlying filesystem or devices.",
+        "name": "tosca.nodes.ObjectStorage",
+        "parent": "tosca.nodes.Root",
+        "role": null
+      },
+      {
+        "description": "The TOSCA Network node represents a simple, logical network service.",
+        "name": "tosca.nodes.network.Network",
+        "parent": "tosca.nodes.Root",
+        "role": null
+      },
+      {
+        "description": "The TOSCA Load Balancer node represents logical function that be used in conjunction with a Floating Address to distribute an application's traffic (load) across a number of instances of the application (e.g., for a clustered or scaled application).",
+        "name": "tosca.nodes.LoadBalancer",
+        "parent": "tosca.nodes.Root",
+        "role": null
+      },
+      {
+        "description": "The TOSCA SoftwareComponent node represents a generic software component that can be managed and run by a TOSCA Compute Node Type.",
+        "name": "tosca.nodes.SoftwareComponent",
+        "parent": "tosca.nodes.Root",
+        "role": null
+      },
+      {
+        "description": "The TOSCA WebApplication node represents a software application that can be managed and run by a TOSCA WebServer node. Specific types of web applications such as Java, etc. could be derived from this type.",
+        "name": "tosca.nodes.WebApplication",
+        "parent": "tosca.nodes.SoftwareComponent",
+        "role": null
+      },
+      {
+        "description": "The TOSCA DBMS node represents a typical relational, SQL Database Management System software component or service.",
+        "name": "tosca.nodes.DBMS",
+        "parent": "tosca.nodes.SoftwareComponent",
+        "role": null
+      },
+      {
+        "description": "The TOSCA Container Runtime node represents operating system-level virtualization technology used to run multiple application services on a single Compute host.",
+        "name": "tosca.nodes.Container.Runtime",
+        "parent": "tosca.nodes.SoftwareComponent",
+        "role": null
+      },
+      {
+        "description": "This TOSCA WebServer Node Type represents an abstract software component or service that is capable of hosting and providing management operations for one or more WebApplication nodes.",
+        "name": "tosca.nodes.WebServer",
+        "parent": "tosca.nodes.SoftwareComponent",
+        "role": null
+      },
+      {
+        "description": "The TOSCA Database node represents a logical database that can be managed and hosted by a TOSCA DBMS node.",
+        "name": "tosca.nodes.Database",
+        "parent": "tosca.nodes.Root",
+        "role": null
+      },
+      {
+        "description": "The TOSCA Compute node represents one or more real or virtual processors of software applications or services along with other essential local resources. Collectively, the resources the compute node represents can logically be viewed as a (real or virtual) \"server\".",
+        "name": "tosca.nodes.Compute",
+        "parent": "tosca.nodes.Root",
+        "role": null
+      },
+      {
+        "description": "The SDNO Node Type all other SDNO base Node Types derive from",
+        "name": "sdno.node.Root",
+        "parent": "tosca.nodes.Root",
+        "role": null
+      },
+      {
+        "description": "It represents the outward customer-facing aspects of the edge-port functions that access the forwarding capabilities provided by the Node. Hence it provides a limited, simplified view of interest to external clients,  that enable the clients to request connectivity without the need to understand the provider network internals.",
+        "name": "sdno.node.ServiceEndPoint",
+        "parent": "sdno.node.Root",
+        "role": null
+      },
+      {
+        "description": "Attach Circuit",
+        "name": "sdno.node.ServiceEndPoint.AC",
+        "parent": "sdno.node.ServiceEndPoint",
+        "role": null
+      },
+      {
+        "description": "It represents the ingress/egress port aspects that access the forwarding function provided  by the Connection.",
+        "name": "sdno.node.ConnectionEndPoint",
+        "parent": "sdno.node.Root",
+        "role": null
+      },
+      {
+        "description": "Attach Circuit",
+        "name": "sdno.node.ConnectionEndPoint.Tp",
+        "parent": "sdno.node.ConnectionEndPoint",
+        "role": null
+      },
+      {
+        "description": "It represents the inward network-facing aspects of the edge-port functions that access the forwarding capabilities provided by the Node.",
+        "name": "sdno.node.NodeEdgePoint",
+        "parent": "sdno.node.Root",
+        "role": null
+      },
+      {
+        "description": "It represents a network element which can be managed remotely (through controller or not). Sometimes called managed element.",
+        "name": "sdno.node.Node",
+        "parent": "sdno.node.Root",
+        "role": null
+      },
+      {
+        "description": "It represents an “intent-like” request for connectivity between two or more ServiceEndPoints. As such, ConnectivityService is a container for connectivity request details and is distinct  from the Connection that realizes the request",
+        "name": "sdno.node.ConnectivityService",
+        "parent": "sdno.node.Root",
+        "role": null
+      },
+      {
+        "description": null,
+        "name": "sdno.node.ConnectivityService.UnderlayVpn",
+        "parent": "sdno.node.ConnectivityService",
+        "role": null
+      },
+      {
+        "description": "The Connection represents an enabled potential for forwarding between two or more connectionEndPoints",
+        "name": "sdno.node.Connection",
+        "parent": "sdno.node.Root",
+        "role": null
+      },
+      {
+        "description": null,
+        "name": "sdno.node.Connection.UnderlayVpn",
+        "parent": "sdno.node.Connection",
+        "role": null
+      },
+      {
+        "description": "The TOSCA Container Application node represents an application that requires Container-level virtualization technology.",
+        "name": "tosca.nodes.Container.Application",
+        "parent": "tosca.nodes.Root",
+        "role": null
+      },
+      {
+        "description": "",
+        "name": "tosca.nodes.BlockStorage",
+        "parent": "tosca.nodes.Root",
+        "role": null
+      }
+    ],
+    "policy_trigger_types": [],
+    "policy_types": [
+      {
+        "description": "This is the default (root) TOSCA Policy Type definition that all other TOSCA base Policy Types derive from.",
+        "name": "tosca.policies.Root",
+        "parent": null,
+        "role": null
+      },
+      {
+        "description": "This is the default (root) TOSCA Policy Type definition that is used to govern placement of TOSCA nodes or groups of nodes.",
+        "name": "tosca.policies.Placement",
+        "parent": "tosca.policies.Root",
+        "role": null
+      },
+      {
+        "description": "This is the default (root) TOSCA Policy Type definition that is used to govern update of TOSCA nodes or groups of nodes.",
+        "name": "tosca.policies.Update",
+        "parent": "tosca.policies.Root",
+        "role": null
+      },
+      {
+        "description": "This is the default (root) TOSCA Policy Type definition that is used to declare performance requirements for TOSCA nodes or groups of nodes.",
+        "name": "tosca.policies.Performance",
+        "parent": "tosca.policies.Root",
+        "role": null
+      },
+      {
+        "description": "This is the default (root) TOSCA Policy Type definition that is used to govern scaling of TOSCA nodes or groups of nodes.",
+        "name": "tosca.policies.Scaling",
+        "parent": "tosca.policies.Root",
+        "role": null
+      }
+    ],
+    "relationship_types": [
+      {
+        "description": "This is the default (root) TOSCA Relationship Type definition that all other TOSCA Relationship Types derive from.",
+        "name": "tosca.relationships.Root",
+        "parent": null,
+        "role": null
+      },
+      {
+        "description": "This type represents an attachment relationship between two nodes. For example, an AttachesTo relationship type would be used for attaching a storage node to a Compute node.",
+        "name": "tosca.relationships.AttachesTo",
+        "parent": "tosca.relationships.Root",
+        "role": null
+      },
+      {
+        "description": "This type represents a network connection relationship between two nodes.",
+        "name": "tosca.relationships.ConnectsTo",
+        "parent": "tosca.relationships.Root",
+        "role": null
+      },
+      {
+        "description": "This type represents an intentional network routing between two Endpoints in different networks.",
+        "name": "tosca.relationships.RoutesTo",
+        "parent": "tosca.relationships.ConnectsTo",
+        "role": null
+      },
+      {
+        "description": "This type represents a hosting relationship between two nodes.",
+        "name": "tosca.relationships.HostedOn",
+        "parent": "tosca.relationships.Root",
+        "role": null
+      },
+      {
+        "description": "The relationship specifies which ConnectionEndPonts are terminating the Connection. The association of the Connection to ConnectionEndPoints is made via the Ports of the Connection, where each Port of the Connection has a role and directionality in the context of the Connection. ",
+        "name": "sdno.relationship.ConnectionEndPoint",
+        "parent": "tosca.relationships.Root",
+        "role": null
+      },
+      {
+        "description": "The relationship specifies which ServiceEndPoints are terminating the ConnectivityService. The association of the ConnectivityService to ServiceEndPoints is made via the Ports of the ConnectivityService, where each Port of the ConnectivityService has a role and directionality in the context of the ConnectivityService.",
+        "name": "sdno.relationship.ServiceEndPoint",
+        "parent": "tosca.relationships.Root",
+        "role": null
+      },
+      {
+        "description": "The relationship specifies what Node the Endpoint is hosted on. ",
+        "name": "sdno.relationship.HostedOn",
+        "parent": "tosca.relationships.Root",
+        "role": null
+      },
+      {
+        "description": "The relationship specifies what Connenctions are Connectivity Services or Connections realized from. ",
+        "name": "sdno.relationship.RealizedBy",
+        "parent": "tosca.relationships.Root",
+        "role": null
+      },
+      {
+        "description": "This type represents a general dependency relationship between two nodes.",
+        "name": "tosca.relationships.DependsOn",
+        "parent": "tosca.relationships.Root",
+        "role": null
+      },
+      {
+        "description": "This relationship type represents an association relationship between Port and Network node types.",
+        "name": "tosca.relationships.network.LinksTo",
+        "parent": "tosca.relationships.DependsOn",
+        "role": null
+      },
+      {
+        "description": "This type represents a network association relationship between Port and Compute node types.",
+        "name": "tosca.relationships.network.BindsTo",
+        "parent": "tosca.relationships.DependsOn",
+        "role": null
+      },
+      {
+        "description": "The relationship  represents a network association relationship between NodeEdgePoint and Network Node types",
+        "name": "sdno.relationship.BindsTo",
+        "parent": "tosca.relationships.DependsOn",
+        "role": null
+      }
+    ]
+  }
+}

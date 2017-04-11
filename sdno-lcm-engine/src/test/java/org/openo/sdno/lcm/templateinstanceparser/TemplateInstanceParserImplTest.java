@@ -30,10 +30,9 @@ import org.openo.sdno.lcm.templatemodel.service.Node;
 import org.openo.sdno.lcm.templatemodel.service.Operation;
 import org.openo.sdno.lcm.templatemodel.service.Relationship;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-@Test(groups = {"sdno-lcm-unit"})
+@Test(groups = { "sdno-lcm-unit" })
 public class TemplateInstanceParserImplTest {
 
     TemplateInstanceParserImpl templateInstanceParserImpl;
@@ -44,9 +43,22 @@ public class TemplateInstanceParserImplTest {
 
     /**
      * Test the template instance JSON is parsed as expected.
+     * 
+     * @throws Exception
      */
     @Test
-    public void testParse() {
+    public void testParse() throws Exception {
+
+        templateInstanceParserImpl = new TemplateInstanceParserImpl();
+        instanceJson = FileUtils.readFileToString(FileUtils.getFile("src", "test", "resources", "instance.json"),
+                Charset.defaultCharset());
+        expectedMetadata = new Metadata();
+        expectedMetadata.setTemplateName("enterprise2DC");
+        expectedMetadata.setTemplateAuthor("Huawei");
+        expectedMetadata.setVersion(0.1d);
+        expectedMetadata.setId("enterprise2Dc");
+        expectedMetadata.setVendor("sdno");
+
         Instance instance = templateInstanceParserImpl.parse(instanceJson);
         Assert.assertNotNull(instance);
         Assert.assertEquals(instance.getDescription(), "sdno basic types");
@@ -56,7 +68,7 @@ public class TemplateInstanceParserImplTest {
 
         int checkedNodes = 0;
 
-        for(Node node : instance.getNodes()) {
+        for (Node node : instance.getNodes()) {
             Assert.assertNotNull(node.getProperties());
             Assert.assertNotNull(node.getCapabilities());
             Assert.assertFalse(node.getCapabilities().isEmpty());
@@ -67,7 +79,7 @@ public class TemplateInstanceParserImplTest {
             Assert.assertNotNull(node.getTemplateName());
             Assert.assertNotNull(node.getTypeName());
 
-            if(node.getId().startsWith("thinCpe_")) {
+            if (node.getId().startsWith("thinCpe_")) {
 
                 checkedNodes++;
                 Assert.assertEquals(node.getTypeName(), "sdno.node.Node");
@@ -94,7 +106,7 @@ public class TemplateInstanceParserImplTest {
                 checkNodeProperty(node, "ipAddress", "0.0.0.0");
             }
 
-            if(node.getId().startsWith("enterprise2Dc_")) {
+            if (node.getId().startsWith("enterprise2Dc_")) {
 
                 checkedNodes++;
                 Assert.assertEquals(node.getTypeName(), "sdno.node.ConnectivityService.Enterprise2Dc");
@@ -151,17 +163,43 @@ public class TemplateInstanceParserImplTest {
         Assert.assertEquals(node.getPropertyValue(propertyName), expectedValue);
     }
 
-    @BeforeClass
-    public void before() throws Exception {
+    /**
+     * Test the template instance JSON is parsed as expected.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testParseUnderlay() throws Exception {
+
         templateInstanceParserImpl = new TemplateInstanceParserImpl();
-        instanceJson = FileUtils.readFileToString(FileUtils.getFile("src", "test", "resources", "instance.json"),
-                Charset.defaultCharset());
+        instanceJson = FileUtils.readFileToString(
+                FileUtils.getFile("src", "test", "resources", "underlayInstance.json"), Charset.defaultCharset());
         expectedMetadata = new Metadata();
-        expectedMetadata.setTemplateName("enterprise2DC");
+        expectedMetadata.setTemplateName("underlayvpn");
         expectedMetadata.setTemplateAuthor("Huawei");
         expectedMetadata.setVersion(0.1d);
-        expectedMetadata.setId("enterprise2Dc");
+        expectedMetadata.setId("vpnUnderlayL3");
         expectedMetadata.setVendor("sdno");
+
+        Instance instance = templateInstanceParserImpl.parse(instanceJson);
+        Assert.assertNotNull(instance);
+        Assert.assertEquals(instance.getDescription(), "sdno basic types");
+        Assert.assertEquals(instance.getNodes().size(), 8);
+        Assert.assertTrue(instance.getMetadata().equals(expectedMetadata));
+        Assert.assertNotNull(instance.getInputs());
+
+        for (Node node : instance.getNodes()) {
+
+            Assert.assertNotNull(node.getProperties());
+            Assert.assertNotNull(node.getCapabilities());
+            Assert.assertFalse(node.getCapabilities().isEmpty());
+            Assert.assertNotNull(node.getId());
+            Assert.assertNotNull(node.getInterfaces());
+            Assert.assertFalse(node.getInterfaces().isEmpty());
+            Assert.assertNotNull(node.getRelationships());
+            Assert.assertNotNull(node.getTemplateName());
+            Assert.assertNotNull(node.getTypeName());
+        }
     }
 
 }

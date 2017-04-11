@@ -16,14 +16,14 @@
 
 package org.openo.sdno.lcm.decomposer.impl;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.anyString;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.mock;
+import static org.easymock.EasyMock.niceMock;
 import static org.easymock.EasyMock.replay;
 
 import java.io.File;
 import java.nio.charset.Charset;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
@@ -36,97 +36,107 @@ import org.openo.sdno.lcm.restclient.catalog.model.PackageMeta;
 import org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser;
 import org.openo.sdno.lcm.templateinstanceparser.impl.TemplateInstanceParserImpl;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
-import org.openo.sdno.lcm.templatemodel.service.Node;
 import org.openo.sdno.lcm.util.Mapper;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 @Test(groups = { "sdno-lcm-unit" })
 public class DecomposerImplTest {
 
-	DecomposerImpl decomposer;
+    DecomposerImpl decomposer;
 
-	Instance instance;
+    Instance instance;
 
-	@BeforeMethod
-	public void before() throws Exception {
+    private void before(String csarName, String instanceName) throws Exception {
 
-		FileHandler mockFileHandler = mock(FileHandler.class);
-		File csarFile = FileUtils.getFile("src", "test", "resources", "enterprise2DC.csar");
-		expect(mockFileHandler.getFile(anyString(), anyString(), anyString())).andReturn(csarFile).anyTimes();
-		replay(mockFileHandler);
+        FileHandler mockFileHandler = mock(FileHandler.class);
+        File csarFile = FileUtils.getFile("src", "test", "resources", csarName);
+        expect(mockFileHandler.getFile(anyString(), anyString(), anyString())).andReturn(csarFile).anyTimes();
+        replay(mockFileHandler);
 
-		PackageResourceApiClient mockPackageResourceApiClient = mock(PackageResourceApiClient.class);
-		PackageMeta packageMeta = new PackageMeta();
-		packageMeta.setCsarId("myCsarId");
-		packageMeta.setName("myCsarName");
-		expect(mockPackageResourceApiClient.queryPackageById(anyString())).andReturn(packageMeta).anyTimes();
-		replay(mockPackageResourceApiClient);
+        PackageResourceApiClient mockPackageResourceApiClient = mock(PackageResourceApiClient.class);
+        PackageMeta packageMeta = new PackageMeta();
+        packageMeta.setCsarId("myCsarId");
+        packageMeta.setName("myCsarName");
+        expect(mockPackageResourceApiClient.queryPackageById(anyString())).andReturn(packageMeta).anyTimes();
+        replay(mockPackageResourceApiClient);
 
-		TemplateInstanceParser templateInstanceParser = new TemplateInstanceParserImpl();
-		decomposer = new DecomposerImpl();
-		CsarHandlerImpl csarHandler = new CsarHandlerImpl();
-		csarHandler.setMapper(new Mapper());
-		csarHandler.setFileHandler(mockFileHandler);
-		csarHandler.setPackageResourceApiClient(mockPackageResourceApiClient);
+        TemplateInstanceParser templateInstanceParser = new TemplateInstanceParserImpl();
+        decomposer = new DecomposerImpl();
+        CsarHandlerImpl csarHandler = new CsarHandlerImpl();
+        csarHandler.setMapper(new Mapper());
+        csarHandler.setFileHandler(mockFileHandler);
+        csarHandler.setPackageResourceApiClient(mockPackageResourceApiClient);
 
-		decomposer.setCsarHandler(csarHandler);
-		String instanceJson = FileUtils.readFileToString(FileUtils.getFile("src", "test", "resources", "instance.json"),
-				Charset.defaultCharset());
-		instance = templateInstanceParser.parse(instanceJson);
-		
-		BrsMapping mockBrsMapping = niceMock(BrsMapping.class);
-		replay(mockBrsMapping);
-		decomposer.setBrsMapping(mockBrsMapping);
-	}
+        decomposer.setCsarHandler(csarHandler);
+        String instanceJson = FileUtils.readFileToString(FileUtils.getFile("src", "test", "resources", instanceName),
+                Charset.defaultCharset());
+        instance = templateInstanceParser.parse(instanceJson);
 
-	@Test
-	public void decomposeDeployTest() {
-		WorkPlan workplan = decomposer.decompose(instance, "deploy", "anyCsarId");
-		this.checkWorkItem(0, workplan.getWorkItem(0), "vpc_");
-		this.checkWorkItem(1, workplan.getWorkItem(1), "vpcSubnet_");
-		this.checkWorkItem(4, workplan.getWorkItem(2), "site_");
-		this.checkWorkItem(2, workplan.getWorkItem(3), "thinCpeConnectionEndPoint_");
-		this.checkWorkItem(3, workplan.getWorkItem(4), "vCpeConnectionEndPoint_");
-		this.checkWorkItem(5, workplan.getWorkItem(5), "vlan_");
-		this.checkWorkItem(6, workplan.getWorkItem(6), "siteSubnet_");
-		this.checkWorkItem(7, workplan.getWorkItem(7), "vpn_");
-		this.checkWorkItem(8, workplan.getWorkItem(8), "siteGateway_");
-		this.checkWorkItem(9, workplan.getWorkItem(9), "vpcGateway_");
-		this.checkWorkItem(10, workplan.getWorkItem(10), "vpnConnection_");
-		this.checkWorkItem(11, workplan.getWorkItem(11), "sfc_");
-	}
-	
-//	@Test
-//	public void fillResourceNodesTest() {
-//
-//		int expectedChecks = 1;
-//		int performedChecks = 0;
-//		// case of adding a property that is not present
-//		List<Node> nodes = instance.getNodes();
-//		for (Node node : nodes) {
-//
-//			if (node.getId().startsWith("thinCpe_")) {
-//				performedChecks++;
-//				Assert.assertEquals(node.getPropertyValue("id"), "0");
-//				decomposer.fillResourceNodes(instance);
-//				// a generated uuid should be filled for now - the real value
-//				// should come from BRS
-//				String nodeValue = node.getPropertyValue("id");
-//				Assert.assertNotEquals(nodeValue, "0");
-//			}
-//		}
-//		Assert.assertEquals(performedChecks, expectedChecks, "Did not check the expected number of nodes");
-//	}
+        BrsMapping mockBrsMapping = niceMock(BrsMapping.class);
+        replay(mockBrsMapping);
+        decomposer.setBrsMapping(mockBrsMapping);
+    }
 
-	private void checkWorkItem(int index, WorkItem workItem, String prefix) {
-		String workItemId = workItem.getNode().getId();
-		Assert.assertTrue(workItemId.startsWith(prefix),
-				String.format(
-						"The Node in the WorkItem at index %s did not have the expected id prefix %s. The Node id is: %s",
-						index, prefix, workItemId));
-		// check the id has been added
-		Assert.assertNotNull(workItem.getNode().getPropertyValue("id"));
-	}
+    @Test
+    public void decomposeEnterprise2DcDeployTest() throws Exception {
+
+        this.before("enterprise2DC.csar", "instance.json");
+
+        WorkPlan workplan = decomposer.decompose(instance, "deploy", "anyCsarId");
+        this.checkWorkItem(0, workplan.getWorkItem(0), "vpc_");
+        this.checkWorkItem(1, workplan.getWorkItem(1), "vpcSubnet_");
+        this.checkWorkItem(4, workplan.getWorkItem(2), "site_");
+        this.checkWorkItem(2, workplan.getWorkItem(3), "thinCpeConnectionEndPoint_");
+        this.checkWorkItem(3, workplan.getWorkItem(4), "vCpeConnectionEndPoint_");
+        this.checkWorkItem(5, workplan.getWorkItem(5), "vlan_");
+        this.checkWorkItem(6, workplan.getWorkItem(6), "siteSubnet_");
+        this.checkWorkItem(7, workplan.getWorkItem(7), "vpn_");
+        this.checkWorkItem(8, workplan.getWorkItem(8), "siteGateway_");
+        this.checkWorkItem(9, workplan.getWorkItem(9), "vpcGateway_");
+        this.checkWorkItem(10, workplan.getWorkItem(10), "vpnConnection_");
+        this.checkWorkItem(11, workplan.getWorkItem(11), "sfc_");
+    }
+
+    @Test
+    public void decomposeUnderlayDeployTest() throws Exception {
+
+        this.before("underlay.csar", "underlayInstance.json");
+
+        WorkPlan workplan = decomposer.decompose(instance, "deploy", "anyCsarId");
+        this.checkWorkItem(0, workplan.getWorkItem(0), "vpnConnection_");
+    }
+
+    // @Test
+    // public void fillResourceNodesTest() {
+    //
+    // int expectedChecks = 1;
+    // int performedChecks = 0;
+    // // case of adding a property that is not present
+    // List<Node> nodes = instance.getNodes();
+    // for (Node node : nodes) {
+    //
+    // if (node.getId().startsWith("thinCpe_")) {
+    // performedChecks++;
+    // Assert.assertEquals(node.getPropertyValue("id"), "0");
+    // decomposer.fillResourceNodes(instance);
+    // // a generated uuid should be filled for now - the real value
+    // // should come from BRS
+    // String nodeValue = node.getPropertyValue("id");
+    // Assert.assertNotEquals(nodeValue, "0");
+    // }
+    // }
+    // Assert.assertEquals(performedChecks, expectedChecks, "Did not check the
+    // expected number of nodes");
+    // }
+
+    private void checkWorkItem(int index, WorkItem workItem, String prefix) {
+        String workItemId = workItem.getNode().getId();
+        Assert.assertTrue(workItemId.startsWith(prefix),
+                String.format(
+                        "The Node in the WorkItem at index %s did not have the expected id prefix %s. The Node id is: %s",
+                        index, prefix, workItemId));
+        // check the id has been added
+        Assert.assertNotNull(workItem.getNode().getPropertyValue("id"));
+    }
 }
