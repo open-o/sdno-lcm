@@ -41,12 +41,18 @@ public class GwfUndeploy extends AtomicWorkflow {
      * org.openo.sdno.lcm.engine.impl.workflow.GenericWorkflowImpl#updateTemplateInstance(org.openo.
      * sdno.lcm.templatemodel.service.Instance, java.lang.String)
      */
-    protected void updateTemplateInstance(Instance templateInstance, String serviceCreateTime) {
+    protected void updateTemplateInstancePreDispatch(Instance templateInstance) {
         // update the nodes with correct values for this workflow
         templateInstance.replacePropertyValueInAllNodes(Constants.LCM_ADMINSTATUS,
                 Constants.LCM_ADMINISTRATIONSTATE_NONE);
         templateInstance.replacePropertyValueInAllNodes(Constants.LCM_ACTIONSTATE,
                 Constants.LCM_ACTIONSTATE_UNDEPLOYING);
+    }
+
+    @Override
+    protected void updateTemplateInstancePostDispatch(Instance templateInstance) {
+
+        templateInstance.replacePropertyValueInAllNodes(Constants.LCM_ACTIONSTATE, Constants.LCM_ACTIONSTATE_NORMAL);
     }
 
     /*

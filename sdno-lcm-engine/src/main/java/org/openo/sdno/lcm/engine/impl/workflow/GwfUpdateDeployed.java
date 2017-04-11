@@ -60,9 +60,14 @@ public class GwfUpdateDeployed extends AtomicWorkflow {
     }
 
     @Override
-    protected void updateTemplateInstance(Instance templateInstance, String serviceCreateTime) {
+    protected void updateTemplateInstancePreDispatch(Instance templateInstance) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    protected void updateTemplateInstancePostDispatch(Instance templateInstance) {
+        // TODO Auto-generated method stub
     }
 
 }

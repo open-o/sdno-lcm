@@ -74,6 +74,8 @@ public class Constants {
     // per-workflow assigned property values
     public static final String LCM_ADMINISTRATIONSTATE_ACTIVE = "active";
 
+    public static final String LCM_ADMINISTRATIONSTATE_INACTIVE = "inactive";
+
     public static final String LCM_ADMINISTRATIONSTATE_NONE = "none";
 
     public static final String LCM_ACTIONSTATE_UNDEPLOYING = "undeploying";
@@ -83,6 +85,8 @@ public class Constants {
     public static final String LCM_ACTIONSTATE_DELETING = "deleting";
 
     public static final String LCM_ACTIONSTATE_DEPLOYING = "deploying";
+
+    public static final String LCM_ACTIONSTATE_NORMAL = "normal";
 
     public static final String LCM_ACTIONSTATE = "actionState";
 

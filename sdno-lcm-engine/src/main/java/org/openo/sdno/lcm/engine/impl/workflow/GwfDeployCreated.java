@@ -61,14 +61,19 @@ public class GwfDeployCreated extends AtomicWorkflow {
      * sdno.lcm.templatemodel.service.Instance, java.lang.String)
      */
     @Override
-    protected void updateTemplateInstance(Instance templateInstance, String serviceCreateTime) {
+    protected void updateTemplateInstancePreDispatch(Instance templateInstance) {
         // update the nodes with correct values for this workflow
-        templateInstance.replacePropertyValueInAllNodes(Constants.LCM_CREATETIME, serviceCreateTime);
         templateInstance.replacePropertyValueInAllNodes(Constants.LCM_ADMINSTATUS,
                 Constants.LCM_ADMINISTRATIONSTATE_ACTIVE);
         templateInstance.replacePropertyValueInAllNodes(Constants.LCM_ACTIONSTATE, Constants.LCM_ACTIONSTATE_DEPLOYING);
     }
 
+    @Override
+    protected void updateTemplateInstancePostDispatch(Instance templateInstance) {
+        
+        templateInstance.replacePropertyValueInAllNodes(Constants.LCM_ACTIONSTATE, Constants.LCM_ACTIONSTATE_NORMAL);   
+    }
+    
     /*
      * (non-Javadoc)
      * @see org.openo.sdno.lcm.engine.impl.workflow.GenericWorkflowImpl#getLogger()

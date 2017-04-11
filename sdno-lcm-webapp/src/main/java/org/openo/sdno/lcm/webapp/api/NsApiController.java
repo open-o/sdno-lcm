@@ -44,6 +44,28 @@ import io.swagger.annotations.ApiParam;
 @Controller
 public class NsApiController implements NsApi {
 
+    private static final String LIFECYCLE_STATE = "lifecycleState";
+
+    private static final String CREATE_TIME = "createtime";
+
+    private static final String ACTION_STATE = "actionState";
+
+    private static final String OWNER_ID = "ownerID";
+
+    private static final String VERSION = "version";
+
+    private static final String STATUS_REASON = "statusReason";
+
+    private static final String ADMIN_STATUS = "adminStatus";
+
+    private static final String OPER_STATUS = "operStatus";
+
+    private static final String TENANT_ID = "tenantID";
+
+    private static final String LOCATION = "location";
+
+    private static final String UPDATE_TIME = "updatetime";
+
     private final Logger log = Logger.getLogger("NsApiController");
 
     private NsApiControllerFacade nsApiControllerFacade;
@@ -99,15 +121,33 @@ public class NsApiController implements NsApi {
         nsInstanceQueryResponse.setNsdId((String)responseMap.get("templateId"));
 
         List<SdnoTemplateParameter> additionalParams = new ArrayList<>();
-        SdnoTemplateParameter serviceStateParam = new SdnoTemplateParameter();
-        serviceStateParam.setName("lifecycleState");
-        serviceStateParam.setValue((String)responseMap.get("lifecycleState"));
-        additionalParams.add(serviceStateParam);
+        additionalParams.add(additionalParameter(LIFECYCLE_STATE, responseMap));
+        additionalParams.add(additionalParameter(CREATE_TIME, responseMap));
+        additionalParams.add(additionalParameter(ACTION_STATE, responseMap));
+        additionalParams.add(additionalParameter(OWNER_ID, responseMap));
+        additionalParams.add(additionalParameter(VERSION, responseMap));
+        additionalParams.add(additionalParameter(ADMIN_STATUS, responseMap));
+        additionalParams.add(additionalParameter(OPER_STATUS, responseMap));
+        additionalParams.add(additionalParameter(TENANT_ID, responseMap));
+        additionalParams.add(additionalParameter(LOCATION, responseMap));
+        additionalParams.add(additionalParameter(STATUS_REASON, responseMap));
+        additionalParams.add(additionalParameter(UPDATE_TIME, responseMap));
         nsInstanceQueryResponse.setAdditionalParams(additionalParams);
-        // TODO set remaining fields as 'additionalParams'
+
         ResponseEntity<NsInstanceQueryResponse> response =
                 new ResponseEntity<NsInstanceQueryResponse>(nsInstanceQueryResponse, HttpStatus.OK);
         return response;
+    }
+
+    /**
+     * @param responseMap
+     * @return
+     */
+    private SdnoTemplateParameter additionalParameter(String paramName, Map<String, Object> valueMap) {
+        SdnoTemplateParameter serviceStateParam = new SdnoTemplateParameter();
+        serviceStateParam.setName(paramName);
+        serviceStateParam.setValue((String)valueMap.get(paramName));
+        return serviceStateParam;
     }
 
     public ResponseEntity<LongOperationResponse> nsTerminationPost(

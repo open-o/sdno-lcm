@@ -23,6 +23,7 @@ import org.openo.sdno.lcm.restclient.serviceinventory.model.GetConnectivityServi
 import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateConnectivityServiceRequest;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.UpdateResponse;
 import org.openo.sdno.lcm.templatemodel.service.Instance;
+import org.openo.sdno.lcm.templatemodel.service.Node;
 import org.openo.sdno.lcm.util.Constants;
 
 /**
@@ -44,14 +45,14 @@ public abstract class AtomicWorkflow extends GenericWorkflowImpl {
         String serviceId = (String)this.getParam(Constants.LCM_NBI_SERVICE_ID, params);
         Instance templateInstance = (Instance)this.getParam(Constants.LCM_TEMPLATE_INSTANCE, params);
 
+        this.updateTemplateInstancePreDispatch(templateInstance);
+        updateServiceInventory(serviceId, templateInstance);
+
         // execute the workplan
         executeWorkplan(csarId, apiOperation, templateInstance);
 
-        // update the service in inventory
-        UpdateConnectivityServiceRequest body = new UpdateConnectivityServiceRequest();
-        body.setLifecycleState(this.getNewState());
-        UpdateResponse updateConnectivityServiceResponse =
-                defaultMssApiClient.updateConnectivityServiceRequest(serviceId, body);
+        this.updateTemplateInstancePostDispatch(templateInstance);
+        UpdateResponse updateServiceInventoryResponse = updateServiceInventory(serviceId, templateInstance);
 
         try {
             GetConnectivityServiceResponse readConnectivityService =
@@ -62,7 +63,7 @@ public abstract class AtomicWorkflow extends GenericWorkflowImpl {
             this.getLogger()
                     .warning("Failed to read the updated connectivity service from inventory due to " + e.getMessage());
             this.getLogger().info(String.format("Update connectivity service response:\n%s",
-                    updateConnectivityServiceResponse.toString()));
+                    updateServiceInventoryResponse.toString()));
         }
 
         // fill response map
@@ -73,6 +74,22 @@ public abstract class AtomicWorkflow extends GenericWorkflowImpl {
     }
 
     /**
+     * @param serviceId
+     * @param templateInstance
+     * @return 
+     */
+    private UpdateResponse updateServiceInventory(String serviceId, Instance templateInstance) {
+        // update the service in inventory
+        UpdateConnectivityServiceRequest body = new UpdateConnectivityServiceRequest();
+        Node rootNode = templateInstance.getRootNode();
+        body.setLifecycleState(this.getNewState());
+        body.setActionState(rootNode.getPropertyValue("actionState"));
+        body.setAdminStatus(rootNode.getPropertyValue("adminStatus"));
+        body.setStatusReason(rootNode.getPropertyValue("statusReason"));
+        return defaultMssApiClient.updateConnectivityServiceRequest(serviceId, body);
+    }
+
+    /**
      * Gets the identifier of the state the service will be in when the workflow is finished.
      * 
      * @return the new state string
@@ -80,11 +97,19 @@ public abstract class AtomicWorkflow extends GenericWorkflowImpl {
     protected abstract String getNewState();
 
     /**
-     * Updates the Instance with values that are set per workflow.
+     * Updates the Instance with values that are set per workflow, before messages are sent to SBI
      * 
      * @param templateInstance the Instance of the TOSCA service blueprint
      * @param serviceCreateTime the time the Connectivity Service was created
      */
-    protected abstract void updateTemplateInstance(Instance templateInstance, String serviceCreateTime);
+    protected abstract void updateTemplateInstancePreDispatch(Instance templateInstance);
+
+    /**
+     * Updates the Instance with values that are set per workflow, after messages are sent to SBI.
+     * 
+     * @param templateInstance the Instance of the TOSCA service blueprint
+     * @param serviceCreateTime the time the Connectivity Service was created
+     */
+    protected abstract void updateTemplateInstancePostDispatch(Instance templateInstance);
 
 }
