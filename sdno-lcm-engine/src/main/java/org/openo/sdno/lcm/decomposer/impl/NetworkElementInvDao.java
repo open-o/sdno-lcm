@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-//import org.codehaus.jackson.type.TypeReference;
 import org.openo.baseservice.remoteservice.exception.ServiceException;
 import org.openo.baseservice.roa.util.restclient.RestfulResponse;
 import org.openo.sdno.lcm.exception.ExternalComponentException;
@@ -73,7 +72,7 @@ public class NetworkElementInvDao {
         String errStr = "NE Query Failed";
         try {
             checkFilterData(condition);
-            RestfulResponse response = new RestfulResponse();
+            RestfulResponse response = null;
             // condition doesn't seem to work if it's siteID
             if (!condition.containsKey(SITE_ID)) {
                 response = BrsRestconfProxy.get(env.getProperty(Constants.SDNO_BRS_RESOURCEINVENTORY_BASE_PATH) + NEURI,
@@ -124,7 +123,7 @@ public class NetworkElementInvDao {
 
         } catch (Exception e) {
             log.severe(errStr);
-            throw new ExternalComponentException(errStr);
+            throw new ExternalComponentException(errStr, e);
         }
         return null;
     }

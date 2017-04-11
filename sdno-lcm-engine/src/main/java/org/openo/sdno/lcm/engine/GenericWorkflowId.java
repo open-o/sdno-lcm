@@ -21,16 +21,17 @@ package org.openo.sdno.lcm.engine;
  */
 public enum GenericWorkflowId {
 
-    CREATE("create"), DEPLOY("deploy"), DEPLOYCREATED("deployCreated"), GET("get"), UPDATECREATED("updateCreated"),
-    UPDATEDEPLOYED("updateDeployed"), UNDEPLOY("undeploy"), DELETECREATED("deleteCreated"),
-    DELETEDEPLOYED("deleteDeployed");
+    CREATE("create"), DEPLOY("deploy"), DEPLOYCREATED("deployCreated"), GET("get"), UPDATECREATED(
+            "updateCreated"), UPDATEDEPLOYED("updateDeployed"), UNDEPLOY(
+                    "undeploy"), DELETECREATED("deleteCreated"), DELETEDEPLOYED("deleteDeployed");
 
     private String idString;
 
     GenericWorkflowId(String idString) {
         this.idString = idString;
     }
-    
+
+    @Override
     public String toString() {
         return idString;
     }

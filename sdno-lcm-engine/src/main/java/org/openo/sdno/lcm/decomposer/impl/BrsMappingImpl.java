@@ -18,6 +18,7 @@ package org.openo.sdno.lcm.decomposer.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.openo.baseservice.remoteservice.exception.ServiceException;
@@ -52,9 +53,9 @@ public class BrsMappingImpl implements BrsMapping {
 
         Map<String, String> querycondition = new HashMap();
 
-        for (String conditionKey : condition.keySet()) {
-            if (condition.get(conditionKey) != "0") {
-                querycondition.put(conditionKey, condition.get(conditionKey));
+        for (Entry<String, String> conditionEntry : condition.entrySet()) {
+            if (conditionEntry.getValue() != "0") {
+                querycondition.put(conditionEntry.getKey(), conditionEntry.getValue());
             }
         }
 
@@ -67,7 +68,7 @@ public class BrsMappingImpl implements BrsMapping {
                 log.info("managedElementJsonObject" + managedElementJsonObject.toString());
                 return managedElementJsonObject;
             } catch (Exception se) {
-                throw new LcmInternalException("");
+                throw new LcmInternalException("Failed to retrieve ManagedElement", se);
 
             }
 
@@ -119,11 +120,11 @@ public class BrsMappingImpl implements BrsMapping {
 
         try {
             Map<String, String> conditionQuerySiteBySiteName = new HashMap<>();
-            for (String key : condition.keySet()) {
-                if (key == SITE_NAME) {
-                    conditionQuerySiteBySiteName.put("name", condition.get(key));
+            for (Entry<String, String> entry : condition.entrySet()) {
+                if (entry.getKey() == SITE_NAME) {
+                    conditionQuerySiteBySiteName.put("name", entry.getValue());
                 } else {
-                    conditionQuerySiteBySiteName.put(key, condition.get(key));
+                    conditionQuerySiteBySiteName.put(entry.getKey(), entry.getValue());
                 }
             }
             JsonNode site = siteInvDao.query(conditionQuerySiteBySiteName);
@@ -147,7 +148,7 @@ public class BrsMappingImpl implements BrsMapping {
             condition.put(SITE_NAME, siteName);
         }
         String ipAddress = node.getPropertyValue(IP_ADDRESS);
-        if (null != ipAddress && !ipAddress.equals(NONE) && !ipAddress.equals("0.0.0.0")) {
+        if ((!NONE.equals(ipAddress)) && (!"0.0.0.0".equals(ipAddress))) {
 
             condition.put(IP_ADDRESS, ipAddress);
         }

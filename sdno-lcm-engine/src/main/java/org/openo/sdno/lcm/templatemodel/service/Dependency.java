@@ -31,7 +31,8 @@ public class Dependency {
     /**
      * Constructor
      * 
-     * @param depString eg "sdno.node.Connection.Site/deploy"
+     * @param depString
+     *            eg "sdno.node.Connection.Site/deploy"
      */
     public Dependency(String depString) {
 
@@ -39,11 +40,11 @@ public class Dependency {
             String[] split = depString.split(SPLITTER);
             type = split[0];
             operation = split[1];
-            if(null == type || type.isEmpty() || null == operation || operation.isEmpty()) {
+            if (null == type || type.isEmpty() || null == operation || operation.isEmpty()) {
                 throw new LcmInternalException(FAILED_TO_PARSE_ERR + depString);
             }
-        } catch(Exception e) {
-            throw new LcmInternalException(FAILED_TO_PARSE_ERR + depString);
+        } catch (Exception e) {
+            throw new LcmInternalException(FAILED_TO_PARSE_ERR + depString, e);
         }
     }
 

@@ -24,10 +24,8 @@ import org.openo.sdno.lcm.util.Constants;
 import org.springframework.stereotype.Component;
 
 /**
- * This workflow corresponds to the following state table row:
- * "apiOperation": "undeploy",
- * "currentState": "deployed",
- * "newState": "created",
+ * This workflow corresponds to the following state table row: "apiOperation":
+ * "undeploy", "currentState": "deployed", "newState": "created",
  * "transitionWorkflow": "undeploy"
  */
 @Component
@@ -37,10 +35,12 @@ public class GwfUndeploy extends AtomicWorkflow {
 
     /*
      * (non-Javadoc)
-     * @see
-     * org.openo.sdno.lcm.engine.impl.workflow.GenericWorkflowImpl#updateTemplateInstance(org.openo.
+     * 
+     * @see org.openo.sdno.lcm.engine.impl.workflow.GenericWorkflowImpl#
+     * updateTemplateInstance(org.openo.
      * sdno.lcm.templatemodel.service.Instance, java.lang.String)
      */
+    @Override
     protected void updateTemplateInstancePreDispatch(Instance templateInstance) {
         // update the nodes with correct values for this workflow
         templateInstance.replacePropertyValueInAllNodes(Constants.LCM_ADMINSTATUS,
@@ -57,8 +57,11 @@ public class GwfUndeploy extends AtomicWorkflow {
 
     /*
      * (non-Javadoc)
-     * @see org.openo.sdno.lcm.engine.impl.workflow.GenericWorkflowImpl#getNewState()
+     * 
+     * @see
+     * org.openo.sdno.lcm.engine.impl.workflow.GenericWorkflowImpl#getNewState()
      */
+    @Override
     protected String getNewState() {
 
         return Constants.LCM_LIFECYCLESTATE_CREATED;
@@ -66,6 +69,7 @@ public class GwfUndeploy extends AtomicWorkflow {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.openo.sdno.lcm.engine.RegisterWorkflow#getWorkflowId()
      */
     @Override

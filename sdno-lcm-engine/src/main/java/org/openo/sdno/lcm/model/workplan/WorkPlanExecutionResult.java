@@ -16,51 +16,61 @@
 
 package org.openo.sdno.lcm.model.workplan;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents the execution result of a work plan
  */
 public class WorkPlanExecutionResult {
-    boolean overallResult;  //whether the whole work plan is executed successfully. true: success; false: failure
-    List<WorkItem> succeededItems;  //work items that have been executed successfully.
-    List<WorkItem> failedItems;  //work items that failed during their execution.
-    List<WorkItem> unprocessedItems;  //work items that haven't been executed (due to fast-fail or node dependency).
+    boolean overallResult; // whether the whole work plan is executed
+                           // successfully. true: success; false: failure
+    List<WorkItem> succeededItems; // work items that have been executed
+                                   // successfully.
+    List<WorkItem> failedItems; // work items that failed during their
+                                // execution.
+    List<WorkItem> unprocessedItems; // work items that haven't been executed
+                                     // (due to fast-fail or node dependency).
 
     /**
      * constructor
      */
     public WorkPlanExecutionResult() {
-        succeededItems = new ArrayList<WorkItem>();
-        failedItems = new ArrayList<WorkItem>();
-        unprocessedItems = new ArrayList<WorkItem>();
+        succeededItems = new ArrayList<>();
+        failedItems = new ArrayList<>();
+        unprocessedItems = new ArrayList<>();
     }
 
-    //getters
+    // getters
     public boolean getOverallResult() {
         return overallResult;
     }
+
     public List<WorkItem> getSucceededItems() {
         return succeededItems;
     }
+
     public List<WorkItem> getFailedItems() {
         return failedItems;
     }
+
     public List<WorkItem> getUnprocessedItems() {
         return unprocessedItems;
     }
 
-    //setter & inserter
+    // setter & inserter
     public void setOverallResult(boolean succeedOrNot) {
         overallResult = succeedOrNot;
     }
+
     public void addSucceededItem(WorkItem item) {
         succeededItems.add(item);
     }
+
     public void addFailedItem(WorkItem item) {
         failedItems.add(item);
     }
+
     public void addUnprocessedItem(WorkItem item) {
         unprocessedItems.add(item);
     }

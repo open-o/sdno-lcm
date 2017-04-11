@@ -54,7 +54,9 @@ public class MsbServiceApiClientImpl implements MsbServiceApiClient {
     @Autowired
     private Environment env;
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.openo.sdno.lcm.msbclient.MsbServiceApiClient#register()
      */
     @Override
@@ -64,18 +66,18 @@ public class MsbServiceApiClientImpl implements MsbServiceApiClient {
         node.setPort(env.getProperty(SERVER_PORT));
 
         String lcmIp = System.getenv(SDNO_LCM_IP);
-        if(lcmIp == null || (!InetAddressValidator.getInstance().isValid(lcmIp))) {
+        if (lcmIp == null || (!InetAddressValidator.getInstance().isValid(lcmIp))) {
 
             log.warning("Invalid or null LCM IP address read from environment variable " + SDNO_LCM_IP + ": " + lcmIp);
             lcmIp = env.getProperty(Constants.SDNO_LCM_DEFAULT_IP);
-            if(lcmIp == null || (!InetAddressValidator.getInstance().isValid(lcmIp))) {
+            if (lcmIp == null || (!InetAddressValidator.getInstance().isValid(lcmIp))) {
 
                 throw new LcmInternalException("Unable to read default IP for LCM from config.properties");
             }
         }
 
         node.setIp(lcmIp);
-        List<Node> nodes = new ArrayList<Node>();
+        List<Node> nodes = new ArrayList<>();
         nodes.add(node);
         MicroServiceInfo microServiceInfo = new MicroServiceInfo();
         microServiceInfo.setUrl(env.getProperty(SERVER_CONTEXT_PATH)); // ?
@@ -86,23 +88,25 @@ public class MsbServiceApiClientImpl implements MsbServiceApiClient {
         microServiceInfo.setLbPolicy(LbPolicyEnum.ROUND_ROBIN);
 
         log.info("LCM registration info for MSB:\n" + microServiceInfo.toString());
-        MSBServiceResourceApi msbServiceResourceApi = this.getMSBServiceResourceApi(); 
+        MSBServiceResourceApi msbServiceResourceApi = this.getMSBServiceResourceApi();
         try {
             // false param so we remove nslcm if it was registered!
-            MicroServiceFullInfo registration =
-                    msbServiceResourceApi.addMicroService(microServiceInfo, false, null);
+            MicroServiceFullInfo registration = msbServiceResourceApi.addMicroService(microServiceInfo, false, null);
             log.info("Registration status " + registration.getStatus());
             return registration;
-        } catch(Exception e) {
+        } catch (Exception e) {
+            log.fine(e.toString());
             log.severe("Failed to register with the microservice bus at "
                     + msbServiceResourceApi.getApiClient().getBasePath() + " due to " + e.getMessage());
-            // throw new ExternalComponentException("Failed to add microservice", e);
+            // throw new ExternalComponentException("Failed to add
+            // microservice", e);
             return null;
         }
     }
 
     private MSBServiceResourceApi getMSBServiceResourceApi() {
-        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded
+        // It's recommended to create an instance of `ApiClient` per thread in a
+        // multithreaded
         // environment
         MSBServiceResourceApi msbServiceResourceApi = new MSBServiceResourceApi();
         msbServiceResourceApi.getApiClient()

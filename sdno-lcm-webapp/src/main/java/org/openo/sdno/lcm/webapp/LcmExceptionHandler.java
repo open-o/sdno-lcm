@@ -46,15 +46,15 @@ public class LcmExceptionHandler extends ResponseEntityExceptionHandler {
 
         Map<String, String> responseBody = new HashMap<>();
         ResponseEntity<Object> response = null;
-        if(ex instanceof LcmInternalException) {
+        if (ex instanceof LcmInternalException) {
             responseBody.put(MESSAGE, "An internal LCM error occurred");
             response = new ResponseEntity<Object>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
 
-        } else if(ex instanceof ExternalComponentException) {
+        } else if (ex instanceof ExternalComponentException) {
             responseBody.put(MESSAGE, "An external component could not be accessed or returned an error reponse");
             response = new ResponseEntity<Object>(responseBody, HttpStatus.NOT_FOUND);
 
-        } else if(ex instanceof InvalidInputException) {
+        } else if (ex instanceof InvalidInputException) {
             responseBody.put(MESSAGE, "Invalid input was received");
             response = new ResponseEntity<Object>(responseBody, HttpStatus.BAD_REQUEST);
 
@@ -63,7 +63,6 @@ public class LcmExceptionHandler extends ResponseEntityExceptionHandler {
             response = new ResponseEntity<Object>(responseBody, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         responseBody.put(DETAIL, ex.getMessage());
-        ex.printStackTrace();
         return response;
     }
 

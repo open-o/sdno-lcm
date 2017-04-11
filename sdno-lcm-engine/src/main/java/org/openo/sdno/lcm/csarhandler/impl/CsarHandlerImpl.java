@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.security.InvalidParameterException;
-import java.util.List;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -55,9 +54,11 @@ public class CsarHandlerImpl implements CsarHandler {
     private Mapper mapper;
 
     /**
-     * Get the ZipFile handle to the actual CSAR correspoding to the CSAR meta data
+     * Get the ZipFile handle to the actual CSAR correspoding to the CSAR meta
+     * data
      * 
-     * @param csar the CSAR meta data
+     * @param csar
+     *            the CSAR meta data
      * @return the ZipFile CSAR
      */
     private ZipFile getCsarZipFile(Csar csar) {
@@ -70,7 +71,7 @@ public class CsarHandlerImpl implements CsarHandler {
             ZipFile zippy = new ZipFile(tmpCsarFile);
             return zippy;
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.severe("Failed to download or store the temporary CSAR file");
             throw new LcmInternalException("Failed to download or store the temporary CSAR file", e);
         }
@@ -84,46 +85,17 @@ public class CsarHandlerImpl implements CsarHandler {
      */
     private Csar getCsarById(String csarId) {
 
-        if(csarId == null || csarId.isEmpty()) {
+        if (csarId == null || csarId.isEmpty()) {
 
             throw new InvalidParameterException("csarId may not be empty or null");
         }
         PackageMeta packageMeta = packageResourceApiClient.queryPackageById(csarId);
 
-        if(null == packageMeta) {
+        if (null == packageMeta) {
             log.severe("Null packageMeta returned from catalog");
             throw new ExternalComponentException("Catalog returned null for the query of CSAR " + csarId);
         }
         return new Csar(packageMeta.getCsarId(), packageMeta.getName(), packageMeta.getDownloadUri());
-    }
-
-    /**
-     * Get the metadata of a CSAR file based on the CSAR name
-     * 
-     * @param csarName the CSAR name
-     * @return the metadata object Csar
-     */
-    private Csar getCsarByName(String csarName) {
-
-        if(csarName == null || csarName.isEmpty()) {
-
-            throw new InvalidParameterException("csarName may not be empty or null");
-        }
-
-        List<PackageMeta> packageMetaList =
-                packageResourceApiClient.queryPackageListByCond(csarName, null, null, null, null);
-
-        if(packageMetaList.isEmpty()) {
-            log.severe("Empty package list returned from catalog");
-            throw new ExternalComponentException("Catalog returned an empty list for the query of CSAR " + csarName);
-        } else {
-
-            if(packageMetaList.size() > 1) {
-                log.warning(String.format("%s packages returned from catalog -expected one", packageMetaList.size()));
-            }
-            PackageMeta packageMeta = packageMetaList.get(0);
-            return new Csar(packageMeta.getCsarId(), packageMeta.getName(), packageMeta.getDownloadUri());
-        }
     }
 
     @Override
@@ -138,7 +110,7 @@ public class CsarHandlerImpl implements CsarHandler {
             Swagger swagger = Yaml.mapper().readValue(entryString, Swagger.class);
             return swagger;
 
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new LcmInternalException("Failed to get the swagger spec for " + swaggerPath, ex);
         }
     }
@@ -153,7 +125,7 @@ public class CsarHandlerImpl implements CsarHandler {
             String entryString = IOUtils.toString(inStream, Charset.defaultCharset());
             return mapper.stringToNode(entryString);
 
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new LcmInternalException("Failed to get the mapper spec for " + mapperPath, ex);
         }
     }

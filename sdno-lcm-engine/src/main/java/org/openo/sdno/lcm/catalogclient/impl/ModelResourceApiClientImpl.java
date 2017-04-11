@@ -52,8 +52,7 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 
     private static final String FAILED_TO_GET_SERVICE_TEMPLATE_PARAMETERS = "Failed to get service template parameters";
 
-    private static final String FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_RAW_DATA =
-            "Failed to query service template by raw data";
+    private static final String FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_RAW_DATA = "Failed to query service template by raw data";
 
     private static final String FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_ID = "Failed to query service template by ID";
 
@@ -63,7 +62,8 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
     private Environment env;
 
     private ModelResourceApi getModelResourceApi() {
-        // It's recommended to create an instance of `ApiClient` per thread in a multithreaded
+        // It's recommended to create an instance of `ApiClient` per thread in a
+        // multithreaded
         // environment
         ModelResourceApi modelResourceApi = new ModelResourceApi();
         modelResourceApi.getApiClient().setBasePath(env.getRequiredProperty(Constants.COMMON_TOSCA_CATALOG_BASE_PATH));
@@ -72,21 +72,22 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.openo.sdno.catalogclient.ModelResourceApiClient#
      * getServiceTemplateById(java.lang.String)
      */
     @Override
     public ServiceTemplate getServiceTemplateById(String serviceTemplateId) {
-    	
-    	if(null==serviceTemplateId) {
-    		throw new LcmInternalException("serviceTemplateId cannot be null");
-    	}
+
+        if (null == serviceTemplateId) {
+            throw new LcmInternalException("serviceTemplateId cannot be null");
+        }
 
         ModelResourceApi modelResourceApi = getModelResourceApi();
         try {
             return modelResourceApi.getServiceTemplateById(serviceTemplateId);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.severe(FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_ID);
             throw new ExternalComponentException(FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_ID, e);
         }
@@ -94,21 +95,22 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.openo.sdno.catalogclient.ModelResourceApiClient#
      * getServiceTemplateParameters(java.lang.String)
      */
     @Override
     public Parameters getServiceTemplateParameters(String serviceTemplateId) {
-    	
-    	if(null==serviceTemplateId) {
-    		throw new LcmInternalException("serviceTemplateId cannot be null");
-    	}
+
+        if (null == serviceTemplateId) {
+            throw new LcmInternalException("serviceTemplateId cannot be null");
+        }
 
         ModelResourceApi modelResourceApi = getModelResourceApi();
         try {
             return modelResourceApi.getServiceTemplateParameters(serviceTemplateId);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.severe(FAILED_TO_GET_SERVICE_TEMPLATE_PARAMETERS);
             throw new ExternalComponentException(FAILED_TO_GET_SERVICE_TEMPLATE_PARAMETERS, e);
         }
@@ -116,6 +118,7 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.openo.sdno.catalogclient.ModelResourceApiClient#
      * getServiceTemplateRawData(org.openo.sdno.lcm.restclient.catalog.model.
      * QueryRawDataCondition)
@@ -126,8 +129,8 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
         QueryRawDataCondition body = new QueryRawDataCondition();
         body.setCsarId(csarId);
 
-        List<KeyValuePair> kvpList = new ArrayList<KeyValuePair>();
-        for(Entry<String, String> entry : inputParameters.entrySet()) {
+        List<KeyValuePair> kvpList = new ArrayList<>();
+        for (Entry<String, String> entry : inputParameters.entrySet()) {
 
             KeyValuePair kvp = new KeyValuePair().key(entry.getKey()).value(entry.getValue());
             kvpList.add(kvp);
@@ -142,7 +145,7 @@ public class ModelResourceApiClientImpl implements ModelResourceApiClient {
             log.info("raw template instance: " + this.unprettyPrint(rawData));
             return rawData;
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.severe(FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_RAW_DATA + body.toString());
             throw new ExternalComponentException(FAILED_TO_QUERY_SERVICE_TEMPLATE_BY_RAW_DATA, e);
         }

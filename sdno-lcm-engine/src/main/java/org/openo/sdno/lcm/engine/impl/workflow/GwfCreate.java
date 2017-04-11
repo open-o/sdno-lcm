@@ -30,12 +30,10 @@ import org.openo.sdno.lcm.util.Constants;
 import org.springframework.stereotype.Component;
 
 /**
- * Create workflow is a special case, it is not composed of other workflows but neither can it share
- * the generic implementation of execute() in AtomicWorkflow.
- * This workflow corresponds to the following state table row:
- * "apiOperation": "create",
- * "currentState": "none",
- * "newState": "created",
+ * Create workflow is a special case, it is not composed of other workflows but
+ * neither can it share the generic implementation of execute() in
+ * AtomicWorkflow. This workflow corresponds to the following state table row:
+ * "apiOperation": "create", "currentState": "none", "newState": "created",
  * "transitionWorkflow": "create"
  */
 @Component
@@ -48,6 +46,7 @@ public class GwfCreate extends GenericWorkflowImpl {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.openo.sdno.lcm.engine.Workflow#execute(java.util.Map)
      */
     @Override
@@ -55,12 +54,12 @@ public class GwfCreate extends GenericWorkflowImpl {
 
         log.info("Execute GwfCreate workflow");
 
-        String csarId = (String)super.getParam(Constants.LCM_NBI_CSAR_ID, params);
-        String apiOperation = (String)super.getParam(Constants.LCM_NBI_API_OPERATION, params);
-        String serviceTemplateId = (String)super.getParam(Constants.LCM_NBI_TEMPLATE_ID, params);
-        Instance templateInstance = (Instance)super.getParam(Constants.LCM_TEMPLATE_INSTANCE, params);
-        String serviceName = (String)super.getParam(Constants.LCM_NBI_SERVICE_NAME, params);
-        String serviceDescription = (String)super.getParam(Constants.LCM_NBI_SERVICE_DESCRIPTION, params);
+        String csarId = (String) super.getParam(Constants.LCM_NBI_CSAR_ID, params);
+        String apiOperation = (String) super.getParam(Constants.LCM_NBI_API_OPERATION, params);
+        String serviceTemplateId = (String) super.getParam(Constants.LCM_NBI_TEMPLATE_ID, params);
+        Instance templateInstance = (Instance) super.getParam(Constants.LCM_TEMPLATE_INSTANCE, params);
+        String serviceName = (String) super.getParam(Constants.LCM_NBI_SERVICE_NAME, params);
+        String serviceDescription = (String) super.getParam(Constants.LCM_NBI_SERVICE_DESCRIPTION, params);
         Node connectivityServiceNode = templateInstance.getRootNode();
 
         // create the Connectivity Service in DB
@@ -68,45 +67,47 @@ public class GwfCreate extends GenericWorkflowImpl {
         connectivityService.setLifecycleState(Constants.LCM_LIFECYCLESTATE_CREATED);
         connectivityService.setTemplateId(serviceTemplateId);
         connectivityService.setName(serviceName);
-        // we don't set 'id' so it will be assigned a generated uuid value by the MSS
-        if(null != connectivityServiceNode.getPropertyValue("actionState")) {
+        // we don't set 'id' so it will be assigned a generated uuid value by
+        // the MSS
+        if (null != connectivityServiceNode.getPropertyValue("actionState")) {
             connectivityService.setActionState(connectivityServiceNode.getPropertyValue("actionState"));
         }
-        if(null != connectivityServiceNode.getPropertyValue("adminStatus")) {
+        if (null != connectivityServiceNode.getPropertyValue("adminStatus")) {
             connectivityService.setAdminStatus(connectivityServiceNode.getPropertyValue("adminStatus"));
         }
         connectivityService.setDescription(serviceDescription);
-        if(null != connectivityServiceNode.getPropertyValue("location")) {
+        if (null != connectivityServiceNode.getPropertyValue("location")) {
             connectivityService.setLocation(connectivityServiceNode.getPropertyValue("location"));
         }
-        if(null != connectivityServiceNode.getPropertyValue("operStatus")) {
+        if (null != connectivityServiceNode.getPropertyValue("operStatus")) {
             connectivityService.setOperStatus(connectivityServiceNode.getPropertyValue("operStatus"));
         }
-        if(null != connectivityServiceNode.getPropertyValue("ownerID")) {
+        if (null != connectivityServiceNode.getPropertyValue("ownerID")) {
             connectivityService.setOwnerID(connectivityServiceNode.getPropertyValue("ownerID"));
         }
-        if(null != connectivityServiceNode.getPropertyValue("statusReason")) {
+        if (null != connectivityServiceNode.getPropertyValue("statusReason")) {
             connectivityService.setStatusReason(connectivityServiceNode.getPropertyValue("statusReason"));
         }
-        if(null != connectivityServiceNode.getPropertyValue("version")) {
+        if (null != connectivityServiceNode.getPropertyValue("version")) {
             connectivityService.setVersion(connectivityServiceNode.getPropertyValue("version"));
         }
 
-        CreateConnectivityServiceResponse createConnectivityService =
-                defaultMssApiClient.createConnectivityService(connectivityService);
-        CreateConnectivityServiceResponseSample createConnectivityServiceResponseSample =
-                createConnectivityService.getObjects().get(0);
+        CreateConnectivityServiceResponse createConnectivityService = defaultMssApiClient
+                .createConnectivityService(connectivityService);
+        CreateConnectivityServiceResponseSample createConnectivityServiceResponseSample = createConnectivityService
+                .getObjects().get(0);
         String createdNsId = createConnectivityServiceResponseSample.getId();
         log.info("Created Connectivity Service ID is " + createdNsId);
         log.info(
-                String.format("Created connectivity service:\n%s", createConnectivityServiceResponseSample.toString()));
-        // put the id into the params in case we are passing on to another wfl eg deployCreated as
+                String.format("Created connectivity service:%n%s", createConnectivityServiceResponseSample.toString()));
+        // put the id into the params in case we are passing on to another wfl
+        // eg deployCreated as
         // part of deploy
         params.put(Constants.LCM_NBI_SERVICE_ID, createdNsId);
 
         executeWorkplan(csarId, apiOperation, templateInstance);
 
-        HashMap<String, Object> responseMap = new HashMap<String, Object>();
+        HashMap<String, Object> responseMap = new HashMap<>();
         responseMap.put(Constants.LCM_NBI_SERVICE_ID, createdNsId);
         return responseMap;
     }

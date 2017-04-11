@@ -89,7 +89,7 @@ public class SiteInvDao {
      * @since SDNO 0.5
      */
     private void checkFilterData(Map<String, String> condition) throws ServiceException {
-        Set<String> suportKeys = new HashSet<String>();
+        Set<String> suportKeys = new HashSet<>();
 
         suportKeys.add("name");
         suportKeys.add("type");

@@ -55,39 +55,41 @@ public class LcmStateEngineImpl implements LcmStateEngine {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.openo.sdno.lcm.engine.impl.LcmStateEngine#execute(java.util.Map)
      */
     @Override
     public Map<String, Object> execute(Map<String, Object> params) {
 
-        if(params == null) {
+        if (params == null) {
             throw new IllegalArgumentException("input params may not be null");
         }
         log.fine("execute params: " + params.toString());
 
         // if the API operation is not set, exit
-        if((!params.containsKey(Constants.LCM_NBI_API_OPERATION))
-                || ((String)params.get(Constants.LCM_NBI_API_OPERATION)).isEmpty()) {
+        if ((!params.containsKey(Constants.LCM_NBI_API_OPERATION))
+                || ((String) params.get(Constants.LCM_NBI_API_OPERATION)).isEmpty()) {
 
             log.severe(Constants.LCM_NBI_API_OPERATION + " is not found in params");
             throw new LcmInternalException("API operation parameter not present - cannot proceed");
         }
-        String apiOperation = (String)params.get(Constants.LCM_NBI_API_OPERATION);
+        String apiOperation = (String) params.get(Constants.LCM_NBI_API_OPERATION);
         log.info(Constants.LCM_NBI_API_OPERATION + " is " + apiOperation);
         String currentState = null;
         String templateId = null;
 
-        // check if the nsid is included in params - this means we have such a service in inventory
+        // check if the nsid is included in params - this means we have such a
+        // service in inventory
         // get the CSAR name from the service instance.
-        if(params.containsKey(Constants.LCM_NBI_SERVICE_ID)
-                && !((String)params.get(Constants.LCM_NBI_SERVICE_ID)).isEmpty()) {
+        if (params.containsKey(Constants.LCM_NBI_SERVICE_ID)
+                && !((String) params.get(Constants.LCM_NBI_SERVICE_ID)).isEmpty()) {
 
-            String nsid = (String)params.get(Constants.LCM_NBI_SERVICE_ID);
+            String nsid = (String) params.get(Constants.LCM_NBI_SERVICE_ID);
             log.info(Constants.LCM_NBI_SERVICE_ID + " (Connectivity Service ID) is " + nsid);
 
             // get the service from the inventory
-            GetConnectivityServiceResponseSample connectivityService =
-                    defaultMssApiClient.readConnectivityService(nsid).getObject();
+            GetConnectivityServiceResponseSample connectivityService = defaultMssApiClient.readConnectivityService(nsid)
+                    .getObject();
             log.fine("Connectivity service: " + connectivityService.toString());
 
             // get state from service instance
@@ -95,21 +97,22 @@ public class LcmStateEngineImpl implements LcmStateEngine {
             // get the csar ID from service instance
             // *** ASSUME CSAR_ID == TEMPLATE_ID ***
             templateId = connectivityService.getTemplateId();
-            // some kind of null object can be returned if the connectivity service is not found
+            // some kind of null object can be returned if the connectivity
+            // service is not found
             // so check we have the templateId to proceed
-            if(null == templateId) {
-                String errString =
-                        String.format("the template ID was null as connectivity service %s was not found", nsid);
+            if (null == templateId) {
+                String errString = String.format("the template ID was null as connectivity service %s was not found",
+                        nsid);
                 log.severe(errString);
                 throw new ExternalComponentException(errString);
             }
             log.info(String.format("Adding template ID to params as %s=%s", Constants.LCM_NBI_TEMPLATE_ID, templateId));
             params.put(Constants.LCM_NBI_TEMPLATE_ID, templateId);
 
-        } else if((params.containsKey(Constants.LCM_NBI_TEMPLATE_ID)
-                && !((String)params.get(Constants.LCM_NBI_TEMPLATE_ID)).isEmpty())) {
+        } else if (params.containsKey(Constants.LCM_NBI_TEMPLATE_ID)
+                && !((String) params.get(Constants.LCM_NBI_TEMPLATE_ID)).isEmpty()) {
 
-            templateId = (String)params.get(Constants.LCM_NBI_TEMPLATE_ID);
+            templateId = (String) params.get(Constants.LCM_NBI_TEMPLATE_ID);
             currentState = Constants.LCM_LIFECYCLESTATE_NONE;
 
         } else {
@@ -126,22 +129,20 @@ public class LcmStateEngineImpl implements LcmStateEngine {
         params.put(Constants.LCM_NBI_CSAR_ID, csarId);
 
         String templateDownloadUri = serviceTemplate.getDownloadUri();
-        if(null == templateDownloadUri || templateDownloadUri.isEmpty()) {
+        if (null == templateDownloadUri || templateDownloadUri.isEmpty()) {
 
             throw new LcmInternalException("templateDownloadUri cannot be null or empty");
         }
         log.info(String.format("Service template URI is: %s", templateDownloadUri));
 
-        Map<String, String> inputParams = (Map<String, String>)params.get(Constants.LCM_NBI_ADDITIONAL_PARAMS);
-        if(null == inputParams) {
+        Map<String, String> inputParams = (Map<String, String>) params.get(Constants.LCM_NBI_ADDITIONAL_PARAMS);
+        if (null == inputParams) {
             log.warning("Input parameters are null - this is ok for create but indicates an error for instantiate");
             inputParams = new HashMap<>();
         }
         // get the service template from catalog
-        // String serviceInstanceJson = modelResourceApiClient.getServiceTemplateRawData(csarId,
-        // inputParams);
-        Map<String, Object> serviceInstanceMap =
-                parserApiClient.parseControllerInstanceIndirect(templateDownloadUri, inputParams);
+        Map<String, Object> serviceInstanceMap = parserApiClient.parseControllerInstanceIndirect(templateDownloadUri,
+                inputParams);
         // String serviceInstanceJson
         log.fine("serviceInstanceMap: " + serviceInstanceMap.toString());
         // add the instance to the params

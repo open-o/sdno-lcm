@@ -38,7 +38,10 @@ public class TemplateInstanceParserImpl implements TemplateInstanceParser {
 
     /*
      * (non-Javadoc)
-     * @see org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser#parse(java.lang.String)
+     * 
+     * @see
+     * org.openo.sdno.lcm.templateinstanceparser.TemplateInstanceParser#parse(
+     * java.lang.String)
      */
     @Override
     public Instance parse(String serviceInstanceJson) {
@@ -54,7 +57,7 @@ public class TemplateInstanceParserImpl implements TemplateInstanceParser {
 
             return instancePojo;
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new LcmInternalException("Failed to parse serviceInstanceJson", e);
         }
     }
@@ -63,12 +66,12 @@ public class TemplateInstanceParserImpl implements TemplateInstanceParser {
     public Instance parse(Map<String, Object> serviceInstanceMap) {
 
         Object instanceObj = serviceInstanceMap.get("instance");
-        if(null == instanceObj) {
+        if (null == instanceObj) {
 
-            log.severe(String.format("The serviceInstanceMap is invalid: %s" + serviceInstanceMap.toString()));
+            log.severe(String.format("The serviceInstanceMap is invalid: %s", serviceInstanceMap.toString()));
             throw new LcmInternalException("The serviceInstanceMap is invalid");
         }
-        Instance instance = mapper.mapToBean(Instance.class, (Map<String, Object>)instanceObj);
+        Instance instance = mapper.mapToBean(Instance.class, (Map<String, Object>) instanceObj);
         log.info("Parsed Instance from serviceInstanceMap:\n" + instance.toString());
         return instance;
     }

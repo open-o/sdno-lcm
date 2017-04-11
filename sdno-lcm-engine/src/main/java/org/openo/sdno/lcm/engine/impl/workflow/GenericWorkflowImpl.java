@@ -41,8 +41,8 @@ import org.openo.sdno.lcm.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Abstract superclass of generic workflows, providing spring dependencies and showing implemented
- * interfaces.
+ * Abstract superclass of generic workflows, providing spring dependencies and
+ * showing implemented interfaces.
  */
 public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow {
 
@@ -67,18 +67,19 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
     /**
      * Gets a certain parameter from the passed param map.
      * 
-     * @param key the param key
+     * @param key
+     *            the param key
      * @param params
      * @return
      */
     protected Object getParam(String key, Map<String, Object> params) {
 
         Object param = params.get(key);
-        if(param == null) {
+        if (param == null) {
 
             throw new LcmInternalException(key + " may not be null");
         }
-        if(param instanceof String && ((String)param).isEmpty()) {
+        if (param instanceof String && ((String) param).isEmpty()) {
 
             throw new LcmInternalException(key + "string may not be empty");
         }
@@ -88,8 +89,10 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.openo.sdno.lcm.engine.RegisterWorkflow#getWorkflowToRegister()
      */
+    @Override
     public Workflow getWorkflowToRegister() {
 
         return this;
@@ -98,7 +101,8 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
     /**
      * Reads a certain Connectivity Service from service inventory (MSS)
      * 
-     * @param serviceId the id of the CS to read
+     * @param serviceId
+     *            the id of the CS to read
      * @return
      */
     protected GetConnectivityServiceResponseSample readConnectivityServiceFromMss(String serviceId) {
@@ -158,7 +162,7 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
             throws SouthboundExecutionException {
         WorkPlan workPlan = this.decomposer.decompose(templateInstance, apiOperation, csarId);
         WorkPlanExecutionResult dispatchResult = dispatcher.dispatch(workPlan, WorkPlanExecutionStrategy.FAIL_FAST);
-        if(!dispatchResult.getOverallResult()) {
+        if (!dispatchResult.getOverallResult()) {
             throw new SouthboundExecutionException("Execution failed in the SBI:\n" + dispatchResult.toString());
         }
     }

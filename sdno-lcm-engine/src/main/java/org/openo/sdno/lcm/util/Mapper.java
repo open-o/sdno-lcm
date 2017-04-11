@@ -63,8 +63,9 @@ public class Mapper {
         try {
             map = beanToMapMapper.convertValue(bean, Map.class);
         } catch (Exception ex) {
-            log.severe(String.format("Failed to convert an object to Map<String, String> due to error %s. /n object: ",
-                    ex.getMessage(), bean.toString()));
+            log.severe(
+                    String.format("Failed to convert an object to Map<String, String> due to error %s. /n object: %s",
+                            ex.getMessage(), bean.toString()));
             throw new LcmInternalException(
                     "Failed to convert an object to Map - maybe the values are not simply strings", ex);
         }
@@ -83,7 +84,7 @@ public class Mapper {
         try {
             jsonNode = stringToNodeMapper.readValue(string, JsonNode.class);
         } catch (Exception e) {
-            log.severe(String.format("JSON cannot be parsed: \n%s", string));
+            log.severe(String.format("JSON cannot be parsed: %n%s", string));
             throw new LcmInternalException("Failed to parse JSON string, ", e);
         }
         return jsonNode;
@@ -97,7 +98,7 @@ public class Mapper {
             });
         } catch (Exception e) {
 
-            log.severe(String.format("JSON cannot be parsed: \n%s", jsonString));
+            log.severe(String.format("JSON cannot be parsed: %n%s", jsonString));
             throw new LcmInternalException("Failed to parse JSON string, ", e);
         }
 

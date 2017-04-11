@@ -16,8 +16,9 @@
 
 package org.openo.sdno.lcm.decomposer.impl;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -80,7 +81,7 @@ public class DecomposerImpl implements Decomposer {
         Node rootNode = serviceTemplateInstance.getRootNode();
         // starting from the root node, proceed in a depth-first traversal of
         // the Node tree:
-        Stack<Node> nodeStack = new Stack<Node>();
+        Deque<Node> nodeStack = new ArrayDeque<>();
         nodeStack.push(rootNode);
         // while stack not empty:
         while (!nodeStack.isEmpty()) {
@@ -152,7 +153,7 @@ public class DecomposerImpl implements Decomposer {
         if (node.isRootNode()) {
 
             log.warning(
-                    String.format("No workitem added to workplan for the root node:%s\n csarId:%s\n operation:%s\n ",
+                    String.format("No workitem added to workplan for the root node:%s%n csarId:%s%n operation:%s%n ",
                             node.getId(), csarId, operation));
 
         } else if (node.hasOperationImplementation(operation)) {
@@ -176,7 +177,7 @@ public class DecomposerImpl implements Decomposer {
 
         } else {
 
-            log.warning(String.format("No workitem added to workplan for node:%s\n csarId:%s\n operation:%s\n ",
+            log.warning(String.format("No workitem added to workplan for node:%s%n csarId:%s%n operation:%s%n ",
                     node.getId(), csarId, operation));
         }
     }
@@ -194,8 +195,10 @@ public class DecomposerImpl implements Decomposer {
                 try {
                     brsMapping.enrichResourceNode(node);
                 } catch (Exception e) {
+                    log.fine(e.toString());
                     log.warning(String.format(
-                            "Failed to enrich the resource node %s with values from resource inventory", node.getId()));
+                            "Failed to enrich the resource node %s with values from resource inventory due to %s",
+                            node.getId(), e.getMessage()));
                 }
 
             } else {

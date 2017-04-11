@@ -25,9 +25,11 @@ public interface ParserApiClient {
     /**
      * Create instance from blueprint specyfied by URI
      * 
-     * @param indirectData Blueprint specification (required)
+     * @param indirectData
+     *            Blueprint specification (required)
      * @return Object
-     * @throws ApiException if fails to make API call
+     * @throws ApiException
+     *             if fails to make API call
      */
     public Map<String, Object> parseControllerInstanceIndirect(String uri, Map<String, String> inputs);
 

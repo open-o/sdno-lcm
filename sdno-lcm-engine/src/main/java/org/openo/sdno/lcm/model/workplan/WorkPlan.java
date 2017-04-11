@@ -16,8 +16,8 @@
 
 package org.openo.sdno.lcm.model.workplan;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.openo.sdno.lcm.exception.LcmInternalException;
 
@@ -27,27 +27,29 @@ import org.openo.sdno.lcm.exception.LcmInternalException;
 public class WorkPlan {
 
     /**
-     * work items that compose a work plan.
-     * Note:
-     * We should execute from the head to the tail of this list.
+     * work items that compose a work plan. Note: We should execute from the
+     * head to the tail of this list.
      */
     List<WorkItem> workItems;
 
-    //constructor
+    // constructor
     public WorkPlan() {
-        workItems = new ArrayList<WorkItem>();
+        workItems = new ArrayList<>();
     }
 
     /**
      * append one work item to the end of the list
-     * @param item the work item to be appended to the end of this work plan.
+     * 
+     * @param item
+     *            the work item to be appended to the end of this work plan.
      */
     public void insert(WorkItem item) {
         workItems.add(item);
     }
 
-     /**
+    /**
      * get the number of work items in the planwork item by index.
+     * 
      * @return the number of work item in the plan
      */
     public int size() {
@@ -56,10 +58,12 @@ public class WorkPlan {
 
     /**
      * get work item by index.
-     * @return work item at the given index. LcmInternalException will be thrown if invalid index is given.
+     * 
+     * @return work item at the given index. LcmInternalException will be thrown
+     *         if invalid index is given.
      */
     public WorkItem getWorkItem(int index) {
-        if(index < 0 || index > workItems.size()) {
+        if (index < 0 || index > workItems.size()) {
             throw new LcmInternalException("No workitem exists with index " + index);
         }
         return workItems.get(index);
