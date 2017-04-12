@@ -424,7 +424,7 @@ node_types:
             standard:
                 type: sdno.interfaces.lifecycle.Standard
                 deploy: 
-                    description: "Deploy Enterprise2Dc"
+                    description: 'Deploy Enterprise2Dc'
                     implementation:
                         # primary:
                         dependencies:
@@ -432,6 +432,16 @@ node_types:
                             - sdno.node.Connection.SiteSubnet/deploy
                             - sdno.node.Connection.Vpn/deploy
                             - sdno.node.Connection.Sfc/deploy
+                undeploy:
+                    description: 'Undeploy Enterprise2Dc'
+                    implementation:
+                        dependencies:
+                            - sdno.node.Connection.Sfc/undeploy
+                            - sdno.node.Connection.Vpn/undeploy
+                            - sdno.node.Connection.SiteSubnet/undeploy
+                            - sdno.node.Connection.VpcSubnet/undeploy
+
+
  
 # MUST FIND ANOTHER WAY TO RESTRICT THE SPECIFIC NETWORK HIERARCHY FOR THE SERVICE AT THE SERVICE DEFINITION LAYER
 # CURRENTLY ENFORCED IN THE TEMPLATE
@@ -511,9 +521,9 @@ node_types:
                 create:
                     #implementation: 'POST /openoapi/sdnovpc/v1/subnets'
                 delete:
-                    #implementation: 'DELETE /openoapi/sdnovpc/v1/subnets/{subnetId}'
+                    #implementation: 'DELETE /openoapi/sdnovpc/v1/subnets/{uuid}'
                 get:
-                    implementation: 'GET /openoapi/sdnovpc/v1/subnets/{subnetId}'
+                    implementation: 'GET /openoapi/sdnovpc/v1/subnets/{uuid}'
                 deploy:
                     implementation:
                         primary: 'POST /openoapi/sdnovpc/v1/subnets'
@@ -521,9 +531,14 @@ node_types:
                             - sdno.node.Connection.Vpc/deploy
                             - sdno.node.Connection.VpcSubnet/deploy
                 undeploy:
-                    implementation: 'DELETE /openoapi/sdnovpc/v1/subnets/{subnetId}'
+                    implementation: 
+                        primary: 'DELETE /openoapi/sdnovpc/v1/subnets/{uuid}'
+                        dependencies: 
+                            - sdno.node.Connection.VpcSubnet/undeploy                        
+                            - sdno.node.Connection.Vpc/undeploy
+
                 update:
-                    #implementation: 'PUT  /openoapi/sdnovpc/v1/subnet/{subnetId}'
+                    #implementation: 'PUT  /openoapi/sdnovpc/v1/subnet/{uuid}'
 
 
 
@@ -554,15 +569,15 @@ node_types:
                 create:
                     #implementation: 'POST /openoapi/sdnovpc/v1/vpcs'
                 delete:
-                    #implementation: 'DELETE /openoapi/sdnovpc/v1/vpcs/{vpcId}'
+                    #implementation: 'DELETE /openoapi/sdnovpc/v1/vpcs/{uuid}'
                 get:
-                    implementation: 'GET /openoapi/sdnovpc/v1/vpcs/{vpcId}'
+                    implementation: 'GET /openoapi/sdnovpc/v1/vpcs/{uuid}'
                 deploy:
                     implementation: 'POST /openoapi/sdnovpc/v1/vpcs'
                 undeploy:
-                     implementation: 'DELETE /openoapi/sdnovpc/v1/vpcs/{vpcId}'
+                     implementation: 'DELETE /openoapi/sdnovpc/v1/vpcs/{uuid}'
                 update:
-                     #implementation: 'PUT /openoapi/sdnovpc/v1/vpsc/{vpcId}'
+                     #implementation: 'PUT /openoapi/sdnovpc/v1/vpsc/{uuid}'
 
     # ***************************************************************************** 
     #            Site Node Types (Subnet, Vlan, Site with thinCPE and cCPE)
@@ -599,7 +614,15 @@ node_types:
                             - sdno.node.Connection.Vlan/deploy
                             - sdno.node.Connection.SiteSubnet/deploy
                 undeploy:
-                    implementation: 'DELETE /openoapi/sdnolocalsite/v1/subnets/{uuid}'
+                    implementation: 
+                        primary: 'DELETE /openoapi/sdnolocalsite/v1/subnets/{uuid}'
+                        dependencies: 
+                            - sdno.node.Connection.SiteSubnet/undeploy
+                            - sdno.node.Connection.Vlan/undeploy
+                            - sdno.node.ConnectionEndPoint.ThinCpe/undeploy
+                            - sdno.node.ConnectionEndPoint.VCpe/undeploy
+                            - sdno.node.ConnectionEndPoint.Site/undeploy
+
                 update:
                     implementation: 'PUT /openoapi/sdnolocalsite/v1/subnets/{uuid}'
 
@@ -955,7 +978,13 @@ node_types:
                             - sdno.node.Connection.Vpn/deploy
                             - sdno.node.Connection.VpnConnection/deploy
                 undeploy:
-                    implementation: 'DELETE /openoapi/sdnooverlay/v1/vpns/action/undeploy'
+                    implementation: 
+                        primary: 'DELETE /openoapi/sdnooverlay/v1/vpns/action/undeploy'
+                        dependencies:
+                            - sdno.node.Connection.VpnConnection/undeploy
+                            - sdno.node.ConnectionEndPoint.SiteGateway/undeploy
+                            - sdno.node.ConnectionEndPoint.VpcGateway/undeploy
+                            - sdno.node.Connection.Vpn/undeploy
                 update:
                     implementation: 'PUT /openoapi/sdnooverlay/v1/vpns/{uuid}'
 
