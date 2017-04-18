@@ -521,9 +521,9 @@ node_types:
                 create:
                     #implementation: 'POST /openoapi/sdnovpc/v1/subnets'
                 delete:
-                    #implementation: 'DELETE /openoapi/sdnovpc/v1/subnets/{uuid}'
+                    #implementation: 'DELETE /openoapi/sdnovpc/v1/subnets/{subnetId}'
                 get:
-                    implementation: 'GET /openoapi/sdnovpc/v1/subnets/{uuid}'
+                    implementation: 'GET /openoapi/sdnovpc/v1/subnets/{subnetId}'
                 deploy:
                     implementation:
                         primary: 'POST /openoapi/sdnovpc/v1/subnets'
@@ -532,13 +532,13 @@ node_types:
                             - sdno.node.Connection.VpcSubnet/deploy
                 undeploy:
                     implementation: 
-                        primary: 'DELETE /openoapi/sdnovpc/v1/subnets/{uuid}'
+                        primary: 'DELETE /openoapi/sdnovpc/v1/subnets/{subnetId}'
                         dependencies: 
                             - sdno.node.Connection.VpcSubnet/undeploy                        
                             - sdno.node.Connection.Vpc/undeploy
 
                 update:
-                    #implementation: 'PUT  /openoapi/sdnovpc/v1/subnet/{uuid}'
+                    #implementation: 'PUT  /openoapi/sdnovpc/v1/subnet/{subnetId}'
 
 
 
@@ -569,15 +569,15 @@ node_types:
                 create:
                     #implementation: 'POST /openoapi/sdnovpc/v1/vpcs'
                 delete:
-                    #implementation: 'DELETE /openoapi/sdnovpc/v1/vpcs/{uuid}'
+                    #implementation: 'DELETE /openoapi/sdnovpc/v1/vpcs/{vpcId}'
                 get:
-                    implementation: 'GET /openoapi/sdnovpc/v1/vpcs/{uuid}'
+                    implementation: 'GET /openoapi/sdnovpc/v1/vpcs/{vpcId}'
                 deploy:
                     implementation: 'POST /openoapi/sdnovpc/v1/vpcs'
                 undeploy:
-                     implementation: 'DELETE /openoapi/sdnovpc/v1/vpcs/{uuid}'
+                     implementation: 'DELETE /openoapi/sdnovpc/v1/vpcs/{vpcId}'
                 update:
-                     #implementation: 'PUT /openoapi/sdnovpc/v1/vpsc/{uuid}'
+                     #implementation: 'PUT /openoapi/sdnovpc/v1/vpsc/{vpcId}'
 
     # ***************************************************************************** 
     #            Site Node Types (Subnet, Vlan, Site with thinCPE and cCPE)
