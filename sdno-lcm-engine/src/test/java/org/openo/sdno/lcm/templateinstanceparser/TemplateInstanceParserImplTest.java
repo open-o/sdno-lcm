@@ -16,6 +16,7 @@
 
 package org.openo.sdno.lcm.templateinstanceparser;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -29,7 +30,9 @@ import org.openo.sdno.lcm.templatemodel.service.Metadata;
 import org.openo.sdno.lcm.templatemodel.service.Node;
 import org.openo.sdno.lcm.templatemodel.service.Operation;
 import org.openo.sdno.lcm.templatemodel.service.Relationship;
+import org.openo.sdno.lcm.util.Mapper;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 @Test(groups = { "sdno-lcm-unit" })
@@ -37,9 +40,37 @@ public class TemplateInstanceParserImplTest {
 
     TemplateInstanceParserImpl templateInstanceParserImpl;
 
+    Mapper mapper;
+
     String instanceJson;
 
     Metadata expectedMetadata;
+
+    @BeforeClass
+    public void beforeClass() {
+
+        templateInstanceParserImpl = new TemplateInstanceParserImpl();
+        mapper = new Mapper();
+    }
+
+    @Test
+    public void testParseMapAndParseAgain() throws IOException {
+
+        templateInstanceParserImpl = new TemplateInstanceParserImpl();
+        instanceJson = FileUtils.readFileToString(FileUtils.getFile("src", "test", "resources", "instance.json"),
+                Charset.defaultCharset());
+        expectedMetadata = new Metadata();
+        expectedMetadata.setTemplateName("enterprise2DC");
+        expectedMetadata.setTemplateAuthor("Huawei");
+        expectedMetadata.setVersion(0.1d);
+        expectedMetadata.setId("enterprise2Dc");
+        expectedMetadata.setVendor("sdno");
+
+        Instance instance = templateInstanceParserImpl.parse(instanceJson);
+        String instanceStr = instance.toJsonString();
+        Instance newInstance = templateInstanceParserImpl.parse(instanceStr);
+        Assert.assertNotNull(newInstance);
+    }
 
     /**
      * Test the template instance JSON is parsed as expected.
@@ -171,7 +202,6 @@ public class TemplateInstanceParserImplTest {
     @Test
     public void testParseUnderlay() throws Exception {
 
-        templateInstanceParserImpl = new TemplateInstanceParserImpl();
         instanceJson = FileUtils.readFileToString(
                 FileUtils.getFile("src", "test", "resources", "underlayInstance.json"), Charset.defaultCharset());
         expectedMetadata = new Metadata();

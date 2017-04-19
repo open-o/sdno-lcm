@@ -132,6 +132,7 @@ public class DispatcherImpl implements Dispatcher {
 
         try {
             // invoke API
+            apiUrl = this.substituteIdPathParam(workItem);
             log.info(String.format("Start to call the following service API: %s; Method: %s", apiUrl,
                     method.toString()));
 
@@ -156,6 +157,12 @@ public class DispatcherImpl implements Dispatcher {
             workItem.setResponse(e.toString());
             return false;
         }
+    }
+
+    public String substituteIdPathParam(WorkItem workItem) {
+
+        String workitemNodeIdProperty = workItem.getNode().getPropertyValue("id");
+        return workItem.getApiUrl().replaceAll("\\{[a-zA-Z_0-9]*\\}", workitemNodeIdProperty);
     }
 
     /**

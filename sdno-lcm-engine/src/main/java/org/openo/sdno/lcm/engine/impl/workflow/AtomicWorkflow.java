@@ -51,7 +51,7 @@ public abstract class AtomicWorkflow extends GenericWorkflowImpl {
         updateServiceInventory(serviceId, templateInstance);
 
         // execute the workplan
-        executeWorkplan(csarId, apiOperation, templateInstance);
+        executeWorkplan(csarId, apiOperation, templateInstance, serviceId);
 
         this.updateTemplateInstancePostDispatch(templateInstance);
         UpdateResponse updateServiceInventoryResponse = updateServiceInventory(serviceId, templateInstance);

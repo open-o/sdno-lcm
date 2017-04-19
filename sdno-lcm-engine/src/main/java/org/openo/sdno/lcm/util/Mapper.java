@@ -46,6 +46,8 @@ public class Mapper {
 
     ObjectMapper stringToMapMapper = new ObjectMapper();
 
+    ObjectMapper beanToStringMapper = new ObjectMapper();
+
     /**
      * Fills a Map with the values of the bean-style object's properties.
      * Limited to String properties for now. Works by checking the getters, not
@@ -103,5 +105,18 @@ public class Mapper {
         }
 
         return map;
+    }
+
+    public String beanToString(Object bean) {
+        // do not add properties to the map that have null value
+        beanToStringMapper.setSerializationInclusion(Include.NON_NULL);
+        String json = null;
+        try {
+            json = beanToStringMapper.writeValueAsString(bean);
+        } catch (Exception e) {
+            throw new LcmInternalException(String.format("Failed to marshall the object %s to JSON", bean.toString()),
+                    e);
+        }
+        return json;
     }
 }

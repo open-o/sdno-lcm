@@ -51,7 +51,7 @@ public class GwfDeleteCreated extends GenericWorkflowImpl {
         Instance templateInstance = (Instance) this.getParam(Constants.LCM_TEMPLATE_INSTANCE, params);
 
         // execute the workplan
-        executeWorkplan(csarId, apiOperation, templateInstance);
+        executeWorkplan(csarId, apiOperation, templateInstance, serviceId);
 
         // delete the service in inventory
         defaultMssApiClient.deleteConnectivityService(serviceId);

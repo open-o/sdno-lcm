@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder({"template_name", "template_author", "version", "vendor", "id", "csarProvider"})
+@JsonPropertyOrder({ "template_name", "template_author", "version", "vendor", "id", "csarProvider" })
 public class Metadata {
 
     @JsonProperty("template_name")
@@ -43,19 +43,19 @@ public class Metadata {
 
     @JsonProperty("csarProvider")
     private String csarProvider;
-    
+
     @JsonProperty("csarType")
     private String csarType;
-    
+
     @JsonProperty("csarVersion")
     private String csarVersion;
 
     @JsonProperty("designer")
     private String designer;
-    
+
     @JsonProperty("name")
     private String name;
-    
+
     @JsonProperty("type")
     private String type;
 
@@ -113,6 +113,7 @@ public class Metadata {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -129,53 +130,54 @@ public class Metadata {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object obj) {
-        if(this == obj) {
+        if (this == obj) {
             return true;
         }
-        if(obj == null) {
+        if (obj == null) {
             return false;
         }
-        if(getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
-        Metadata other = (Metadata)obj;
-        if(id == null) {
-            if(other.id != null) {
+        Metadata other = (Metadata) obj;
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if(!id.equals(other.id)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
-        if(templateAuthor == null) {
-            if(other.templateAuthor != null) {
+        if (templateAuthor == null) {
+            if (other.templateAuthor != null) {
                 return false;
             }
-        } else if(!templateAuthor.equals(other.templateAuthor)) {
+        } else if (!templateAuthor.equals(other.templateAuthor)) {
             return false;
         }
-        if(templateName == null) {
-            if(other.templateName != null) {
+        if (templateName == null) {
+            if (other.templateName != null) {
                 return false;
             }
-        } else if(!templateName.equals(other.templateName)) {
+        } else if (!templateName.equals(other.templateName)) {
             return false;
         }
-        if(vendor == null) {
-            if(other.vendor != null) {
+        if (vendor == null) {
+            if (other.vendor != null) {
                 return false;
             }
-        } else if(!vendor.equals(other.vendor)) {
+        } else if (!vendor.equals(other.vendor)) {
             return false;
         }
-        if(version == null) {
-            if(other.version != null) {
+        if (version == null) {
+            if (other.version != null) {
                 return false;
             }
-        } else if(!version.equals(other.version)) {
+        } else if (!version.equals(other.version)) {
             return false;
         }
         return true;
@@ -201,7 +203,6 @@ public class Metadata {
         this.csarType = csarType;
     }
 
-    
     /**
      * @return the csarVersion
      */
@@ -209,9 +210,9 @@ public class Metadata {
         return csarVersion;
     }
 
-    
     /**
-     * @param csarVersion the csarVersion to set
+     * @param csarVersion
+     *            the csarVersion to set
      */
     public void setCsarVersion(String csarVersion) {
         this.csarVersion = csarVersion;
@@ -245,6 +246,16 @@ public class Metadata {
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Object toJsonString() {
+        StringBuilder bob = new StringBuilder();
+        bob.append("{");
+        bob.append("\"template_name\":\"").append(this.getTemplateName()).append("\"");
+        bob.append(",");
+        bob.append("\"id\":\"").append(this.getId()).append("\"");
+        bob.append("}");
+        return bob;
     }
 
 }

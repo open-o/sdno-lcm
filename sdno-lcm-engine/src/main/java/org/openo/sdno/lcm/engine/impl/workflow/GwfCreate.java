@@ -21,6 +21,10 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.engine.GenericWorkflowId;
+import org.openo.sdno.lcm.exception.SouthboundExecutionException;
+import org.openo.sdno.lcm.model.workplan.WorkPlan;
+import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionResult;
+import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionStrategy;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.ConnectivityService;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.CreateConnectivityServiceResponse;
 import org.openo.sdno.lcm.restclient.serviceinventory.model.CreateConnectivityServiceResponseSample;
@@ -105,11 +109,22 @@ public class GwfCreate extends GenericWorkflowImpl {
         // part of deploy
         params.put(Constants.LCM_NBI_SERVICE_ID, createdNsId);
 
-        executeWorkplan(csarId, apiOperation, templateInstance);
+        executeWorkplan(csarId, apiOperation, templateInstance, createdNsId);
 
         HashMap<String, Object> responseMap = new HashMap<>();
         responseMap.put(Constants.LCM_NBI_SERVICE_ID, createdNsId);
         return responseMap;
+    }
+
+    protected void executeWorkplan(String csarId, String apiOperation, Instance templateInstance, String nsId)
+            throws SouthboundExecutionException {
+        this.getLogger().fine("no file store action required for create workflow");
+
+        WorkPlan workPlan = this.decomposer.decompose(templateInstance, apiOperation, csarId);
+        WorkPlanExecutionResult dispatchResult = dispatcher.dispatch(workPlan, WorkPlanExecutionStrategy.FAIL_FAST);
+        if (!dispatchResult.getOverallResult()) {
+            throw new SouthboundExecutionException("Execution failed in the SBI:\n" + dispatchResult.toString());
+        }
     }
 
     @Override

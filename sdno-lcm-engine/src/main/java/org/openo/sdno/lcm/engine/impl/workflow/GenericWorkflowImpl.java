@@ -19,6 +19,7 @@ package org.openo.sdno.lcm.engine.impl.workflow;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openo.sdno.lcm.ariaclient.ParserApiClient;
 import org.openo.sdno.lcm.catalogclient.ModelResourceApiClient;
 import org.openo.sdno.lcm.catalogclient.PackageResourceApiClient;
 import org.openo.sdno.lcm.decomposer.Decomposer;
@@ -28,6 +29,7 @@ import org.openo.sdno.lcm.engine.Workflow;
 import org.openo.sdno.lcm.engine.impl.WorkflowRegistry;
 import org.openo.sdno.lcm.exception.LcmInternalException;
 import org.openo.sdno.lcm.exception.SouthboundExecutionException;
+import org.openo.sdno.lcm.filestorehandler.FileStoreHandler;
 import org.openo.sdno.lcm.model.workplan.WorkPlan;
 import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionResult;
 import org.openo.sdno.lcm.model.workplan.WorkPlanExecutionStrategy;
@@ -56,6 +58,8 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
 
     protected TemplateInstanceParser templateInstanceParser;
 
+    protected ParserApiClient parserApiClient;
+
     protected Decomposer decomposer;
 
     protected Dispatcher dispatcher;
@@ -63,6 +67,8 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
     protected WorkflowRegistry workflowRegistry;
 
     protected Mapper mapper;
+
+    protected FileStoreHandler fileStoreHandler;
 
     /**
      * Gets a certain parameter from the passed param map.
@@ -158,8 +164,18 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
      * @param templateInstance
      * @throws SouthboundExecutionException
      */
-    protected void executeWorkplan(String csarId, String apiOperation, Instance templateInstance)
+    protected void executeWorkplan(String csarId, String apiOperation, Instance templateInstance, String nsId)
             throws SouthboundExecutionException {
+
+        /**
+         * If this workplan is instantiate we need to store the file, if it is
+         * another atomic wfl we need to recover the stored instance and unify
+         * the ID properties.
+         */
+        this.getLogger().fine("file store action required for this workflow");
+        Instance instanceFromFile = fileStoreHandler.getInstanceFromFile(nsId);
+        templateInstance.fillIdPropertiesFromInstance(instanceFromFile);
+
         WorkPlan workPlan = this.decomposer.decompose(templateInstance, apiOperation, csarId);
         WorkPlanExecutionResult dispatchResult = dispatcher.dispatch(workPlan, WorkPlanExecutionStrategy.FAIL_FAST);
         if (!dispatchResult.getOverallResult()) {
@@ -178,4 +194,15 @@ public abstract class GenericWorkflowImpl implements Workflow, RegisterWorkflow 
     public void setMapper(Mapper mapper) {
         this.mapper = mapper;
     }
+
+    @Autowired
+    public void setFileStoreHandler(FileStoreHandler fileStoreHandler) {
+        this.fileStoreHandler = fileStoreHandler;
+    }
+
+    @Autowired
+    public void setParserApiClient(ParserApiClient parserApiClient) {
+        this.parserApiClient = parserApiClient;
+    }
+
 }

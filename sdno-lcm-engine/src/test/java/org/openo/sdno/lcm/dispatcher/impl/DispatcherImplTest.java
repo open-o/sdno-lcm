@@ -42,9 +42,11 @@ import org.openo.sdno.lcm.templatemodel.service.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -52,8 +54,8 @@ import io.swagger.models.HttpMethod;
 import io.swagger.models.Swagger;
 import io.swagger.util.Yaml;
 
-@Test(groups = {"sdno-lcm-unit"})
-@ContextConfiguration(locations = {"classpath:spring-test-config.xml"})
+@Test(groups = { "sdno-lcm-unit" })
+@ContextConfiguration(locations = { "classpath:spring-test-config.xml" })
 public class DispatcherImplTest extends AbstractTestNGSpringContextTests {
     @Autowired
     DispatcherImpl dispatcher;
@@ -67,27 +69,32 @@ public class DispatcherImplTest extends AbstractTestNGSpringContextTests {
         JsonNode mapperSpec = null;
         try {
             String content = FileUtils.readFileToString(
-                FileUtils.getFile("src","test", "resources", "swagger-test.jaml"), Charset.defaultCharset());
+                    FileUtils.getFile("src", "test", "resources", "swagger-test.jaml"), Charset.defaultCharset());
             swagger = Yaml.mapper().readValue(content, Swagger.class);
 
             String propertyContent = FileUtils.readFileToString(
-                FileUtils.getFile("src","test", "resources", "node-properties-test.json"), Charset.defaultCharset());
+                    FileUtils.getFile("src", "test", "resources", "node-properties-test.json"),
+                    Charset.defaultCharset());
             properties = (JsonNode) new ObjectMapper().readTree(propertyContent);
 
             String mapperSpecContent = FileUtils.readFileToString(
-                FileUtils.getFile("src","test", "resources", "mapper-test.tsmap"), Charset.defaultCharset());
+                    FileUtils.getFile("src", "test", "resources", "mapper-test.tsmap"), Charset.defaultCharset());
             mapperSpec = (JsonNode) new ObjectMapper().readTree(mapperSpecContent);
-        }  catch(IOException e) {
+        } catch (IOException e) {
             assertTrue(false, "Files cannot be parsed successfully.");
         }
 
         Node node = new Node();
         node.setProperties(properties);
 
-        WorkItem item1 = new WorkItem(node, swagger, mapperSpec, "/openoapi/sdnoservicechain/v1/paths/test", HttpMethod.GET);
-        WorkItem item2 = new WorkItem(node, swagger, mapperSpec, "/openoapi/sdnoservicechain/v1/paths/test", HttpMethod.GET);
-        WorkItem item3 = new WorkItem(node, swagger, mapperSpec, "/openoapi/sdnoservicechain/v1/paths/test", HttpMethod.GET);
-        WorkItem item4 = new WorkItem(node, swagger, mapperSpec, "/openoapi/sdnoservicechain/v1/paths/test", HttpMethod.GET);
+        WorkItem item1 = new WorkItem(node, swagger, mapperSpec, "/openoapi/sdnoservicechain/v1/paths/test",
+                HttpMethod.GET);
+        WorkItem item2 = new WorkItem(node, swagger, mapperSpec, "/openoapi/sdnoservicechain/v1/paths/test",
+                HttpMethod.GET);
+        WorkItem item3 = new WorkItem(node, swagger, mapperSpec, "/openoapi/sdnoservicechain/v1/paths/test",
+                HttpMethod.GET);
+        WorkItem item4 = new WorkItem(node, swagger, mapperSpec, "/openoapi/sdnoservicechain/v1/paths/test",
+                HttpMethod.GET);
 
         plan = new WorkPlan();
         plan.insert(item1);
@@ -98,12 +105,11 @@ public class DispatcherImplTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testWorkPlanSuccess() {
-        HttpResponse rsp = new BasicHttpResponse(new ProtocolVersion("http",1,1), 200, "Success");
+        HttpResponse rsp = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 200, "Success");
         GenericApiClient mockClient = mock(GenericApiClient.class);
         dispatcher.setGenericApiClient(mockClient);
-        expect(mockClient.execute(anyObject(), anyObject(), anyObject(), anyObject(),
-                                  anyObject(), anyObject(), anyObject(), anyObject()))
-            .andReturn(rsp).times(4);
+        expect(mockClient.execute(anyObject(), anyObject(), anyObject(), anyObject(), anyObject(), anyObject(),
+                anyObject(), anyObject())).andReturn(rsp).times(4);
         replay(mockClient);
 
         WorkPlanExecutionResult result = dispatcher.dispatch(plan, WorkPlanExecutionStrategy.FAIL_FAST);
@@ -112,13 +118,12 @@ public class DispatcherImplTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testWorkPlanFailFast() {
-        HttpResponse rsp = new BasicHttpResponse(new ProtocolVersion("http",1,1), 200, "Success");
+        HttpResponse rsp = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 200, "Success");
         GenericApiClient mockClient = mock(GenericApiClient.class);
         dispatcher.setGenericApiClient(mockClient);
-        expect(mockClient.execute(anyObject(), anyObject(), anyObject(), anyObject(),
-                                  anyObject(), anyObject(), anyObject(), anyObject()))
-            .andReturn(rsp)
-            .andThrow(new ExternalComponentException("Internal Exception"));
+        expect(mockClient.execute(anyObject(), anyObject(), anyObject(), anyObject(), anyObject(), anyObject(),
+                anyObject(), anyObject())).andReturn(rsp)
+                        .andThrow(new ExternalComponentException("Internal Exception"));
         replay(mockClient);
 
         WorkPlanExecutionResult result = dispatcher.dispatch(plan, WorkPlanExecutionStrategy.FAIL_FAST);
@@ -130,15 +135,12 @@ public class DispatcherImplTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testWorkPlanContinueExecution() {
-        HttpResponse rsp = new BasicHttpResponse(new ProtocolVersion("http",1,1), 200, "Success");
+        HttpResponse rsp = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 200, "Success");
         GenericApiClient mockClient = mock(GenericApiClient.class);
         dispatcher.setGenericApiClient(mockClient);
-        expect(mockClient.execute(anyObject(), anyObject(), anyObject(), anyObject(),
-                                  anyObject(), anyObject(), anyObject(), anyObject()))
-            .andReturn(rsp)
-            .andThrow(new LcmInternalException("Internal Exception"))
-            .andReturn(rsp)
-            .andThrow(new LcmInternalException("External Exception"));
+        expect(mockClient.execute(anyObject(), anyObject(), anyObject(), anyObject(), anyObject(), anyObject(),
+                anyObject(), anyObject())).andReturn(rsp).andThrow(new LcmInternalException("Internal Exception"))
+                        .andReturn(rsp).andThrow(new LcmInternalException("External Exception"));
         replay(mockClient);
 
         WorkPlanExecutionResult result = dispatcher.dispatch(plan, WorkPlanExecutionStrategy.CONTINUE_EXECUTE);
@@ -150,12 +152,11 @@ public class DispatcherImplTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testExecuteWorkItemSuccess() {
-        HttpResponse rsp = new BasicHttpResponse(new ProtocolVersion("http",1,1), 200, "Success");
+        HttpResponse rsp = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 200, "Success");
         GenericApiClient mockClient = mock(GenericApiClient.class);
         dispatcher.setGenericApiClient(mockClient);
-        expect(mockClient.execute(anyObject(), anyObject(), anyObject(), anyObject(),
-                                  anyObject(), anyObject(), anyObject(), anyObject()))
-            .andReturn(rsp);
+        expect(mockClient.execute(anyObject(), anyObject(), anyObject(), anyObject(), anyObject(), anyObject(),
+                anyObject(), anyObject())).andReturn(rsp);
         replay(mockClient);
 
         boolean result = dispatcher.executeWorkItem(plan.getWorkItem(0));
@@ -166,10 +167,9 @@ public class DispatcherImplTest extends AbstractTestNGSpringContextTests {
     public void testExecuteWorkItemCatchException() {
         GenericApiClient mockClient = mock(GenericApiClient.class);
         dispatcher.setGenericApiClient(mockClient);
-        expect(mockClient.execute(anyObject(), anyObject(), anyObject(), anyObject(),
-                                  anyObject(), anyObject(), anyObject(), anyObject()))
-            .andThrow(new LcmInternalException("Internal Exception"))
-            .andThrow(new ExternalComponentException("External Exception"));
+        expect(mockClient.execute(anyObject(), anyObject(), anyObject(), anyObject(), anyObject(), anyObject(),
+                anyObject(), anyObject())).andThrow(new LcmInternalException("Internal Exception"))
+                        .andThrow(new ExternalComponentException("External Exception"));
         replay(mockClient);
 
         boolean result = dispatcher.executeWorkItem(plan.getWorkItem(0));
@@ -178,23 +178,73 @@ public class DispatcherImplTest extends AbstractTestNGSpringContextTests {
         assertFalse(result, "execution doesn't handle response correctly.");
     }
 
-
     @Test
     public void testSuccessJudge() {
-        HttpResponse rsp = new BasicHttpResponse(new ProtocolVersion("http",1,1), 200, "Success");
+        HttpResponse rsp = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 200, "Success");
         boolean success = dispatcher.isSuccessful(rsp);
         assertTrue(success, "wrong judgement");
 
-        rsp = new BasicHttpResponse(new ProtocolVersion("http",1,1), 202, "Success");
+        rsp = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 202, "Success");
         success = dispatcher.isSuccessful(rsp);
         assertTrue(success, "wrong judgement");
 
-        rsp = new BasicHttpResponse(new ProtocolVersion("http",1,1), 300, "Fail");
+        rsp = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 300, "Fail");
         success = dispatcher.isSuccessful(rsp);
         assertFalse(success, "wrong judgement");
 
-        rsp = new BasicHttpResponse(new ProtocolVersion("http",1,1), 199, "Fail");
+        rsp = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 199, "Fail");
         success = dispatcher.isSuccessful(rsp);
         assertFalse(success, "wrong judgement");
+    }
+
+    @Test
+    public void substituteIdPathParamTest() throws JsonProcessingException, IOException {
+
+        Swagger swagger = null;
+        // JsonNode properties = null;
+        JsonNode mapperSpec = null;
+        try {
+            String content = FileUtils.readFileToString(
+                    FileUtils.getFile("src", "test", "resources", "swagger-test.jaml"), Charset.defaultCharset());
+            swagger = Yaml.mapper().readValue(content, Swagger.class);
+
+            String propertyContent = FileUtils.readFileToString(
+                    FileUtils.getFile("src", "test", "resources", "node-properties-test.json"),
+                    Charset.defaultCharset());
+            // properties = (JsonNode) new
+            // ObjectMapper().readTree(propertyContent);
+
+            String mapperSpecContent = FileUtils.readFileToString(
+                    FileUtils.getFile("src", "test", "resources", "mapper-test.tsmap"), Charset.defaultCharset());
+            mapperSpec = (JsonNode) new ObjectMapper().readTree(mapperSpecContent);
+        } catch (IOException e) {
+            assertTrue(false, "Files cannot be parsed successfully.");
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        Node aNode = new Node();
+        aNode.setProperties(mapper.readTree("{}"));
+        aNode.setId("itsanodejim");
+        aNode.setProperty("id", "bones", "string");
+
+        WorkItem item1 = new WorkItem(aNode, swagger, mapperSpec, "/openoapi/sdnoservicechain/v1/paths/{id}",
+                HttpMethod.GET);
+        String newUri = dispatcher.substituteIdPathParam(item1);
+        Assert.assertEquals(newUri, "/openoapi/sdnoservicechain/v1/paths/bones");
+
+        WorkItem item2 = new WorkItem(aNode, swagger, mapperSpec, "/openoapi/sdnoservicechain/v1/{subnetId}/test",
+                HttpMethod.GET);
+        newUri = dispatcher.substituteIdPathParam(item2);
+        Assert.assertEquals(newUri, "/openoapi/sdnoservicechain/v1/bones/test");
+
+        WorkItem item3 = new WorkItem(aNode, swagger, mapperSpec, "/openoapi/sdnoservicechain/{ID123}/paths/test",
+                HttpMethod.GET);
+        newUri = dispatcher.substituteIdPathParam(item3);
+        Assert.assertEquals(newUri, "/openoapi/sdnoservicechain/bones/paths/test");
+
+        WorkItem item4 = new WorkItem(aNode, swagger, mapperSpec, "/{z}/{123IDid}/v1/paths/test", HttpMethod.GET);
+        newUri = dispatcher.substituteIdPathParam(item4);
+        Assert.assertEquals(newUri, "/bones/bones/v1/paths/test");
     }
 }

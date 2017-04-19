@@ -102,9 +102,6 @@ public class Node {
      */
     public void clearExamined() {
 
-        if (!examined) {
-            throw new LcmInternalException("Tried to clear a Node that was not examined");
-        }
         examined = false;
     }
 
@@ -582,6 +579,17 @@ public class Node {
         }
         this.setFieldValue(parentNode, fieldName, newValue);
         log.info(String.format("After replace attribute value:%nparentNode: %s%n", parentNode.toString()));
+    }
+
+    public Object toJsonString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("{");
+        stringBuilder.append("\"id\":\"").append(this.getId()).append("\",");
+        stringBuilder.append("\"type_name\":\"").append(this.getTypeName()).append("\",");
+        stringBuilder.append("\"template_name\":\"").append(this.getTemplateName()).append("\",");
+        stringBuilder.append("\"properties\":").append(this.propertiesJson.toString());
+        stringBuilder.append("}");
+        return stringBuilder.toString();
     }
 
 }

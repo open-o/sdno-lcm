@@ -19,11 +19,9 @@ package org.openo.sdno.lcm.decomposer.impl;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.openo.sdno.lcm.csarhandler.CsarHandler;
-import org.openo.sdno.lcm.decomposer.BrsMapping;
 import org.openo.sdno.lcm.decomposer.Decomposer;
 import org.openo.sdno.lcm.model.workplan.WorkItem;
 import org.openo.sdno.lcm.model.workplan.WorkPlan;
@@ -49,13 +47,9 @@ public class DecomposerImpl implements Decomposer {
 
     private static final String SWAGGER = "swagger";
 
-    private static final String SDNO_NODE_NODE = "sdno.node.Node";
-
     private final Logger log = Logger.getLogger("DecomposerImpl");
 
     private CsarHandler csarHandler;
-
-    private BrsMapping brsMapping;
 
     /*
      * (non-Javadoc)
@@ -68,10 +62,8 @@ public class DecomposerImpl implements Decomposer {
     @Override
     public WorkPlan decompose(final Instance serviceTemplateInstance, final String operation, final String csarId) {
 
-        // retrieve resources from BRS and fill required data
-        this.fillResourceNodes(serviceTemplateInstance);
         // fill values for nodes that reference other nodes, usually this will
-        // be an id retrieved from resource inventory in the previous step
+        // be an id previously retrieved from resource inventory
         serviceTemplateInstance.fillNodeReferences();
 
         WorkPlan workplan = new WorkPlan();
@@ -133,22 +125,14 @@ public class DecomposerImpl implements Decomposer {
             }
         }
 
+        for (Node node : serviceTemplateInstance.getNodes()) {
+
+            node.clearExamined();
+        }
         return workplan;
     }
 
-    private void decorateNode(final Node node) {
-
-        // generate UUIDs for Nodes that will be created by atomic services
-        if (node.isConnectionNode()) {
-            String uuid = UUID.randomUUID().toString();
-            node.setProperty("id", uuid, "string");
-            log.info(String.format("Generated random ID property %s for Node %s", uuid, node.getId()));
-        }
-    }
-
     private void addWorkItem(WorkPlan workplan, final Node node, final String csarId, final String operation) {
-
-        node.clearExamined();
 
         if (node.isRootNode()) {
 
@@ -157,10 +141,6 @@ public class DecomposerImpl implements Decomposer {
                             node.getId(), csarId, operation));
 
         } else if (node.hasOperationImplementation(operation)) {
-
-            // add required extras to the node itself eg ID property
-            this.decorateNode(node);
-            // clean examined flag from all Nodes that are added to WorkPlan
 
             Artifact swaggerArtifact = node.getArtifact(SWAGGER);
             String swaggerPath = swaggerArtifact.getSourcePath();
@@ -182,39 +162,9 @@ public class DecomposerImpl implements Decomposer {
         }
     }
 
-    /**
-     * 
-     */
-    public void fillResourceNodes(Instance instance) {
-
-        for (Node node : instance.getNodes()) {
-
-            if (node.getTypeName().equals(SDNO_NODE_NODE)) {
-                log.info(String.format("fillResourceNodes: %s is a resource Node", node.getId()));
-
-                try {
-                    brsMapping.enrichResourceNode(node);
-                } catch (Exception e) {
-                    log.fine(e.toString());
-                    log.warning(String.format(
-                            "Failed to enrich the resource node %s with values from resource inventory due to %s",
-                            node.getId(), e.getMessage()));
-                }
-
-            } else {
-                log.fine(String.format("fillResourceNodes: %s is not a resource Node - no values will be filled",
-                        node.getId()));
-            }
-        }
-    }
-
     @Autowired
     public void setCsarHandler(CsarHandler csarHandler) {
         this.csarHandler = csarHandler;
     }
 
-    @Autowired
-    public void setBrsMapping(BrsMapping brsMapping) {
-        this.brsMapping = brsMapping;
-    }
 }

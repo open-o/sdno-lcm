@@ -127,7 +127,7 @@ public class Instance {
                 return n;
             }
         }
-        log.severe(UNABLE_TO_FIND_NODE_ERR + nodeId);
+        log.warning(UNABLE_TO_FIND_NODE_ERR + nodeId);
         throw new LcmInternalException(UNABLE_TO_FIND_NODE_ERR + nodeId);
     }
 
@@ -161,6 +161,20 @@ public class Instance {
     public String toString() {
         return String.format("Instance [log=%s, inputsJson=%s, description=%s, metadata=%s, nodes=%s]", log, inputsJson,
                 description, metadata, nodes.toString());
+    }
+
+    public String toJsonString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("{\"instance\":{\"metadata\":").append(metadata.toJsonString());
+        stringBuilder.append(", \"nodes\":[");
+        for (Node node : this.getNodes()) {
+            stringBuilder.append(node.toJsonString());
+            stringBuilder.append(",");
+        }
+        stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
+        stringBuilder.append("]");
+        stringBuilder.append("}}");
+        return stringBuilder.toString();
     }
 
     /**
@@ -200,6 +214,36 @@ public class Instance {
         for (Node node : this.getNodes()) {
 
             node.fillNodeReferences(this);
+        }
+    }
+
+    /**
+     * Takes another Instance and copies the values of the ID properties from
+     * that instance into this instance. Part of temporary fix in storing the
+     * instantiated Nodes so we can set the IDs for temination correctly.
+     * 
+     * @param idInstance
+     *            the Instance containing nodes that has the ID property set
+     *            (note this is different to the node id)
+     */
+    public void fillIdPropertiesFromInstance(Instance idInstance) {
+
+        for (Node node : this.getNodes()) {
+            String nodeTemplateName = node.getTemplateName();
+            try {
+                Node idNode = idInstance.getNodeByTemplateName(nodeTemplateName);
+                String idNodeIdProperty = idNode.getPropertyValue("id");
+                if (null == idNodeIdProperty) {
+                    throw new LcmInternalException(String.format(
+                            "Unable to fill ID property in node %s as the ID property was null in the passed Instance",
+                            nodeTemplateName));
+                }
+                node.setProperty("id", idNodeIdProperty, "string");
+            } catch (Exception e) {
+                log.warning(String.format(
+                        "Unable to fill ID property in node %s as this node was not found in the passed Instance",
+                        nodeTemplateName));
+            }
         }
     }
 
